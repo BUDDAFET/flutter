@@ -16,7 +16,6 @@ void main() {
   testWidgets(
     'Material2 - RichText TextSpan styles with different locales',
     (WidgetTester tester) async {
-
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(useMaterial3: false),
@@ -28,7 +27,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -39,8 +38,14 @@ void main() {
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(text: character, style: style.copyWith(locale: const Locale('ja'))),
-                          TextSpan(text: character, style: style.copyWith(locale: const Locale('zh'))),
+                          TextSpan(
+                              text: character,
+                              style:
+                                  style.copyWith(locale: const Locale('ja'))),
+                          TextSpan(
+                              text: character,
+                              style:
+                                  style.copyWith(locale: const Locale('zh'))),
                         ],
                       ),
                     ),
@@ -62,7 +67,6 @@ void main() {
   testWidgets(
     'Material3 - RichText TextSpan styles with different locales',
     (WidgetTester tester) async {
-
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(useMaterial3: true),
@@ -74,7 +78,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -85,8 +89,14 @@ void main() {
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(text: character, style: style.copyWith(locale: const Locale('ja'))),
-                          TextSpan(text: character, style: style.copyWith(locale: const Locale('zh'))),
+                          TextSpan(
+                              text: character,
+                              style:
+                                  style.copyWith(locale: const Locale('ja'))),
+                          TextSpan(
+                              text: character,
+                              style:
+                                  style.copyWith(locale: const Locale('zh'))),
                         ],
                       ),
                     ),
@@ -119,7 +129,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -171,7 +181,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -223,7 +233,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -234,8 +244,10 @@ void main() {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text(character, style: style, locale: const Locale('ja')),
-                        Text(character, style: style, locale: const Locale('zh')),
+                        Text(character,
+                            style: style, locale: const Locale('ja')),
+                        Text(character,
+                            style: style, locale: const Locale('zh')),
                       ],
                     ),
                   ),
@@ -267,7 +279,7 @@ void main() {
           home: Builder(
             builder: (BuildContext context) {
               const String character = '骨';
-              final TextStyle style = Theme.of(context).textTheme.displayMedium!;
+              final TextStyle style = Theme.of(context).textTheme.displayMedium;
               return Scaffold(
                 body: Container(
                   padding: const EdgeInsets.all(48.0),
@@ -278,8 +290,10 @@ void main() {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text(character, style: style, locale: const Locale('ja')),
-                        Text(character, style: style, locale: const Locale('zh')),
+                        Text(character,
+                            style: style, locale: const Locale('ja')),
+                        Text(character,
+                            style: style, locale: const Locale('zh')),
                       ],
                     ),
                   ),

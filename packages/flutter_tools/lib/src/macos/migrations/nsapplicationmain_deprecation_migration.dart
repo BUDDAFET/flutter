@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../base/file_system.dart';
 import '../../base/project_migrator.dart';
 import '../../xcode_project.dart';
 
@@ -38,7 +37,8 @@ class NSApplicationMainDeprecationMigration extends ProjectMigrator {
 
     // Migrate the macos/Runner/AppDelegate.swift file.
     final String original = _appDelegateSwift.readAsStringSync();
-    final String migrated = original.replaceFirst(_appDelegateFileBefore, _appDelegateFileAfter);
+    final String migrated =
+        original.replaceFirst(_appDelegateFileBefore, _appDelegateFileAfter);
     if (original == migrated) {
       return;
     }

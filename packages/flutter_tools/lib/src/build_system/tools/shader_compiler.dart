@@ -11,7 +11,6 @@ import 'package:process/process.dart';
 
 import '../../artifacts.dart';
 import '../../base/error_handling_io.dart';
-import '../../base/file_system.dart';
 import '../../base/io.dart';
 import '../../base/logger.dart';
 import '../../build_info.dart';
@@ -25,9 +24,9 @@ class DevelopmentShaderCompiler {
     required ShaderCompiler shaderCompiler,
     required FileSystem fileSystem,
     @visibleForTesting math.Random? random,
-  }) : _shaderCompiler = shaderCompiler,
-       _fileSystem = fileSystem,
-       _random = random ?? math.Random();
+  })  : _shaderCompiler = shaderCompiler,
+        _fileSystem = fileSystem,
+        _random = random ?? math.Random();
 
   final ShaderCompiler _shaderCompiler;
   final FileSystem _fileSystem;
@@ -51,7 +50,8 @@ class DevelopmentShaderCompiler {
   /// to the attached device in its place.
   Future<DevFSContent?> recompileShader(DevFSContent inputShader) async {
     assert(_debugConfigured);
-    final File output = _fileSystem.systemTempDirectory.childFile('${_random.nextDouble()}.temp');
+    final File output = _fileSystem.systemTempDirectory
+        .childFile('${_random.nextDouble()}.temp');
     late File inputFile;
     bool cleanupInput = false;
     Uint8List result;
@@ -61,7 +61,8 @@ class DevelopmentShaderCompiler {
       if (inputShader is DevFSFileContent) {
         inputFile = inputShader.file as File;
       } else {
-        inputFile = _fileSystem.systemTempDirectory.childFile('${_random.nextDouble()}.temp');
+        inputFile = _fileSystem.systemTempDirectory
+            .childFile('${_random.nextDouble()}.temp');
         inputFile.writeAsBytesSync(await inputShader.contentsAsBytes());
         cleanupInput = true;
       }
@@ -94,10 +95,10 @@ class ShaderCompiler {
     required Logger logger,
     required FileSystem fileSystem,
     required Artifacts artifacts,
-  }) : _processManager = processManager,
-       _logger = logger,
-       _fs = fileSystem,
-       _artifacts = artifacts;
+  })  : _processManager = processManager,
+        _logger = logger,
+        _fs = fileSystem,
+        _artifacts = artifacts;
 
   final ProcessManager _processManager;
   final Logger _logger;
@@ -115,7 +116,11 @@ class ShaderCompiler {
       case TargetPlatform.linux_arm64:
       case TargetPlatform.windows_x64:
       case TargetPlatform.windows_arm64:
-        return <String>['--sksl', '--runtime-stage-gles', '--runtime-stage-vulkan'];
+        return <String>[
+          '--sksl',
+          '--runtime-stage-gles',
+          '--runtime-stage-vulkan'
+        ];
 
       case TargetPlatform.ios:
       case TargetPlatform.darwin:
@@ -128,7 +133,6 @@ class ShaderCompiler {
 
       case TargetPlatform.web_javascript:
         return <String>['--sksl'];
-
     }
   }
 
@@ -136,7 +140,8 @@ class ShaderCompiler {
   ///
   /// See [Target.inputs].
   static const List<Source> inputs = <Source>[
-    Source.pattern('{FLUTTER_ROOT}/packages/flutter_tools/lib/src/build_system/tools/shader_compiler.dart'),
+    Source.pattern(
+        '{FLUTTER_ROOT}/packages/flutter_tools/lib/src/build_system/tools/shader_compiler.dart'),
     Source.hostArtifact(HostArtifact.impellerc),
   ];
 
@@ -164,13 +169,13 @@ class ShaderCompiler {
       );
     }
 
-    final String shaderLibPath = _fs.path.join(impellerc.parent.absolute.path, 'shader_lib');
+    final String shaderLibPath =
+        _fs.path.join(impellerc.parent.absolute.path, 'shader_lib');
     final List<String> cmd = <String>[
       impellerc.path,
       ..._shaderTargetsFromTargetPlatform(targetPlatform),
       '--iplr',
-      if (targetPlatform == TargetPlatform.web_javascript)
-        '--json',
+      if (targetPlatform == TargetPlatform.web_javascript) '--json',
       '--sl=$outputPath',
       '--spirv=$outputPath.spirv',
       '--input=${input.path}',

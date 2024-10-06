@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'framework.dart';
-
 /// The buttons that can appear in a context menu by default.
 ///
 /// See also:
@@ -94,10 +92,10 @@ class ContextMenuButtonItem {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is ContextMenuButtonItem
-        && other.label == label
-        && other.onPressed == onPressed
-        && other.type == type;
+    return other is ContextMenuButtonItem &&
+        other.label == label &&
+        other.onPressed == onPressed &&
+        other.type == type;
   }
 
   @override

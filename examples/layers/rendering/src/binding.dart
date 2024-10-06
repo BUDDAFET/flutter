@@ -21,14 +21,14 @@ class ViewRenderingFlutterBinding extends RenderingFlutterBinding {
   ///
   /// This binding does not automatically schedule any frames. Callers are
   /// responsible for deciding when to first call [scheduleFrame].
-  ViewRenderingFlutterBinding({ RenderBox? root }) : _root = root;
+  ViewRenderingFlutterBinding({RenderBox? root}) : _root = root;
 
   @override
   void initInstances() {
     super.initInstances();
     // TODO(goderbauer): Create window if embedder doesn't provide an implicit view.
     assert(PlatformDispatcher.instance.implicitView != null);
-    _renderView = initRenderView(PlatformDispatcher.instance.implicitView!);
+    _renderView = initRenderView(PlatformDispatcher.instance.implicitView);
     _renderView.child = _root;
     _root = null;
   }

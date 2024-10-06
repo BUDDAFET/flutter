@@ -19,13 +19,14 @@ void main() {
     await tester.pump();
 
     final TextFormField textField = tester.widget(find.byType(TextFormField));
-    final TextEditingController controller = textField.controller!;
+    final TextEditingController controller = textField.controller;
 
     expect(find.text(input.toLowerCase()), findsOneWidget);
     expect(controller.text, input.toLowerCase());
   });
 
-  testWidgets('Keeps the caret at the end of the input', (WidgetTester tester) async {
+  testWidgets('Keeps the caret at the end of the input',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const example.TextEditingControllerExampleApp(),
     );
@@ -38,7 +39,7 @@ void main() {
     expect(find.text(input), findsOneWidget);
 
     final TextFormField textField = tester.widget(find.byType(TextFormField));
-    final TextEditingController controller = textField.controller!;
+    final TextEditingController controller = textField.controller;
 
     // Verify that the caret positioned at the end of the input.
     expect(

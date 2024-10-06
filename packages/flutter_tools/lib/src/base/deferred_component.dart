@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../convert.dart';
 import '../flutter_manifest.dart';
@@ -82,7 +81,8 @@ class DeferredComponent {
   /// configuration.
   @override
   String toString() {
-    final StringBuffer out = StringBuffer('\nDeferredComponent: $name\n  Libraries:');
+    final StringBuffer out =
+        StringBuffer('\nDeferredComponent: $name\n  Libraries:');
     for (final String lib in libraries) {
       out.write('\n    - $lib');
     }
@@ -150,7 +150,9 @@ class LoadingUnit {
   ///
   /// This will read all existing loading units for every provided abi. If no abis are
   /// provided, loading units for all abis will be parsed.
-  static List<LoadingUnit> parseGeneratedLoadingUnits(Directory outputDir, Logger logger, {List<String>? abis}) {
+  static List<LoadingUnit> parseGeneratedLoadingUnits(
+      Directory outputDir, Logger logger,
+      {List<String>? abis}) {
     final List<LoadingUnit> loadingUnits = <LoadingUnit>[];
     final List<FileSystemEntity> files = outputDir.listSync(recursive: true);
     for (final FileSystemEntity fileEntity in files) {
@@ -178,7 +180,8 @@ class LoadingUnit {
   /// Parses loading units from a single loading unit manifest json file.
   ///
   /// Returns an empty list if the manifestFile does not exist or is invalid.
-  static List<LoadingUnit> parseLoadingUnitManifest(File manifestFile, Logger logger) {
+  static List<LoadingUnit> parseLoadingUnitManifest(
+      File manifestFile, Logger logger) {
     if (!manifestFile.existsSync()) {
       return <LoadingUnit>[];
     }
@@ -188,17 +191,20 @@ class LoadingUnit {
     try {
       manifest = jsonDecode(fileString) as Map<String, dynamic>;
     } on FormatException catch (e) {
-      logger.printError('Loading unit manifest at `${manifestFile.path}` was invalid JSON:\n$e');
+      logger.printError(
+          'Loading unit manifest at `${manifestFile.path}` was invalid JSON:\n$e');
     }
     // Set up android source directory
     return <LoadingUnit>[
       if (manifest?['loadingUnits'] case final List<dynamic> loadingUnits)
-        for (final Map<String, dynamic> loadingUnitMap in loadingUnits.cast<Map<String, dynamic>>())
+        for (final Map<String, dynamic> loadingUnitMap
+            in loadingUnits.cast<Map<String, dynamic>>())
           if (loadingUnitMap['id'] != 1) // skip base unit
             LoadingUnit(
               id: loadingUnitMap['id'] as int,
               path: loadingUnitMap['path'] as String,
-              libraries: List<String>.from(loadingUnitMap['libraries'] as List<dynamic>),
+              libraries: List<String>.from(
+                  loadingUnitMap['libraries'] as List<dynamic>),
             ),
     ];
   }

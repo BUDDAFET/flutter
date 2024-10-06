@@ -8,7 +8,6 @@ import 'package:native_assets_cli/native_assets_cli_internal.dart';
 
 import '../../../android/android_sdk.dart';
 import '../../../base/common.dart';
-import '../../../base/file_system.dart';
 import '../../../build_info.dart';
 import '../../../globals.dart' as globals;
 import '../native_assets.dart';
@@ -100,8 +99,7 @@ Future<(Uri? nativeAssetsYaml, List<Uri> dependencies)>
   }
 
   final List<Target> targets = androidArchs.map(_getNativeTarget).toList();
-  final BuildModeImpl buildModeCli =
-      nativeAssetsBuildMode(buildMode);
+  final BuildModeImpl buildModeCli = nativeAssetsBuildMode(buildMode);
 
   globals.logger
       .printTrace('Building native assets for $targets $buildModeCli.');
@@ -165,7 +163,8 @@ Future<void> _copyNativeAssetsAndroid(
     for (final MapEntry<AssetImpl, KernelAsset> assetMapping
         in assetTargetLocations.entries) {
       final Uri source = assetMapping.key.file!;
-      final Uri target = (assetMapping.value.path as KernelAssetAbsolutePath).uri;
+      final Uri target =
+          (assetMapping.value.path as KernelAssetAbsolutePath).uri;
       final AndroidArch androidArch =
           _getAndroidArch(assetMapping.value.target);
       final String jniArchDir = androidArch.archName;
@@ -182,19 +181,19 @@ Future<void> _copyNativeAssetsAndroid(
 Target _getNativeTarget(AndroidArch androidArch) {
   return switch (androidArch) {
     AndroidArch.armeabi_v7a => Target.androidArm,
-    AndroidArch.arm64_v8a   => Target.androidArm64,
-    AndroidArch.x86         => Target.androidIA32,
-    AndroidArch.x86_64      => Target.androidX64,
+    AndroidArch.arm64_v8a => Target.androidArm64,
+    AndroidArch.x86 => Target.androidIA32,
+    AndroidArch.x86_64 => Target.androidX64,
   };
 }
 
 /// Get the [AndroidArch] for [target].
 AndroidArch _getAndroidArch(Target target) {
   return switch (target) {
-    Target.androidArm   => AndroidArch.armeabi_v7a,
+    Target.androidArm => AndroidArch.armeabi_v7a,
     Target.androidArm64 => AndroidArch.arm64_v8a,
-    Target.androidIA32  => AndroidArch.x86,
-    Target.androidX64   => AndroidArch.x86_64,
+    Target.androidIA32 => AndroidArch.x86,
+    Target.androidX64 => AndroidArch.x86_64,
     Target.androidRiscv64 => throwToolExit('Android RISC-V not yet supported.'),
     _ => throwToolExit('Invalid target: $target.'),
   };

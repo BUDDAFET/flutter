@@ -8,7 +8,6 @@ import '../android/android_builder.dart';
 import '../android/android_sdk.dart';
 import '../android/gradle_utils.dart';
 import '../base/common.dart';
-import '../base/file_system.dart';
 import '../base/os.dart';
 import '../build_info.dart';
 import '../cache.dart';
@@ -24,9 +23,9 @@ class BuildAarCommand extends BuildSubCommand {
     required AndroidSdk? androidSdk,
     required FileSystem fileSystem,
     required bool verboseHelp,
-  }): _androidSdk = androidSdk,
-      _fileSystem = fileSystem,
-      super(verboseHelp: verboseHelp) {
+  })  : _androidSdk = androidSdk,
+        _fileSystem = fileSystem,
+        super(verboseHelp: verboseHelp) {
     argParser
       ..addFlag(
         'debug',
@@ -36,7 +35,8 @@ class BuildAarCommand extends BuildSubCommand {
       ..addFlag(
         'profile',
         defaultsTo: true,
-        help: 'Build a version of the current project specialized for performance profiling.',
+        help:
+            'Build a version of the current project specialized for performance profiling.',
       )
       ..addFlag(
         'release',
@@ -56,13 +56,17 @@ class BuildAarCommand extends BuildSubCommand {
     addNullSafetyModeOptions(hide: !verboseHelp);
     addEnableExperimentation(hide: !verboseHelp);
     addAndroidSpecificBuildOptions(hide: !verboseHelp);
-    argParser
-      .addMultiOption(
-        'target-platform',
-        defaultsTo: <String>['android-arm', 'android-arm64', 'android-x64'],
-        allowed: <String>['android-arm', 'android-arm64', 'android-x86', 'android-x64'],
-        help: 'The target platform for which the project is compiled.',
-      );
+    argParser.addMultiOption(
+      'target-platform',
+      defaultsTo: <String>['android-arm', 'android-arm64', 'android-x64'],
+      allowed: <String>[
+        'android-arm',
+        'android-arm64',
+        'android-x86',
+        'android-x64'
+      ],
+      help: 'The target platform for which the project is compiled.',
+    );
   }
   final AndroidSdk? _androidSdk;
   final FileSystem _fileSystem;
@@ -74,9 +78,10 @@ class BuildAarCommand extends BuildSubCommand {
   bool get reportNullSafety => false;
 
   @override
-  Future<Set<DevelopmentArtifact>> get requiredArtifacts async => <DevelopmentArtifact>{
-    DevelopmentArtifact.androidGenSnapshot,
-  };
+  Future<Set<DevelopmentArtifact>> get requiredArtifacts async =>
+      <DevelopmentArtifact>{
+        DevelopmentArtifact.androidGenSnapshot,
+      };
 
   @override
   late final FlutterProject project = _getProject();
@@ -118,7 +123,8 @@ class BuildAarCommand extends BuildSubCommand {
   }
 
   @override
-  final String description = 'Build a repository containing an AAR and a POM file.\n\n'
+  final String description =
+      'Build a repository containing an AAR and a POM file.\n\n'
       'By default, AARs are built for `release`, `debug` and `profile`.\n'
       'The POM file is used to include the dependencies that the AAR was compiled against.\n'
       'To learn more about how to use these artifacts, see: https://flutter.dev/to/integrate-android-archive\n'
@@ -144,24 +150,27 @@ class BuildAarCommand extends BuildSubCommand {
         stringsArg('target-platform').map<AndroidArch>(getAndroidArchForName);
 
     final String? buildNumberArg = stringArg('build-number');
-    final String buildNumber = argParser.options.containsKey('build-number')
-      && buildNumberArg != null
-      && buildNumberArg.isNotEmpty
-      ? buildNumberArg
-      : '1.0';
+    final String buildNumber = argParser.options.containsKey('build-number') &&
+            buildNumberArg != null &&
+            buildNumberArg.isNotEmpty
+        ? buildNumberArg
+        : '1.0';
 
-    final File targetFile = _fileSystem.file(_fileSystem.path.join('lib', 'main.dart'));
-    for (final String buildMode in const <String>['debug', 'profile', 'release']) {
+    final File targetFile =
+        _fileSystem.file(_fileSystem.path.join('lib', 'main.dart'));
+    for (final String buildMode in const <String>[
+      'debug',
+      'profile',
+      'release'
+    ]) {
       if (boolArg(buildMode)) {
-        androidBuildInfo.add(
-          AndroidBuildInfo(
-            await getBuildInfo(
-              forcedBuildMode: BuildMode.fromCliName(buildMode),
-              forcedTargetFile: targetFile,
-            ),
-            targetArchs: targetArchitectures,
-          )
-        );
+        androidBuildInfo.add(AndroidBuildInfo(
+          await getBuildInfo(
+            forcedBuildMode: BuildMode.fromCliName(buildMode),
+            forcedTargetFile: targetFile,
+          ),
+          targetArchs: targetArchitectures,
+        ));
       }
     }
     if (androidBuildInfo.isEmpty) {
@@ -182,8 +191,8 @@ class BuildAarCommand extends BuildSubCommand {
     // to false if not enabled explicitly in the manifest.
     final bool impellerEnabled = project.android.computeImpellerEnabled();
     final String buildLabel = impellerEnabled
-          ? 'manifest-aar-impeller-enabled'
-          : 'manifest-aar-impeller-disabled';
+        ? 'manifest-aar-impeller-enabled'
+        : 'manifest-aar-impeller-disabled';
     globals.analytics.send(Event.flutterBuildInfo(
       label: buildLabel,
       buildType: 'android',
@@ -202,7 +211,8 @@ class BuildAarCommand extends BuildSubCommand {
     final File mainFile = _fileSystem.file(remainingArguments.first);
     final String path;
     if (!mainFile.existsSync()) {
-      final Directory pathProject = _fileSystem.directory(remainingArguments.first);
+      final Directory pathProject =
+          _fileSystem.directory(remainingArguments.first);
       if (!pathProject.existsSync()) {
         throwToolExit('${remainingArguments.first} does not exist');
       }

@@ -127,9 +127,9 @@ class BoxShadow extends ui.Shadow {
       return a.scale(1.0 - t);
     }
     return BoxShadow(
-      color: Color.lerp(a.color, b.color, t)!,
-      offset: Offset.lerp(a.offset, b.offset, t)!,
-      blurRadius: ui.lerpDouble(a.blurRadius, b.blurRadius, t)!,
+      color: Color.lerp(a.color, b.color, t),
+      offset: Offset.lerp(a.offset, b.offset, t),
+      blurRadius: ui.lerpDouble(a.blurRadius, b.blurRadius, t),
       spreadRadius: ui.lerpDouble(a.spreadRadius, b.spreadRadius, t)!,
       blurStyle: a.blurStyle == BlurStyle.normal ? b.blurStyle : a.blurStyle,
     );
@@ -140,7 +140,8 @@ class BoxShadow extends ui.Shadow {
   /// If the lists differ in length, excess items are lerped with null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static List<BoxShadow>? lerpList(List<BoxShadow>? a, List<BoxShadow>? b, double t) {
+  static List<BoxShadow>? lerpList(
+      List<BoxShadow>? a, List<BoxShadow>? b, double t) {
     if (identical(a, b)) {
       return a;
     }
@@ -162,17 +163,19 @@ class BoxShadow extends ui.Shadow {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is BoxShadow
-        && other.color == color
-        && other.offset == offset
-        && other.blurRadius == blurRadius
-        && other.spreadRadius == spreadRadius
-        && other.blurStyle == blurStyle;
+    return other is BoxShadow &&
+        other.color == color &&
+        other.offset == offset &&
+        other.blurRadius == blurRadius &&
+        other.spreadRadius == spreadRadius &&
+        other.blurStyle == blurStyle;
   }
 
   @override
-  int get hashCode => Object.hash(color, offset, blurRadius, spreadRadius, blurStyle);
+  int get hashCode =>
+      Object.hash(color, offset, blurRadius, spreadRadius, blurStyle);
 
   @override
-  String toString() => 'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)';
+  String toString() =>
+      'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)';
 }

@@ -78,7 +78,7 @@ class _TimePickerOptionsState extends State<TimePickerOptions> {
   void _entryModeChanged(TimePickerEntryMode? value) {
     if (value != entryMode) {
       setState(() {
-        entryMode = value!;
+        entryMode = value;
       });
     }
   }
@@ -94,7 +94,7 @@ class _TimePickerOptionsState extends State<TimePickerOptions> {
   void _textDirectionChanged(TextDirection? value) {
     if (value != textDirection) {
       setState(() {
-        textDirection = value!;
+        textDirection = value;
       });
     }
   }
@@ -102,7 +102,7 @@ class _TimePickerOptionsState extends State<TimePickerOptions> {
   void _tapTargetSizeChanged(MaterialTapTargetSize? value) {
     if (value != tapTargetSize) {
       setState(() {
-        tapTargetSize = value!;
+        tapTargetSize = value;
       });
     }
   }
@@ -158,7 +158,8 @@ class _TimePickerOptionsState extends State<TimePickerOptions> {
                   value: orientation,
                   title: '$Orientation',
                   choiceLabels: <Orientation?, String>{
-                    for (final Orientation choice in Orientation.values) choice: choice.name,
+                    for (final Orientation choice in Orientation.values)
+                      choice: choice.name,
                     null: 'from MediaQuery',
                   },
                   onChanged: _orientationChanged,
@@ -229,7 +230,8 @@ class _TimePickerOptionsState extends State<TimePickerOptions> {
                     },
                   ),
                 ),
-                if (selectedTime != null) Text('Selected time: ${selectedTime!.format(context)}'),
+                if (selectedTime != null)
+                  Text('Selected time: ${selectedTime!.format(context)}'),
               ],
             ),
           ),
@@ -350,7 +352,8 @@ class _RadioSelectionState<T extends Object?> extends State<RadioSelection<T>> {
             onChanged: widget.onChanged,
           ),
         ),
-        GestureDetector(onTap: () => widget.onChanged(widget.value), child: widget.child),
+        GestureDetector(
+            onTap: () => widget.onChanged(widget.value), child: widget.child),
       ],
     );
   }

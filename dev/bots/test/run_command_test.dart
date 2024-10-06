@@ -7,8 +7,6 @@ import 'dart:io' as io;
 import '../run_command.dart';
 import '../utils.dart';
 
-import 'common.dart';
-
 void main() {
   // These tests only run on Linux. They test platform-agnostic code that is
   // triggered by platform-sensitive code. To avoid having to complicate our
@@ -46,7 +44,8 @@ void main() {
     final PrintCallback oldPrint = print;
     print = log.add;
     try {
-      await runCommand('/usr/bin/sh', <String>['-c', 'echo ${"meow" * 1024}; false']);
+      await runCommand(
+          '/usr/bin/sh', <String>['-c', 'echo ${"meow" * 1024}; false']);
       expect(log, <Object>[
         startsWith('RUNNING:'),
         'workingDirectory: null, executable: /usr/bin/sh, arguments: [-c, echo ${"meow" * 1024}; false]',

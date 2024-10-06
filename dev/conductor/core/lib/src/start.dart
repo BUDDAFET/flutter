@@ -114,7 +114,7 @@ class StartCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final ArgResults argumentResults = argResults!;
+    final ArgResults argumentResults = argResults;
     if (!platform.isMacOS && !platform.isLinux) {
       throw ConductorException(
         'Error! This tool is only supported on macOS and Linux',
@@ -131,8 +131,7 @@ class StartCommand extends Command<void> {
       argumentResults,
       platform.environment,
     )!;
-    final String frameworkMirror =
-        'git@github.com:$githubUsername/flutter.git';
+    final String frameworkMirror = 'git@github.com:$githubUsername/flutter.git';
     final String engineUpstream = getValueFromEnvOrArgs(
       kEngineUpstreamOption,
       argumentResults,
@@ -261,7 +260,10 @@ class StartContext extends Context {
 
     return switch (lastVersion.type) {
       VersionType.stable => ReleaseType.STABLE_HOTFIX,
-      VersionType.development || VersionType.gitDescribe || VersionType.latest => ReleaseType.STABLE_INITIAL,
+      VersionType.development ||
+      VersionType.gitDescribe ||
+      VersionType.latest =>
+        ReleaseType.STABLE_INITIAL,
     };
   }
 
@@ -304,13 +306,10 @@ class StartContext extends Context {
       ..checkoutPath = (await engine.checkoutDirectory).path
       ..upstream = (pb.Remote.create()
         ..name = 'upstream'
-        ..url = engine.upstreamRemote.url
-      )
+        ..url = engine.upstreamRemote.url)
       ..mirror = (pb.Remote.create()
         ..name = 'mirror'
-        ..url = engine.mirrorRemote!.url
-      )
-    );
+        ..url = engine.mirrorRemote!.url));
     if (dartRevision != null && dartRevision!.isNotEmpty) {
       state.engine.dartRevision = dartRevision!;
     }
@@ -364,13 +363,10 @@ class StartContext extends Context {
       ..checkoutPath = (await framework.checkoutDirectory).path
       ..upstream = (pb.Remote.create()
         ..name = 'upstream'
-        ..url = framework.upstreamRemote.url
-      )
+        ..url = framework.upstreamRemote.url)
       ..mirror = (pb.Remote.create()
         ..name = 'mirror'
-        ..url = framework.mirrorRemote!.url
-      )
-    );
+        ..url = framework.mirrorRemote!.url));
 
     state.currentPhase = ReleasePhase.APPLY_ENGINE_CHERRYPICKS;
 
@@ -386,9 +382,10 @@ class StartContext extends Context {
   /// Determine this release's version number from the [lastVersion] and the [incrementLetter].
   Version calculateNextVersion(Version lastVersion, ReleaseType releaseType) {
     return switch (releaseType) {
-      ReleaseType.STABLE_INITIAL   => Version(x: lastVersion.x, y: lastVersion.y, z: 0, type: VersionType.stable),
-      ReleaseType.STABLE_HOTFIX    => Version.increment(lastVersion, 'z'),
-      ReleaseType.BETA_INITIAL     => Version.fromCandidateBranch(candidateBranch),
+      ReleaseType.STABLE_INITIAL => Version(
+          x: lastVersion.x, y: lastVersion.y, z: 0, type: VersionType.stable),
+      ReleaseType.STABLE_HOTFIX => Version.increment(lastVersion, 'z'),
+      ReleaseType.BETA_INITIAL => Version.fromCandidateBranch(candidateBranch),
       ReleaseType.BETA_HOTFIX || _ => Version.increment(lastVersion, 'n'),
     };
   }

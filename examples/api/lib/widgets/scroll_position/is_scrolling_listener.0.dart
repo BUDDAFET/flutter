@@ -11,7 +11,7 @@ void main() {
 }
 
 class IsScrollingListenerApp extends StatelessWidget {
-  const IsScrollingListenerApp({ super.key });
+  const IsScrollingListenerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,15 @@ class IsScrollingListenerApp extends StatelessWidget {
 }
 
 class IsScrollingListenerExample extends StatefulWidget {
-  const IsScrollingListenerExample({ super.key });
+  const IsScrollingListenerExample({super.key});
 
   @override
-  State<IsScrollingListenerExample> createState() => _IsScrollingListenerExampleState();
+  State<IsScrollingListenerExample> createState() =>
+      _IsScrollingListenerExampleState();
 }
 
-class _IsScrollingListenerExampleState extends State<IsScrollingListenerExample> {
+class _IsScrollingListenerExampleState
+    extends State<IsScrollingListenerExample> {
   static const int itemCount = 25;
   static const double itemExtent = 100;
 
@@ -61,7 +63,8 @@ class _IsScrollingListenerExampleState extends State<IsScrollingListenerExample>
   // zero or change the scroll offset by less than itemExtent don't trigger
   // an auto-scroll.
   void handleScrollChange() {
-    final bool isScrollingNow = scrollController.position.isScrollingNotifier.value;
+    final bool isScrollingNow =
+        scrollController.position.isScrollingNotifier.value;
     if (isScrolling == isScrollingNow) {
       return;
     }
@@ -72,10 +75,13 @@ class _IsScrollingListenerExampleState extends State<IsScrollingListenerExample>
     } else {
       // scroll-end
       final ScrollPosition p = scrollController.position;
-      final int lastIndex = ((p.extentBefore + p.extentInside) ~/ itemExtent).clamp(0, itemCount - 1);
-      final double alignedScrollOffset = itemExtent * (lastIndex + 1) - p.extentInside;
+      final int lastIndex = ((p.extentBefore + p.extentInside) ~/ itemExtent)
+          .clamp(0, itemCount - 1);
+      final double alignedScrollOffset =
+          itemExtent * (lastIndex + 1) - p.extentInside;
       final double scrollOffset = scrollController.position.pixels;
-      if (scrollOffset > 0 && (scrollOffset - lastScrollOffset).abs() > itemExtent) {
+      if (scrollOffset > 0 &&
+          (scrollOffset - lastScrollOffset).abs() > itemExtent) {
         SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
           scrollController.animateTo(
             alignedScrollOffset,
@@ -104,9 +110,9 @@ class _IsScrollingListenerExampleState extends State<IsScrollingListenerExample>
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       return Item(
-                        title: 'Item $index',
-                        color: Color.lerp(Colors.red, Colors.blue, index / itemCount)!
-                      );
+                          title: 'Item $index',
+                          color: Color.lerp(
+                              Colors.red, Colors.blue, index / itemCount));
                     },
                     childCount: itemCount,
                   ),
@@ -121,7 +127,7 @@ class _IsScrollingListenerExampleState extends State<IsScrollingListenerExample>
 }
 
 class Item extends StatelessWidget {
-  const Item({ super.key, required this.title, required this.color });
+  const Item({super.key, required this.title, required this.color});
 
   final String title;
   final Color color;

@@ -18,7 +18,8 @@ class CandidatesCommand extends Command<void> {
   CandidatesCommand({
     required this.flutterRoot,
     required this.checkouts,
-  }) : git = Git(checkouts.processManager), stdio = checkouts.stdio {
+  })  : git = Git(checkouts.processManager),
+        stdio = checkouts.stdio {
     argParser.addOption(
       kRemote,
       help: 'Which remote name to query for branches.',
@@ -39,7 +40,7 @@ class CandidatesCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    final ArgResults results = argResults!;
+    final ArgResults results = argResults;
     await git.run(
       <String>['fetch', results[kRemote] as String],
       'Fetch from remote ${results[kRemote]}',
@@ -65,12 +66,14 @@ class CandidatesCommand extends Command<void> {
       ],
       'List all remote branches',
       workingDirectory: flutterRoot.path,
-    )).split('\n');
+    ))
+        .split('\n');
 
     // Pattern for extracting only the branch name via sub-group 1
     final RegExp remotePattern = RegExp('${results[kRemote]}\\/(.*)');
     for (final String branchName in branches) {
-      final RegExpMatch? candidateMatch = releaseCandidateBranchRegex.firstMatch(branchName);
+      final RegExpMatch? candidateMatch =
+          releaseCandidateBranchRegex.firstMatch(branchName);
       if (candidateMatch == null) {
         continue;
       }

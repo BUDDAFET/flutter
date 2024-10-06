@@ -37,7 +37,8 @@ Future<void> _waitUntilWindowVisible() async {
   }
 }
 
-void _expectVisible(bool current, bool expect, Completer<String> completer, int frameCount) {
+void _expectVisible(
+    bool current, bool expect, Completer<String> completer, int frameCount) {
   if (current != expect) {
     try {
       throw 'Window should be ${expect ? 'visible' : 'hidden'} on frame $frameCount';
@@ -53,7 +54,7 @@ void _expectVisible(bool current, bool expect, Completer<String> completer, int 
 void main() async {
   // TODO(goderbauer): Create a window if embedder doesn't provide an implicit view to draw into.
   assert(ui.PlatformDispatcher.instance.implicitView != null);
-  final ui.FlutterView view = ui.PlatformDispatcher.instance.implicitView!;
+  final ui.FlutterView view = ui.PlatformDispatcher.instance.implicitView;
 
   // Create a completer to send the window visibility result back to the
   // integration test.
@@ -66,8 +67,8 @@ void main() async {
       final bool system = await isSystemDarkModeEnabled();
 
       return (app == system)
-        ? 'success'
-        : 'error: app dark mode ($app) does not match system dark mode ($system)';
+          ? 'success'
+          : 'error: app dark mode ($app) does not match system dark mode ($system)';
     } else if (message == 'verifyStringConversion') {
       // Use a test string that contains code points that fit in both 8 and 16 bits.
       // The code points are passed a list of integers through the method channel,
@@ -77,8 +78,8 @@ void main() async {
       final Int32List codePoints = Int32List.fromList(expected.codeUnits);
       final String converted = await testStringConversion(codePoints);
       return (converted == expected)
-        ? 'success'
-        : 'error: conversion of UTF16 string to UTF8 failed, expected "${expected.codeUnits}" but got "${converted.codeUnits}"';
+          ? 'success'
+          : 'error: conversion of UTF16 string to UTF8 failed, expected "${expected.codeUnits}" but got "${converted.codeUnits}"';
     }
 
     throw 'Unrecognized message: $message';

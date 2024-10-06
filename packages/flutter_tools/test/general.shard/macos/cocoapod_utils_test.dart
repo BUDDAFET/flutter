@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:file/file.dart';
 import 'package:file/memory.dart';
 import 'package:flutter_tools/src/base/logger.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_tools/src/macos/cocoapods.dart';
 import 'package:flutter_tools/src/project.dart';
 import 'package:test/fake.dart';
 
-import '../../src/common.dart';
 import '../../src/context.dart';
 
 void main() {
@@ -23,19 +21,25 @@ void main() {
     late BufferLogger logger;
 
     // Adds basic properties to the flutterProject and its subprojects.
-    void setUpProject(FakeFlutterProject flutterProject, MemoryFileSystem fileSystem) {
+    void setUpProject(
+        FakeFlutterProject flutterProject, MemoryFileSystem fileSystem) {
       flutterProject
         ..manifest = FakeFlutterManifest()
         ..directory = fileSystem.systemTempDirectory.childDirectory('app')
-        ..flutterPluginsFile = flutterProject.directory.childFile('.flutter-plugins')
-        ..flutterPluginsDependenciesFile = flutterProject.directory.childFile('.flutter-plugins-dependencies')
+        ..flutterPluginsFile =
+            flutterProject.directory.childFile('.flutter-plugins')
+        ..flutterPluginsDependenciesFile =
+            flutterProject.directory.childFile('.flutter-plugins-dependencies')
         ..ios = FakeIosProject(fileSystem: fileSystem, parent: flutterProject)
-        ..macos = FakeMacOSProject(fileSystem: fileSystem, parent: flutterProject)
+        ..macos =
+            FakeMacOSProject(fileSystem: fileSystem, parent: flutterProject)
         ..android = FakeAndroidProject()
         ..web = FakeWebProject()
         ..windows = FakeWindowsProject()
         ..linux = FakeLinuxProject();
-      flutterProject.directory.childFile('.packages').createSync(recursive: true);
+      flutterProject.directory
+          .childFile('.packages')
+          .createSync(recursive: true);
     }
 
     setUp(() async {
@@ -59,17 +63,19 @@ void main() {
               pluginClass: PLUGIN_CLASS
       ''';
 
-      final Directory fakePubCache = fileSystem.systemTempDirectory.childDirectory('cache');
+      final Directory fakePubCache =
+          fileSystem.systemTempDirectory.childDirectory('cache');
       final File packagesFile = flutterProject.directory.childFile('.packages')
-            ..createSync(recursive: true);
+        ..createSync(recursive: true);
       for (final String name in pluginNames) {
         final Directory pluginDirectory = fakePubCache.childDirectory(name);
         packagesFile.writeAsStringSync(
             '$name:${pluginDirectory.childFile('lib').uri}\n',
             mode: FileMode.writeOnlyAppend);
         pluginDirectory.childFile('pubspec.yaml')
-            ..createSync(recursive: true)
-            ..writeAsStringSync(pluginYamlTemplate.replaceAll('PLUGIN_CLASS', name));
+          ..createSync(recursive: true)
+          ..writeAsStringSync(
+              pluginYamlTemplate.replaceAll('PLUGIN_CLASS', name));
       }
     }
 
@@ -78,10 +84,8 @@ void main() {
         testUsingContext('processes when there are plugins', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
 
           await processPodsIfNeeded(
             flutterProject.ios,
@@ -95,7 +99,9 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('processes when no plugins but the project is a module and podfile exists', () async {
+        testUsingContext(
+            'processes when no plugins but the project is a module and podfile exists',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
           flutterProject.isModule = true;
@@ -113,7 +119,9 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext("skips when no plugins and the project is a module but podfile doesn't exist", () async {
+        testUsingContext(
+            "skips when no plugins and the project is a module but podfile doesn't exist",
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
           flutterProject.isModule = true;
@@ -130,7 +138,8 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('skips when no plugins and project is not a module', () async {
+        testUsingContext('skips when no plugins and project is not a module',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
 
@@ -151,10 +160,8 @@ void main() {
         testUsingContext('processes if podfile exists', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
           flutterProject.ios.podfile.createSync(recursive: true);
 
@@ -173,10 +180,8 @@ void main() {
         testUsingContext('skip if podfile does not exists', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
 
           await processPodsIfNeeded(
@@ -191,15 +196,16 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('process if podfile does not exists but forceCocoaPodsOnly is true', () async {
+        testUsingContext(
+            'process if podfile does not exists but forceCocoaPodsOnly is true',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
-          flutterProject.ios.flutterPluginSwiftPackageManifest.createSync(recursive: true);
+          flutterProject.ios.flutterPluginSwiftPackageManifest
+              .createSync(recursive: true);
 
           await processPodsIfNeeded(
             flutterProject.ios,
@@ -210,9 +216,9 @@ void main() {
           expect(cocoaPods.processedPods, isTrue);
           expect(cocoaPods.podfileSetup, isTrue);
           expect(
-            logger.warningText,
-            'Swift Package Manager does not yet support this command. '
-            'CocoaPods will be used instead.\n');
+              logger.warningText,
+              'Swift Package Manager does not yet support this command. '
+              'CocoaPods will be used instead.\n');
           expect(
             flutterProject.ios.flutterPluginSwiftPackageManifest.existsSync(),
             isFalse,
@@ -231,10 +237,8 @@ void main() {
         testUsingContext('processes when there are plugins', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
 
           await processPodsIfNeeded(
             flutterProject.macos,
@@ -248,7 +252,9 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('processes when no plugins but the project is a module and podfile exists', () async {
+        testUsingContext(
+            'processes when no plugins but the project is a module and podfile exists',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
           flutterProject.isModule = true;
@@ -266,7 +272,9 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext("skips when no plugins and the project is a module but podfile doesn't exist", () async {
+        testUsingContext(
+            "skips when no plugins and the project is a module but podfile doesn't exist",
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
           flutterProject.isModule = true;
@@ -283,7 +291,8 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('skips when no plugins and project is not a module', () async {
+        testUsingContext('skips when no plugins and project is not a module',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
 
@@ -304,10 +313,8 @@ void main() {
         testUsingContext('processes if podfile exists', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
           flutterProject.macos.podfile.createSync(recursive: true);
 
@@ -326,10 +333,8 @@ void main() {
         testUsingContext('skip if podfile does not exists', () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
 
           await processPodsIfNeeded(
@@ -344,15 +349,16 @@ void main() {
           CocoaPods: () => cocoaPods,
         });
 
-        testUsingContext('process if podfile does not exists but forceCocoaPodsOnly is true', () async {
+        testUsingContext(
+            'process if podfile does not exists but forceCocoaPodsOnly is true',
+            () async {
           final FakeFlutterProject flutterProject = FakeFlutterProject();
           setUpProject(flutterProject, fs);
-          createFakePlugins(flutterProject, fs, <String>[
-            'plugin_one',
-            'plugin_two'
-          ]);
+          createFakePlugins(
+              flutterProject, fs, <String>['plugin_one', 'plugin_two']);
           flutterProject.usesSwiftPackageManager = true;
-          flutterProject.macos.flutterPluginSwiftPackageManifest.createSync(recursive: true);
+          flutterProject.macos.flutterPluginSwiftPackageManifest
+              .createSync(recursive: true);
 
           await processPodsIfNeeded(
             flutterProject.macos,
@@ -363,9 +369,9 @@ void main() {
           expect(cocoaPods.processedPods, isTrue);
           expect(cocoaPods.podfileSetup, isTrue);
           expect(
-            logger.warningText,
-            'Swift Package Manager does not yet support this command. '
-            'CocoaPods will be used instead.\n');
+              logger.warningText,
+              'Swift Package Manager does not yet support this command. '
+              'CocoaPods will be used instead.\n');
           expect(
             flutterProject.macos.flutterPluginSwiftPackageManifest.existsSync(),
             isFalse,

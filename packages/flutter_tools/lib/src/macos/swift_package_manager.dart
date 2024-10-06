@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import '../base/common.dart';
-import '../base/file_system.dart';
 import '../base/template.dart';
 import '../base/version.dart';
 import '../plugins.dart';
@@ -28,14 +27,17 @@ class SwiftPackageManager {
   final FileSystem _fileSystem;
   final TemplateRenderer _templateRenderer;
 
-  static const String _defaultFlutterPluginsSwiftPackageName = 'FlutterGeneratedPluginSwiftPackage';
+  static const String _defaultFlutterPluginsSwiftPackageName =
+      'FlutterGeneratedPluginSwiftPackage';
 
-  static final SwiftPackageSupportedPlatform iosSwiftPackageSupportedPlatform = SwiftPackageSupportedPlatform(
+  static final SwiftPackageSupportedPlatform iosSwiftPackageSupportedPlatform =
+      SwiftPackageSupportedPlatform(
     platform: SwiftPackagePlatform.ios,
     version: Version(12, 0, null),
   );
 
-  static final SwiftPackageSupportedPlatform macosSwiftPackageSupportedPlatform = SwiftPackageSupportedPlatform(
+  static final SwiftPackageSupportedPlatform
+      macosSwiftPackageSupportedPlatform = SwiftPackageSupportedPlatform(
     platform: SwiftPackagePlatform.macos,
     version: Version(10, 14, null),
   );
@@ -60,7 +62,8 @@ class SwiftPackageManager {
     // it's not needed. If the project has already been migrated, regenerate
     // the Package.swift even if there are no dependencies in case there
     // were dependencies previously.
-    if (packageDependencies.isEmpty && !project.flutterPluginSwiftPackageInProjectSettings) {
+    if (packageDependencies.isEmpty &&
+        !project.flutterPluginSwiftPackageInProjectSettings) {
       return;
     }
 
@@ -96,7 +99,8 @@ class SwiftPackageManager {
     pluginsPackage.createSwiftPackage();
   }
 
-  (List<SwiftPackagePackageDependency>, List<SwiftPackageTargetDependency>) _dependenciesForPlugins(
+  (List<SwiftPackagePackageDependency>, List<SwiftPackageTargetDependency>)
+      _dependenciesForPlugins(
     List<Plugin> plugins,
     SupportedPlatform platform,
   ) {
@@ -106,7 +110,8 @@ class SwiftPackageManager {
         <SwiftPackageTargetDependency>[];
 
     for (final Plugin plugin in plugins) {
-      final String? pluginSwiftPackageManifestPath = plugin.pluginSwiftPackageManifestPath(
+      final String? pluginSwiftPackageManifestPath =
+          plugin.pluginSwiftPackageManifestPath(
         _fileSystem,
         platform.name,
       );
@@ -165,7 +170,8 @@ class SwiftPackageManager {
     required SupportedPlatform platform,
     required String deploymentTarget,
   }) {
-    final Version? projectDeploymentTargetVersion = Version.parse(deploymentTarget);
+    final Version? projectDeploymentTargetVersion =
+        Version.parse(deploymentTarget);
     final SwiftPackageSupportedPlatform defaultPlatform;
     final SwiftPackagePlatform packagePlatform;
     if (platform == SupportedPlatform.ios) {
@@ -182,7 +188,8 @@ class SwiftPackageManager {
       return;
     }
 
-    final String manifestContents = project.flutterPluginSwiftPackageManifest.readAsStringSync();
+    final String manifestContents =
+        project.flutterPluginSwiftPackageManifest.readAsStringSync();
     final String oldSupportedPlatform = defaultPlatform.format();
     final String newSupportedPlatform = SwiftPackageSupportedPlatform(
       platform: packagePlatform,

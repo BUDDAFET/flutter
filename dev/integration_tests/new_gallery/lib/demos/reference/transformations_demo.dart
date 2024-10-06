@@ -128,7 +128,7 @@ class _TransformationsDemoState extends State<TransformationsDemo>
                   viewportSize.width / 2 - _board.size.width / 2,
                   viewportSize.height / 2 - _board.size.height / 2,
                 );
-              _transformationController.value = _homeMatrix!;
+              _transformationController.value = _homeMatrix;
             }
 
             return ClipRect(
@@ -230,7 +230,8 @@ class _BoardPainter extends CustomPainter {
       final Color color = boardPoint!.color.withOpacity(
         board.selected == boardPoint ? 0.7 : 1,
       );
-      final Vertices vertices = board.getVerticesForBoardPoint(boardPoint, color);
+      final Vertices vertices =
+          board.getVerticesForBoardPoint(boardPoint, color);
       canvas.drawVertices(vertices, BlendMode.color, Paint());
     }
 

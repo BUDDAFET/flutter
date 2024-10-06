@@ -9,7 +9,6 @@ import 'dart:ui' as ui show PlaceholderAlignment;
 
 import 'package:flutter/foundation.dart';
 
-import 'basic_types.dart';
 import 'inline_span.dart';
 import 'text_painter.dart';
 import 'text_span.dart';
@@ -64,14 +63,16 @@ abstract class PlaceholderSpan extends InlineSpan {
   /// [PlaceholderSpan]s are flattened to a `0xFFFC` object replacement character in the
   /// plain text representation when `includePlaceholders` is true.
   @override
-  void computeToPlainText(StringBuffer buffer, {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
+  void computeToPlainText(StringBuffer buffer,
+      {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
     if (includePlaceholders) {
       buffer.writeCharCode(placeholderCodeUnit);
     }
   }
 
   @override
-  void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector) {
+  void computeSemanticsInformation(
+      List<InlineSpanSemanticsInformation> collector) {
     collector.add(InlineSpanSemanticsInformation.placeholder);
   }
 
@@ -79,8 +80,10 @@ abstract class PlaceholderSpan extends InlineSpan {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
 
-    properties.add(EnumProperty<ui.PlaceholderAlignment>('alignment', alignment, defaultValue: null));
-    properties.add(EnumProperty<TextBaseline>('baseline', baseline, defaultValue: null));
+    properties.add(EnumProperty<ui.PlaceholderAlignment>('alignment', alignment,
+        defaultValue: null));
+    properties.add(
+        EnumProperty<TextBaseline>('baseline', baseline, defaultValue: null));
   }
 
   @override

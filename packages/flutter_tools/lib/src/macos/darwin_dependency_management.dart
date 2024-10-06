@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import '../base/common.dart';
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../plugins.dart';
 import '../project.dart';
@@ -57,9 +56,8 @@ class DarwinDependencyManagement {
         'The platform ${platform.name} is incompatible with Darwin Dependency Managers. Only iOS and macOS are allowed.',
       );
     }
-    final XcodeBasedProject xcodeProject = platform == SupportedPlatform.ios
-        ? _project.ios
-        : _project.macos;
+    final XcodeBasedProject xcodeProject =
+        platform == SupportedPlatform.ios ? _project.ios : _project.macos;
     if (_project.usesSwiftPackageManager) {
       await _swiftPackageManager.generatePluginsSwiftPackage(
         _plugins,
@@ -83,7 +81,8 @@ class DarwinDependencyManagement {
     if (_project.isModule) {
       return;
     }
-    final (:int totalCount, :int swiftPackageCount, :int podCount) = await _evaluatePluginsAndPrintWarnings(
+    final (:int totalCount, :int swiftPackageCount, :int podCount) =
+        await _evaluatePluginsAndPrintWarnings(
       platform: platform,
       xcodeProject: xcodeProject,
     );
@@ -105,9 +104,11 @@ class DarwinDependencyManagement {
     if (useCocoapods) {
       await _cocoapods.setupPodfile(xcodeProject);
     }
+
     /// The user may have a custom maintained Podfile that they're running `pod install`
     /// on themselves.
-    else if (xcodeProject.podfile.existsSync() && xcodeProject.podfileLock.existsSync()) {
+    else if (xcodeProject.podfile.existsSync() &&
+        xcodeProject.podfileLock.existsSync()) {
       _cocoapods.addPodsDependencyToFlutterXcconfig(xcodeProject);
     }
   }
@@ -134,7 +135,8 @@ class DarwinDependencyManagement {
   ///
   /// Prints message prompting the user to deintegrate CocoaPods if using all
   /// Swift Package plugins.
-  Future<({int totalCount, int swiftPackageCount, int podCount})> _evaluatePluginsAndPrintWarnings({
+  Future<({int totalCount, int swiftPackageCount, int podCount})>
+      _evaluatePluginsAndPrintWarnings({
     required SupportedPlatform platform,
     required XcodeBasedProject xcodeProject,
   }) async {
@@ -205,8 +207,9 @@ class DarwinDependencyManagement {
           xcodeProject.xcodeProject,
         );
 
-        final String configWarning = '${_podIncludeInConfigWarning(xcodeProject, 'Debug')}'
-              '${_podIncludeInConfigWarning(xcodeProject, 'Release')}';
+        final String configWarning =
+            '${_podIncludeInConfigWarning(xcodeProject, 'Debug')}'
+            '${_podIncludeInConfigWarning(xcodeProject, 'Release')}';
 
         if (xcodeProject.podfile.readAsStringSync() ==
             podfileTemplate.readAsStringSync()) {
@@ -243,9 +246,11 @@ class DarwinDependencyManagement {
     );
   }
 
-  String _podIncludeInConfigWarning(XcodeBasedProject xcodeProject, String mode) {
+  String _podIncludeInConfigWarning(
+      XcodeBasedProject xcodeProject, String mode) {
     final File xcconfigFile = xcodeProject.xcodeConfigFor(mode);
-    final bool configIncludesPods = _cocoapods.xcconfigIncludesPods(xcconfigFile);
+    final bool configIncludesPods =
+        _cocoapods.xcconfigIncludesPods(xcconfigFile);
     if (configIncludesPods) {
       return '  * Remove the include to '
           '"${_cocoapods.includePodsXcconfig(mode)}" in your '

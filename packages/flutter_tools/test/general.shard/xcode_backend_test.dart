@@ -63,8 +63,8 @@ void main() {
         scriptOutputStreamFile: pipe,
       );
       expect(
-          () => context.run(),
-          throwsException,
+        () => context.run(),
+        throwsException,
       );
       expect(
         context.stderr,
@@ -135,10 +135,12 @@ void main() {
       const String buildMode = 'Release';
       const String dartObfuscation = 'false';
       const String dartDefines = 'flutter.inspector.structuredErrors%3Dtrue';
-      const String expandedCodeSignIdentity = 'F1326572E0B71C3C8442805230CB4B33B708A2E2';
+      const String expandedCodeSignIdentity =
+          'F1326572E0B71C3C8442805230CB4B33B708A2E2';
       const String extraFrontEndOptions = '--some-option';
       const String extraGenSnapshotOptions = '--obfuscate';
-      const String frontendServerStarterPath = '/path/to/frontend_server_starter.dart';
+      const String frontendServerStarterPath =
+          '/path/to/frontend_server_starter.dart';
       const String sdkRoot = '/path/to/sdk';
       const String splitDebugInfo = '/path/to/split/debug/info';
       const String trackWidgetCreation = 'true';
@@ -271,8 +273,8 @@ void main() {
         scriptOutputStreamFile: pipe,
       );
       expect(
-          () => context.run(),
-          throwsException,
+        () => context.run(),
+        throwsException,
       );
       expect(
         context.stderr,
@@ -336,10 +338,12 @@ void main() {
       const String buildMode = 'Release';
       const String dartObfuscation = 'false';
       const String dartDefines = 'flutter.inspector.structuredErrors%3Dtrue';
-      const String expandedCodeSignIdentity = 'F1326572E0B71C3C8442805230CB4B33B708A2E2';
+      const String expandedCodeSignIdentity =
+          'F1326572E0B71C3C8442805230CB4B33B708A2E2';
       const String extraFrontEndOptions = '--some-option';
       const String extraGenSnapshotOptions = '--obfuscate';
-      const String frontendServerStarterPath = '/path/to/frontend_server_starter.dart';
+      const String frontendServerStarterPath =
+          '/path/to/frontend_server_starter.dart';
       const String sdkRoot = '/path/to/sdk';
       const String splitDebugInfo = '/path/to/split/debug/info';
       const String trackWidgetCreation = 'true';
@@ -508,9 +512,9 @@ class TestContext extends Context {
     Map<String, String> environment, {
     required this.fileSystem,
     required List<FakeCommand> commands,
-    File? scriptOutputStreamFile,
+    File? super.scriptOutputStreamFile,
   })  : processManager = FakeProcessManager.list(commands),
-        super(arguments: arguments, environment: environment, scriptOutputStreamFile: scriptOutputStreamFile);
+        super(arguments: arguments, environment: environment);
 
   final FileSystem fileSystem;
   final FakeProcessManager processManager;

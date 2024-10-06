@@ -23,10 +23,12 @@ class ValueListenableBuilderExample extends StatefulWidget {
   const ValueListenableBuilderExample({super.key});
 
   @override
-  State<ValueListenableBuilderExample> createState() => _ValueListenableBuilderExampleState();
+  State<ValueListenableBuilderExample> createState() =>
+      _ValueListenableBuilderExampleState();
 }
 
-class _ValueListenableBuilderExampleState extends State<ValueListenableBuilderExample> {
+class _ValueListenableBuilderExampleState
+    extends State<ValueListenableBuilderExample> {
   final ValueNotifier<int> _counter = ValueNotifier<int>(0);
 
   @override
@@ -49,7 +51,7 @@ class _ValueListenableBuilderExampleState extends State<ValueListenableBuilderEx
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     CountDisplay(count: value),
-                    child!,
+                    child,
                   ],
                 );
               },

@@ -27,12 +27,11 @@ Future<void> startTransitionBetween(
       theme: theme,
       builder: (BuildContext context, Widget? navigator) {
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: textScaler),
-          child: Directionality(
-            textDirection: textDirection,
-            child: navigator!,
-          )
-        );
+            data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+            child: Directionality(
+              textDirection: textDirection,
+              child: navigator!,
+            ));
       },
       home: const Placeholder(),
     ),
@@ -42,7 +41,7 @@ Future<void> startTransitionBetween(
       .state<NavigatorState>(find.byType(Navigator))
       .push(CupertinoPageRoute<void>(
         title: fromTitle,
-        builder: (BuildContext context) => scaffoldForNavBar(from)!,
+        builder: (BuildContext context) => scaffoldForNavBar(from),
       ));
 
   await tester.pump();
@@ -52,7 +51,7 @@ Future<void> startTransitionBetween(
       .state<NavigatorState>(find.byType(Navigator))
       .push(CupertinoPageRoute<void>(
         title: toTitle,
-        builder: (BuildContext context) => scaffoldForNavBar(to)!,
+        builder: (BuildContext context) => scaffoldForNavBar(to),
       ));
 
   await tester.pump();
@@ -80,19 +79,25 @@ CupertinoPageScaffold? scaffoldForNavBar(Widget? navBar) {
 }
 
 Finder flying(WidgetTester tester, Finder finder) {
-  final ContainerRenderObjectMixin<RenderBox, StackParentData> theater = tester.renderObject(find.byType(Overlay));
+  final ContainerRenderObjectMixin<RenderBox, StackParentData> theater =
+      tester.renderObject(find.byType(Overlay));
   final Finder lastOverlayFinder = find.byElementPredicate((Element element) {
-    return element is RenderObjectElement && element.renderObject == theater.lastChild;
+    return element is RenderObjectElement &&
+        element.renderObject == theater.lastChild;
   });
 
   assert(
-    find.descendant(
-      of: lastOverlayFinder,
-      matching: find.byWidgetPredicate(
-        (Widget widget) =>
-            widget.runtimeType.toString() == '_NavigationBarTransition',
-      ),
-    ).evaluate().length == 1,
+    find
+            .descendant(
+              of: lastOverlayFinder,
+              matching: find.byWidgetPredicate(
+                (Widget widget) =>
+                    widget.runtimeType.toString() == '_NavigationBarTransition',
+              ),
+            )
+            .evaluate()
+            .length ==
+        1,
     'The last overlay in the navigator was not a flying hero',
   );
 
@@ -106,30 +111,36 @@ void checkBackgroundBoxHeight(WidgetTester tester, double height) {
   final Widget transitionBackgroundBox =
       tester.widget<Stack>(flying(tester, find.byType(Stack))).children[0];
   expect(
-    tester.widget<SizedBox>(
-      find.descendant(
-        of: find.byWidget(transitionBackgroundBox),
-        matching: find.byType(SizedBox),
-      ),
-    ).height,
+    tester
+        .widget<SizedBox>(
+          find.descendant(
+            of: find.byWidget(transitionBackgroundBox),
+            matching: find.byType(SizedBox),
+          ),
+        )
+        .height,
     height,
   );
 }
 
 void checkOpacity(WidgetTester tester, Finder finder, double opacity) {
   expect(
-    tester.firstRenderObject<RenderAnimatedOpacity>(
-      find.ancestor(
-        of: finder,
-        matching: find.byType(FadeTransition),
-      ),
-    ).opacity.value,
+    tester
+        .firstRenderObject<RenderAnimatedOpacity>(
+          find.ancestor(
+            of: finder,
+            matching: find.byType(FadeTransition),
+          ),
+        )
+        .opacity
+        .value,
     moreOrLessEquals(opacity),
   );
 }
 
 void main() {
-  testWidgets('Bottom middle moves between middle and back label', (WidgetTester tester) async {
+  testWidgets('Bottom middle moves between middle and back label',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     // Be mid-transition.
@@ -157,7 +168,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom middle moves between middle and back label RTL', (WidgetTester tester) async {
+  testWidgets('Bottom middle moves between middle and back label RTL',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -184,7 +196,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom middle never changes size during the animation', (WidgetTester tester) async {
+  testWidgets('Bottom middle never changes size during the animation',
+      (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1080.0 / 2.75, 600));
     addTearDown(() async {
       await tester.binding.setSurfaceSize(const Size(800.0, 600.0));
@@ -205,7 +218,8 @@ void main() {
     }
   });
 
-  testWidgets('Bottom middle and top back label transitions their font', (WidgetTester tester) async {
+  testWidgets('Bottom middle and top back label transitions their font',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     // Be mid-transition.
@@ -219,7 +233,8 @@ void main() {
     expect(bottomMiddle.text.style!.fontFamily, 'CupertinoSystemText');
     expect(bottomMiddle.text.style!.letterSpacing, -0.41);
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')).first, 0.9404401779174805);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).first, 0.9404401779174805);
 
     // The top back label is styled exactly the same way. But the opacity tweens
     // are flipped.
@@ -246,7 +261,8 @@ void main() {
     expect(topBackLabel.text.style!.fontFamily, 'CupertinoSystemText');
     expect(topBackLabel.text.style!.letterSpacing, -0.41);
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')).last, 0.5292819738388062);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).last, 0.5292819738388062);
   });
 
   testWidgets('Font transitions respect themes', (WidgetTester tester) async {
@@ -267,7 +283,8 @@ void main() {
     expect(bottomMiddle.text.style!.fontFamily, 'CupertinoSystemText');
     expect(bottomMiddle.text.style!.letterSpacing, -0.41);
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')).first, 0.9404401779174805);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).first, 0.9404401779174805);
 
     // The top back label is styled exactly the same way. But the opacity tweens
     // are flipped.
@@ -294,10 +311,12 @@ void main() {
     expect(topBackLabel.text.style!.fontFamily, 'CupertinoSystemText');
     expect(topBackLabel.text.style!.letterSpacing, -0.41);
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')).last, 0.5292819738388062);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).last, 0.5292819738388062);
   });
 
-  testWidgets('Fullscreen dialogs do not create heroes', (WidgetTester tester) async {
+  testWidgets('Fullscreen dialogs do not create heroes',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const CupertinoApp(
         home: Placeholder(),
@@ -308,7 +327,7 @@ void main() {
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 1',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
@@ -319,7 +338,7 @@ void main() {
         .push(CupertinoPageRoute<void>(
           title: 'Page 2',
           fullscreenDialog: true,
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
@@ -355,7 +374,8 @@ void main() {
     expect(() => flying(tester, find.text('Page 2')), throwsAssertionError);
   });
 
-  testWidgets('Popping mid-transition is symmetrical', (WidgetTester tester) async {
+  testWidgets('Popping mid-transition is symmetrical',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     // Be mid-transition.
@@ -403,7 +423,8 @@ void main() {
     checkColorAndPositionAt50ms();
   });
 
-  testWidgets('Popping mid-transition is symmetrical RTL', (WidgetTester tester) async {
+  testWidgets('Popping mid-transition is symmetrical RTL',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -454,7 +475,8 @@ void main() {
     checkColorAndPositionAt50ms();
   });
 
-  testWidgets('There should be no global keys in the hero flight', (WidgetTester tester) async {
+  testWidgets('There should be no global keys in the hero flight',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     // Be mid-transition.
@@ -469,7 +491,8 @@ void main() {
     );
   });
 
-  testWidgets('DartPerformanceMode is latency mid-animation', (WidgetTester tester) async {
+  testWidgets('DartPerformanceMode is latency mid-animation',
+      (WidgetTester tester) async {
     DartPerformanceMode? mode;
 
     // before the animation starts, no requests are active.
@@ -489,7 +512,9 @@ void main() {
     expect(mode, isNull);
   });
 
-  testWidgets('Multiple nav bars tags do not conflict if in different navigators', (WidgetTester tester) async {
+  testWidgets(
+      'Multiple nav bars tags do not conflict if in different navigators',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       CupertinoApp(
         home: CupertinoTabScaffold(
@@ -516,15 +541,17 @@ void main() {
                     child: CupertinoButton(
                       child: const Text('Next'),
                       onPressed: () {
-                        Navigator.push<void>(context, CupertinoPageRoute<void>(
-                          title: 'Tab ${tab + 1} Page 2',
-                          builder: (BuildContext context) {
-                            return const CupertinoPageScaffold(
-                              navigationBar: CupertinoNavigationBar(),
-                              child: Placeholder(),
-                            );
-                          },
-                        ));
+                        Navigator.push<void>(
+                            context,
+                            CupertinoPageRoute<void>(
+                              title: 'Tab ${tab + 1} Page 2',
+                              builder: (BuildContext context) {
+                                return const CupertinoPageScaffold(
+                                  navigationBar: CupertinoNavigationBar(),
+                                  child: Placeholder(),
+                                );
+                              },
+                            ));
                       },
                     ),
                   ),
@@ -564,7 +591,8 @@ void main() {
     expect(find.text('Tab 1 Page 2', skipOffstage: false), findsNothing);
   });
 
-  testWidgets('Transition box grows to large title size', (WidgetTester tester) async {
+  testWidgets('Transition box grows to large title size',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -588,7 +616,8 @@ void main() {
     checkBackgroundBoxHeight(tester, 84.33018499612808);
   });
 
-  testWidgets('Large transition box shrinks to standard nav bar size', (WidgetTester tester) async {
+  testWidgets('Large transition box shrinks to standard nav bar size',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       from: const CupertinoSliverNavigationBar(),
@@ -612,7 +641,8 @@ void main() {
     checkBackgroundBoxHeight(tester, 55.66981500387192);
   });
 
-  testWidgets('Hero flight removed at the end of page transition', (WidgetTester tester) async {
+  testWidgets('Hero flight removed at the end of page transition',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     await tester.pump(const Duration(milliseconds: 50));
@@ -627,7 +657,8 @@ void main() {
     expect(() => flying(tester, find.text('Page 1')), throwsAssertionError);
   });
 
-  testWidgets('Exact widget is reused to build inside the transition', (WidgetTester tester) async {
+  testWidgets('Exact widget is reused to build inside the transition',
+      (WidgetTester tester) async {
     const Widget userMiddle = Placeholder();
     await startTransitionBetween(
       tester,
@@ -643,7 +674,9 @@ void main() {
     expect(flying(tester, find.byWidget(userMiddle)), findsOneWidget);
   });
 
-  testWidgets('Middle is not shown if alwaysShowMiddle is false and the nav bar is expanded', (WidgetTester tester) async {
+  testWidgets(
+      'Middle is not shown if alwaysShowMiddle is false and the nav bar is expanded',
+      (WidgetTester tester) async {
     const Widget userMiddle = Placeholder();
     await startTransitionBetween(
       tester,
@@ -660,7 +693,9 @@ void main() {
     expect(flying(tester, find.byWidget(userMiddle)), findsNothing);
   });
 
-  testWidgets('Middle is shown if alwaysShowMiddle is false but the nav bar is collapsed', (WidgetTester tester) async {
+  testWidgets(
+      'Middle is shown if alwaysShowMiddle is false but the nav bar is collapsed',
+      (WidgetTester tester) async {
     const Widget userMiddle = Placeholder();
     final ScrollController scrollController = ScrollController();
     addTearDown(scrollController.dispose);
@@ -693,14 +728,14 @@ void main() {
     // Middle widget is visible when nav bar is collapsed.
     final RenderAnimatedOpacity userMiddleOpacity = tester
         .element(find.byWidget(userMiddle))
-        .findAncestorRenderObjectOfType<RenderAnimatedOpacity>()!;
+        .findAncestorRenderObjectOfType<RenderAnimatedOpacity>();
     expect(userMiddleOpacity.opacity.value, 1.0);
 
     tester
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 2',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
@@ -709,7 +744,8 @@ void main() {
     expect(flying(tester, find.byWidget(userMiddle)), findsOneWidget);
   });
 
-  testWidgets('First appearance of back chevron fades in from the right', (WidgetTester tester) async {
+  testWidgets('First appearance of back chevron fades in from the right',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       CupertinoApp(
         home: scaffoldForNavBar(null),
@@ -720,13 +756,14 @@ void main() {
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 1',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));
 
-    final Finder backChevron = flying(tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
+    final Finder backChevron = flying(
+        tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
 
     expect(
       backChevron,
@@ -735,20 +772,25 @@ void main() {
     );
     // Come in from the right and fade in.
     checkOpacity(tester, backChevron, 0.0);
-    expect(tester.getTopLeft(backChevron), const Offset(
-      87.2460581221158690823,
-      7.0,
-    ));
+    expect(
+        tester.getTopLeft(backChevron),
+        const Offset(
+          87.2460581221158690823,
+          7.0,
+        ));
 
     await tester.pump(const Duration(milliseconds: 200));
     checkOpacity(tester, backChevron, 0.09497911669313908);
-    expect(tester.getTopLeft(backChevron), const Offset(
-      30.8718595298545324113,
-      7.0,
-    ));
+    expect(
+        tester.getTopLeft(backChevron),
+        const Offset(
+          30.8718595298545324113,
+          7.0,
+        ));
   });
 
-  testWidgets('First appearance of back chevron fades in from the left in RTL', (WidgetTester tester) async {
+  testWidgets('First appearance of back chevron fades in from the left in RTL',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       CupertinoApp(
         builder: (BuildContext context, Widget? navigator) {
@@ -765,13 +807,14 @@ void main() {
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 1',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));
 
-    final Finder backChevron = flying(tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
+    final Finder backChevron = flying(
+        tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
 
     expect(
       backChevron,
@@ -800,12 +843,14 @@ void main() {
     );
   });
 
-  testWidgets('Back chevron fades out and in when both pages have it', (WidgetTester tester) async {
+  testWidgets('Back chevron fades out and in when both pages have it',
+      (WidgetTester tester) async {
     await startTransitionBetween(tester, fromTitle: 'Page 1');
 
     await tester.pump(const Duration(milliseconds: 50));
 
-    final Finder backChevrons = flying(tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
+    final Finder backChevrons = flying(
+        tester, find.text(String.fromCharCode(CupertinoIcons.back.codePoint)));
 
     expect(
       backChevrons,
@@ -826,7 +871,8 @@ void main() {
     expect(tester.getTopLeft(backChevrons.last), const Offset(14.0, 7.0));
   });
 
-  testWidgets('Bottom middle just fades if top page has a custom leading', (WidgetTester tester) async {
+  testWidgets('Bottom middle just fades if top page has a custom leading',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -841,7 +887,8 @@ void main() {
     // There's just 1 in flight because there's no back label on the top page.
     expect(flying(tester, find.text('Page 1')), findsOneWidget);
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')), 0.9404401779174805);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')), 0.9404401779174805);
 
     // The middle widget doesn't move.
     expect(
@@ -869,7 +916,8 @@ void main() {
 
     expect(flying(tester, find.text('custom')), findsOneWidget);
 
-    checkOpacity(tester, flying(tester, find.text('custom')), 0.8948725312948227);
+    checkOpacity(
+        tester, flying(tester, find.text('custom')), 0.8948725312948227);
     expect(
       tester.getTopLeft(flying(tester, find.text('custom'))),
       const Offset(16.0, 0.0),
@@ -895,7 +943,8 @@ void main() {
 
     expect(flying(tester, find.text('custom')), findsOneWidget);
 
-    checkOpacity(tester, flying(tester, find.text('custom')), 0.9280824661254883);
+    checkOpacity(
+        tester, flying(tester, find.text('custom')), 0.9280824661254883);
     expect(
       tester.getTopLeft(flying(tester, find.text('custom'))),
       const Offset(
@@ -915,7 +964,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom back label fades and slides to the left', (WidgetTester tester) async {
+  testWidgets('Bottom back label fades and slides to the left',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -927,7 +977,7 @@ void main() {
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 3',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
@@ -937,7 +987,8 @@ void main() {
     expect(flying(tester, find.text('Page 1')), findsOneWidget);
 
     // Back label fades out faster.
-    checkOpacity(tester, flying(tester, find.text('Page 1')), 0.7952219992876053);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')), 0.7952219992876053);
     expect(
       tester.getTopLeft(flying(tester, find.text('Page 1'))),
       const Offset(
@@ -957,7 +1008,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom back label fades and slides to the right in RTL', (WidgetTester tester) async {
+  testWidgets('Bottom back label fades and slides to the right in RTL',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -970,7 +1022,7 @@ void main() {
         .state<NavigatorState>(find.byType(Navigator))
         .push(CupertinoPageRoute<void>(
           title: 'Page 3',
-          builder: (BuildContext context) => scaffoldForNavBar(null)!,
+          builder: (BuildContext context) => scaffoldForNavBar(null),
         ));
 
     await tester.pump();
@@ -980,7 +1032,8 @@ void main() {
     expect(flying(tester, find.text('Page 1')), findsOneWidget);
 
     // Back label fades out faster.
-    checkOpacity(tester, flying(tester, find.text('Page 1')), 0.7952219992876053);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')), 0.7952219992876053);
     expect(
       tester.getTopRight(flying(tester, find.text('Page 1'))),
       const Offset(
@@ -1001,7 +1054,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom large title moves to top back label', (WidgetTester tester) async {
+  testWidgets('Bottom large title moves to top back label',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       from: const CupertinoSliverNavigationBar(),
@@ -1015,7 +1069,8 @@ void main() {
     // bottom back label fading in.
     expect(flying(tester, find.text('Page 1')), findsNWidgets(2));
 
-    checkOpacity(tester, flying(tester, find.text('Page 1')).first, 0.9280824661254883);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).first, 0.9280824661254883);
     checkOpacity(tester, flying(tester, find.text('Page 1')).last, 0.0);
 
     expect(
@@ -1035,7 +1090,8 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 200));
     checkOpacity(tester, flying(tester, find.text('Page 1')).first, 0.0);
-    checkOpacity(tester, flying(tester, find.text('Page 1')).last, 0.4604858811944723);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 1')).last, 0.4604858811944723);
 
     expect(
       tester.getTopLeft(flying(tester, find.text('Page 1')).first),
@@ -1053,7 +1109,8 @@ void main() {
     );
   });
 
-  testWidgets('Long title turns into the word back mid transition', (WidgetTester tester) async {
+  testWidgets('Long title turns into the word back mid transition',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       from: const CupertinoSliverNavigationBar(),
@@ -1063,11 +1120,13 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 50));
 
-    expect(flying(tester, find.text('A title too long to fit')), findsOneWidget);
+    expect(
+        flying(tester, find.text('A title too long to fit')), findsOneWidget);
     // Automatically changed to the word 'Back' in the back label.
     expect(flying(tester, find.text('Back')), findsOneWidget);
 
-    checkOpacity(tester, flying(tester, find.text('A title too long to fit')), 0.9280824661254883);
+    checkOpacity(tester, flying(tester, find.text('A title too long to fit')),
+        0.9280824661254883);
     checkOpacity(tester, flying(tester, find.text('Back')), 0.0);
     expect(
       tester.getTopLeft(flying(tester, find.text('A title too long to fit'))),
@@ -1085,7 +1144,8 @@ void main() {
     );
 
     await tester.pump(const Duration(milliseconds: 200));
-    checkOpacity(tester, flying(tester, find.text('A title too long to fit')), 0.0);
+    checkOpacity(
+        tester, flying(tester, find.text('A title too long to fit')), 0.0);
     checkOpacity(tester, flying(tester, find.text('Back')), 0.4604858811944723);
     expect(
       tester.getTopLeft(flying(tester, find.text('A title too long to fit'))),
@@ -1103,7 +1163,8 @@ void main() {
     );
   });
 
-  testWidgets('Bottom large title and top back label transitions their font', (WidgetTester tester) async {
+  testWidgets('Bottom large title and top back label transitions their font',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       from: const CupertinoSliverNavigationBar(),
@@ -1119,7 +1180,8 @@ void main() {
     expect(bottomLargeTitle.text.style!.color, const Color(0xff000306));
     expect(bottomLargeTitle.text.style!.fontWeight, FontWeight.w700);
     expect(bottomLargeTitle.text.style!.fontFamily, 'CupertinoSystemDisplay');
-    expect(bottomLargeTitle.text.style!.letterSpacing, moreOrLessEquals(0.35967791542410854));
+    expect(bottomLargeTitle.text.style!.letterSpacing,
+        moreOrLessEquals(0.35967791542410854));
 
     // The top back label is styled exactly the same way.
     final RenderParagraph topBackLabel =
@@ -1127,22 +1189,26 @@ void main() {
     expect(topBackLabel.text.style!.color, const Color(0xff000306));
     expect(topBackLabel.text.style!.fontWeight, FontWeight.w700);
     expect(topBackLabel.text.style!.fontFamily, 'CupertinoSystemDisplay');
-    expect(topBackLabel.text.style!.letterSpacing, moreOrLessEquals(0.35967791542410854));
+    expect(topBackLabel.text.style!.letterSpacing,
+        moreOrLessEquals(0.35967791542410854));
 
     // Move animation further a bit.
     await tester.pump(const Duration(milliseconds: 200));
     expect(bottomLargeTitle.text.style!.color, const Color(0xff005ec5));
     expect(bottomLargeTitle.text.style!.fontWeight, FontWeight.w500);
     expect(bottomLargeTitle.text.style!.fontFamily, 'CupertinoSystemText');
-    expect(bottomLargeTitle.text.style!.letterSpacing, moreOrLessEquals(-0.23270857974886894));
+    expect(bottomLargeTitle.text.style!.letterSpacing,
+        moreOrLessEquals(-0.23270857974886894));
 
     expect(topBackLabel.text.style!.color, const Color(0xff005ec5));
     expect(topBackLabel.text.style!.fontWeight, FontWeight.w500);
     expect(topBackLabel.text.style!.fontFamily, 'CupertinoSystemText');
-    expect(topBackLabel.text.style!.letterSpacing, moreOrLessEquals(-0.23270857974886894));
+    expect(topBackLabel.text.style!.letterSpacing,
+        moreOrLessEquals(-0.23270857974886894));
   });
 
-  testWidgets('Top middle fades in and slides in from the right', (WidgetTester tester) async {
+  testWidgets('Top middle fades in and slides in from the right',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       toTitle: 'Page 2',
@@ -1163,7 +1229,8 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 150));
 
-    checkOpacity(tester, flying(tester, find.text('Page 2')), 0.29867843724787235);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 2')), 0.29867843724787235);
     expect(
       tester.getTopLeft(flying(tester, find.text('Page 2'))),
       const Offset(
@@ -1173,7 +1240,8 @@ void main() {
     );
   });
 
-  testWidgets('Top middle never changes size during the animation', (WidgetTester tester) async {
+  testWidgets('Top middle never changes size during the animation',
+      (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1080.0 / 2.75, 600));
     addTearDown(() async {
       await tester.binding.setSurfaceSize(const Size(800.0, 600.0));
@@ -1197,7 +1265,8 @@ void main() {
     }
   });
 
-  testWidgets('Top middle fades in and slides in from the left in RTL', (WidgetTester tester) async {
+  testWidgets('Top middle fades in and slides in from the left in RTL',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       toTitle: 'Page 2',
@@ -1219,7 +1288,8 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 150));
 
-    checkOpacity(tester, flying(tester, find.text('Page 2')), 0.29867843724787235);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 2')), 0.29867843724787235);
     expect(
       tester.getTopRight(flying(tester, find.text('Page 2'))),
       const Offset(
@@ -1229,7 +1299,8 @@ void main() {
     );
   });
 
-  testWidgets('Top large title fades in and slides in from the right', (WidgetTester tester) async {
+  testWidgets('Top large title fades in and slides in from the right',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       to: const CupertinoSliverNavigationBar(),
@@ -1248,14 +1319,16 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 150));
 
-    checkOpacity(tester, flying(tester, find.text('Page 2')), 0.2601277381181717);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 2')), 0.2601277381181717);
     expect(
       tester.getTopLeft(flying(tester, find.text('Page 2'))),
       const Offset(325.3008875846863, 54.0),
     );
   });
 
-  testWidgets('Top large title fades in and slides in from the left in RTL', (WidgetTester tester) async {
+  testWidgets('Top large title fades in and slides in from the left in RTL',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       to: const CupertinoSliverNavigationBar(),
@@ -1275,14 +1348,16 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 150));
 
-    checkOpacity(tester, flying(tester, find.text('Page 2')), 0.2601277381181717);
+    checkOpacity(
+        tester, flying(tester, find.text('Page 2')), 0.2601277381181717);
     expect(
       tester.getTopRight(flying(tester, find.text('Page 2'))),
       const Offset(474.6991124153137, 54.0),
     );
   });
 
-  testWidgets('Components are not unnecessarily rebuilt during transitions', (WidgetTester tester) async {
+  testWidgets('Components are not unnecessarily rebuilt during transitions',
+      (WidgetTester tester) async {
     int bottomBuildTimes = 0;
     int topBuildTimes = 0;
     await startTransitionBetween(
@@ -1338,7 +1413,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
 
     // Start the gesture at the edge of the screen.
-    final TestGesture gesture = await tester.startGesture(const Offset(5.0, 200.0));
+    final TestGesture gesture =
+        await tester.startGesture(const Offset(5.0, 200.0));
     // Trigger the swipe.
     await gesture.moveBy(const Offset(100.0, 0.0));
 
@@ -1390,17 +1466,23 @@ void main() {
     expect(find.text('Page 1'), findsOneWidget);
   });
 
-  testWidgets('textScaleFactor is set to 1.0 on transition', (WidgetTester tester) async {
-    await startTransitionBetween(tester, fromTitle: 'Page 1', textScaler: const TextScaler.linear(99));
+  testWidgets('textScaleFactor is set to 1.0 on transition',
+      (WidgetTester tester) async {
+    await startTransitionBetween(tester,
+        fromTitle: 'Page 1', textScaler: const TextScaler.linear(99));
 
     await tester.pump(const Duration(milliseconds: 50));
 
-    final TextScaler scaler = tester.firstWidget<RichText>(flying(tester, find.byType(RichText))).textScaler;
-    final List<double> fontSizes = List<double>.generate(100, (int index) => index / 3 + 1);
+    final TextScaler scaler = tester
+        .firstWidget<RichText>(flying(tester, find.byType(RichText)))
+        .textScaler;
+    final List<double> fontSizes =
+        List<double>.generate(100, (int index) => index / 3 + 1);
     expect(fontSizes.map(scaler.scale), fontSizes);
   });
 
-  testWidgets('Back swipe gesture cancels properly with transition', (WidgetTester tester) async {
+  testWidgets('Back swipe gesture cancels properly with transition',
+      (WidgetTester tester) async {
     await startTransitionBetween(
       tester,
       fromTitle: 'Page 1',
@@ -1411,7 +1493,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
 
     // Start the gesture at the edge of the screen.
-    final TestGesture gesture = await tester.startGesture(const Offset(5.0, 200.0));
+    final TestGesture gesture =
+        await tester.startGesture(const Offset(5.0, 200.0));
     // Trigger the swipe.
     await gesture.moveBy(const Offset(100.0, 0.0));
 

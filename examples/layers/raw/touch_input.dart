@@ -70,7 +70,8 @@ ui.Scene composite(ui.Picture picture, ui.Rect paintBounds) {
 }
 
 void beginFrame(Duration timeStamp) {
-  final ui.Rect paintBounds = ui.Offset.zero & (view.physicalSize / view.devicePixelRatio);
+  final ui.Rect paintBounds =
+      ui.Offset.zero & (view.physicalSize / view.devicePixelRatio);
   // First, record a picture with our painting commands.
   final ui.Picture picture = paint(paintBounds);
   // Second, include that picture in a scene graph.
@@ -107,7 +108,7 @@ void handlePointerDataPacket(ui.PointerDataPacket packet) {
 void main() {
   // TODO(goderbauer): Create a window if embedder doesn't provide an implicit view to draw into.
   assert(ui.PlatformDispatcher.instance.implicitView != null);
-  view = ui.PlatformDispatcher.instance.implicitView!;
+  view = ui.PlatformDispatcher.instance.implicitView;
 
   color = const ui.Color(0xFF00FF00);
   // The engine calls onBeginFrame whenever it wants us to produce a frame.

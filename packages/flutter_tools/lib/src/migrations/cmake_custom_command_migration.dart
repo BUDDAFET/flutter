@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../base/project_migrator.dart';
 import '../cmake_project.dart';
 
@@ -11,14 +10,15 @@ import '../cmake_project.dart';
 // See https://github.com/flutter/flutter/issues/67270.
 class CmakeCustomCommandMigration extends ProjectMigrator {
   CmakeCustomCommandMigration(CmakeBasedProject project, super.logger)
-    : _cmakeFile = project.managedCmakeFile;
+      : _cmakeFile = project.managedCmakeFile;
 
   final File _cmakeFile;
 
   @override
   Future<void> migrate() async {
     if (!_cmakeFile.existsSync()) {
-      logger.printTrace('CMake project not found, skipping add_custom_command() VERBATIM migration');
+      logger.printTrace(
+          'CMake project not found, skipping add_custom_command() VERBATIM migration');
       return;
     }
 
@@ -44,13 +44,17 @@ class CmakeCustomCommandMigration extends ProjectMigrator {
 
     String newProjectContents = originalProjectContents;
 
-    final Iterable<RegExpMatch> matches = addCustomCommand.allMatches(originalProjectContents);
+    final Iterable<RegExpMatch> matches =
+        addCustomCommand.allMatches(originalProjectContents);
 
     for (final RegExpMatch match in matches) {
       final String? addCustomCommandOriginal = match.group(1);
-      if (addCustomCommandOriginal != null && !addCustomCommandOriginal.contains('VERBATIM')) {
-        final String addCustomCommandReplacement = '$addCustomCommandOriginal\n  VERBATIM';
-        newProjectContents = newProjectContents.replaceAll(addCustomCommandOriginal, addCustomCommandReplacement);
+      if (addCustomCommandOriginal != null &&
+          !addCustomCommandOriginal.contains('VERBATIM')) {
+        final String addCustomCommandReplacement =
+            '$addCustomCommandOriginal\n  VERBATIM';
+        newProjectContents = newProjectContents.replaceAll(
+            addCustomCommandOriginal, addCustomCommandReplacement);
       }
 
       // CMake's add_custom_command() should add FLUTTER_TARGET_PLATFORM to support multi-architecture.
@@ -61,11 +65,13 @@ class CmakeCustomCommandMigration extends ProjectMigrator {
       //    FLUTTER_TARGET_PLATFORM
       // ------------------------------
       if (addCustomCommandOriginal?.contains('linux-x64') ?? false) {
-        newProjectContents = newProjectContents.replaceAll('linux-x64', r'${FLUTTER_TARGET_PLATFORM}');
+        newProjectContents = newProjectContents.replaceAll(
+            'linux-x64', r'${FLUTTER_TARGET_PLATFORM}');
       }
     }
     if (originalProjectContents != newProjectContents) {
-      logger.printStatus('add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.');
+      logger.printStatus(
+          'add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.');
       _cmakeFile.writeAsStringSync(newProjectContents);
     }
   }

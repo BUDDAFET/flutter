@@ -33,21 +33,29 @@ class LogoModel extends InheritedModel<LogoAspect> {
   final bool? large;
 
   static Color? backgroundColorOf(BuildContext context) {
-    return InheritedModel.inheritFrom<LogoModel>(context, aspect: LogoAspect.backgroundColor)?.backgroundColor;
+    return InheritedModel.inheritFrom<LogoModel>(context,
+            aspect: LogoAspect.backgroundColor)
+        ?.backgroundColor;
   }
 
   static bool sizeOf(BuildContext context) {
-    return InheritedModel.inheritFrom<LogoModel>(context, aspect: LogoAspect.large)?.large ?? false;
+    return InheritedModel.inheritFrom<LogoModel>(context,
+                aspect: LogoAspect.large)
+            ?.large ??
+        false;
   }
 
   @override
   bool updateShouldNotify(LogoModel oldWidget) {
-    return backgroundColor != oldWidget.backgroundColor || large != oldWidget.large;
+    return backgroundColor != oldWidget.backgroundColor ||
+        large != oldWidget.large;
   }
 
   @override
-  bool updateShouldNotifyDependent(LogoModel oldWidget, Set<LogoAspect> dependencies) {
-    if (backgroundColor != oldWidget.backgroundColor && dependencies.contains(LogoAspect.backgroundColor)) {
+  bool updateShouldNotifyDependent(
+      LogoModel oldWidget, Set<LogoAspect> dependencies) {
+    if (backgroundColor != oldWidget.backgroundColor &&
+        dependencies.contains(LogoAspect.backgroundColor)) {
       return true;
     }
     if (large != oldWidget.large && dependencies.contains(LogoAspect.large)) {
@@ -134,7 +142,7 @@ class BackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = LogoModel.backgroundColorOf(context)!;
+    final Color color = LogoModel.backgroundColorOf(context);
 
     return AnimatedContainer(
       padding: const EdgeInsets.all(12.0),

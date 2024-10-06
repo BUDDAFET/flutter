@@ -83,17 +83,17 @@ class RenderAnimatedSize extends RenderAligningShiftedBox {
     super.child,
     Clip clipBehavior = Clip.hardEdge,
     VoidCallback? onEnd,
-  }) : _vsync = vsync,
-       _clipBehavior = clipBehavior {
+  })  : _vsync = vsync,
+        _clipBehavior = clipBehavior {
     _controller = AnimationController(
       vsync: vsync,
       duration: duration,
       reverseDuration: reverseDuration,
     )..addListener(() {
-      if (_controller.value != _lastValue) {
-        markNeedsLayout();
-      }
-    });
+        if (_controller.value != _lastValue) {
+          markNeedsLayout();
+        }
+      });
     _animation = CurvedAnimation(
       parent: _controller,
       curve: curve,
@@ -271,7 +271,7 @@ class RenderAnimatedSize extends RenderAligningShiftedBox {
         _layoutUnstable();
     }
 
-    size = constraints.constrain(_animatedSize!);
+    size = constraints.constrain(_animatedSize);
     alignChild();
 
     if (size.width < _sizeTween.end!.width ||
@@ -307,7 +307,7 @@ class RenderAnimatedSize extends RenderAligningShiftedBox {
         }
     }
 
-    return constraints.constrain(_animatedSize!);
+    return constraints.constrain(_animatedSize);
   }
 
   void _restartAnimation() {
@@ -404,7 +404,8 @@ class RenderAnimatedSize extends RenderAligningShiftedBox {
     }
   }
 
-  final LayerHandle<ClipRectLayer> _clipRectLayer = LayerHandle<ClipRectLayer>();
+  final LayerHandle<ClipRectLayer> _clipRectLayer =
+      LayerHandle<ClipRectLayer>();
 
   @override
   void dispose() {

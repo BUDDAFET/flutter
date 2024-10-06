@@ -277,8 +277,9 @@ class TravelDestinationContent extends StatelessWidget {
     final TextStyle titleStyle = theme.textTheme.headlineSmall!.copyWith(
       color: Colors.white,
     );
-    final TextStyle descriptionStyle = theme.textTheme.titleMedium!;
-    final GalleryLocalizations localizations = GalleryLocalizations.of(context)!;
+    final TextStyle descriptionStyle = theme.textTheme.titleMedium;
+    final GalleryLocalizations localizations =
+        GalleryLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,13 +418,17 @@ class _CardsDemoState extends State<CardsDemo> with RestorationMixin {
               Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: switch (destination.cardType) {
-                  CardType.standard => TravelDestinationItem(destination: destination),
-                  CardType.tappable => TappableTravelDestinationItem(destination: destination),
+                  CardType.standard =>
+                    TravelDestinationItem(destination: destination),
+                  CardType.tappable =>
+                    TappableTravelDestinationItem(destination: destination),
                   CardType.selectable => SelectableTravelDestinationItem(
-                    destination: destination,
-                    isSelected: _isSelected.value,
-                    onSelected: () => setState(() { _isSelected.value = !_isSelected.value; }),
-                  ),
+                      destination: destination,
+                      isSelected: _isSelected.value,
+                      onSelected: () => setState(() {
+                        _isSelected.value = !_isSelected.value;
+                      }),
+                    ),
                 },
               ),
           ],

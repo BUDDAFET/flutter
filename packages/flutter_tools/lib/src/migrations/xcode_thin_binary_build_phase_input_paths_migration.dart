@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../base/project_migrator.dart';
 import '../xcode_project.dart';
 
@@ -10,19 +9,22 @@ import '../xcode_project.dart';
 // as an input file to ensure it has been created before inserting the NSBonjourServices key
 // to avoid an mDNS error.
 class XcodeThinBinaryBuildPhaseInputPathsMigration extends ProjectMigrator {
-  XcodeThinBinaryBuildPhaseInputPathsMigration(XcodeBasedProject project, super.logger)
-    : _xcodeProjectInfoFile = project.xcodeProjectInfoFile;
+  XcodeThinBinaryBuildPhaseInputPathsMigration(
+      XcodeBasedProject project, super.logger)
+      : _xcodeProjectInfoFile = project.xcodeProjectInfoFile;
 
   final File _xcodeProjectInfoFile;
 
   @override
   Future<void> migrate() async {
     if (!_xcodeProjectInfoFile.existsSync()) {
-      logger.printTrace('Xcode project not found, skipping script build phase dependency analysis removal.');
+      logger.printTrace(
+          'Xcode project not found, skipping script build phase dependency analysis removal.');
       return;
     }
 
-    final String originalProjectContents = _xcodeProjectInfoFile.readAsStringSync();
+    final String originalProjectContents =
+        _xcodeProjectInfoFile.readAsStringSync();
 
     // Add Info.plist from build directory as an input file to Thin Binary build phase.
     // Path for the Info.plist is ${TARGET_BUILD_DIR}/\${INFOPLIST_PATH}
@@ -33,9 +35,9 @@ class XcodeThinBinaryBuildPhaseInputPathsMigration extends ProjectMigrator {
     //   alwaysOutOfDate = 1;
     //   buildActionMask = 2147483647;
     //   files = (
-		// 	 );
-		// 	 inputPaths = (
-		// 	 );
+    // 	 );
+    // 	 inputPaths = (
+    // 	 );
 
     String newProjectContents = originalProjectContents;
     const String thinBinaryBuildPhaseOriginal = '''
@@ -61,7 +63,8 @@ class XcodeThinBinaryBuildPhaseInputPathsMigration extends ProjectMigrator {
 			);
 ''';
 
-    newProjectContents = newProjectContents.replaceAll(thinBinaryBuildPhaseOriginal, thinBinaryBuildPhaseReplacement);
+    newProjectContents = newProjectContents.replaceAll(
+        thinBinaryBuildPhaseOriginal, thinBinaryBuildPhaseReplacement);
     if (originalProjectContents != newProjectContents) {
       logger.printStatus('Adding input path to Thin Binary build phase.');
       _xcodeProjectInfoFile.writeAsStringSync(newProjectContents);

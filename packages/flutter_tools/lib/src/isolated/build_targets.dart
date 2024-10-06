@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../build_system/build_system.dart';
 import '../build_system/build_targets.dart';
 import '../build_system/targets/common.dart';
@@ -27,6 +26,7 @@ class BuildTargetsImpl extends BuildTargets {
   Target get dartPluginRegistrantTarget => const DartPluginRegistrantTarget();
 
   @override
-  Target webServiceWorker(FileSystem fileSystem, List<WebCompilerConfig> compileConfigs) =>
+  Target webServiceWorker(
+          FileSystem fileSystem, List<WebCompilerConfig> compileConfigs) =>
       WebServiceWorker(fileSystem, compileConfigs);
 }

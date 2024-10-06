@@ -202,7 +202,7 @@ class _SaveLayerDrawer extends CustomPainter {
 Future<ui.Image> _drawImage() async {
   final ui.PictureRecorder recorder = ui.PictureRecorder();
   const Size markerSize = Size(120, 120);
-  final double canvasSize = markerSize.height + 3;
+  const double canvasSize = markerSize.height + 3;
   final Canvas canvas = Canvas(
     recorder,
     Rect.fromLTWH(0, 0, canvasSize, canvasSize),
@@ -226,12 +226,10 @@ Future<ui.Image> _drawImage() async {
   final ByteData? byteData =
       await image.toByteData(format: ui.ImageByteFormat.rawExtendedRgba128);
   final Completer<ui.Image> completer = Completer<ui.Image>();
-  ui.decodeImageFromPixels(Uint8List.view(byteData!.buffer),
-      canvasSize.toInt(),
-      canvasSize.toInt(),
-      ui.PixelFormat.rgbaFloat32, (ui.Image image) {
-        completer.complete(image);
-      });
+  ui.decodeImageFromPixels(Uint8List.view(byteData!.buffer), canvasSize.toInt(),
+      canvasSize.toInt(), ui.PixelFormat.rgbaFloat32, (ui.Image image) {
+    completer.complete(image);
+  });
   return completer.future;
 }
 
@@ -261,9 +259,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     switch (widget.setup) {
       case Setup.canvasSaveLayer:
-        _loadImage().then((ui.Image? value) => setState(() { _image = value; }));
+        _loadImage().then((ui.Image? value) => setState(() {
+              _image = value;
+            }));
       case Setup.drawnImage:
-        _drawImage().then((ui.Image? value) => setState(() { _image = value; }));
+        _drawImage().then((ui.Image? value) => setState(() {
+              _image = value;
+            }));
       case Setup.image || Setup.blur || Setup.none:
         break;
     }

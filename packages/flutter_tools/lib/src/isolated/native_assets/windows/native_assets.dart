@@ -6,7 +6,6 @@ import 'package:native_assets_builder/native_assets_builder.dart'
     hide NativeAssetsBuildRunner;
 import 'package:native_assets_cli/native_assets_cli_internal.dart';
 
-import '../../../base/file_system.dart';
 import '../../../build_info.dart';
 import '../../../globals.dart' as globals;
 import '../../../windows/visual_studio.dart';

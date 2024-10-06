@@ -39,7 +39,8 @@ class MatchesGoldenFile extends AsyncMatcher {
   const MatchesGoldenFile(this.key, this.version);
 
   /// Creates an instance of [MatchesGoldenFile]. Called by [matchesGoldenFile].
-  MatchesGoldenFile.forStringPath(String path, this.version) : key = Uri.parse(path);
+  MatchesGoldenFile.forStringPath(String path, this.version)
+      : key = Uri.parse(path);
 
   /// The [key] to the golden image.
   final Uri key;
@@ -61,33 +62,39 @@ class MatchesGoldenFile extends AsyncMatcher {
     final Element element = elements.single;
     final RenderObject renderObject = _findRepaintBoundary(element);
     final Size size = renderObject.paintBounds.size;
-    final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding.instance;
-    final ui.FlutterView view = binding.platformDispatcher.implicitView!;
-    final RenderView renderView = binding.renderViews.firstWhere((RenderView r) => r.flutterView == view);
+    final TestWidgetsFlutterBinding binding =
+        TestWidgetsFlutterBinding.instance;
+    final ui.FlutterView view = binding.platformDispatcher.implicitView;
+    final RenderView renderView =
+        binding.renderViews.firstWhere((RenderView r) => r.flutterView == view);
 
     if (isSkiaWeb) {
       // In CanvasKit and Skwasm, use Layer.toImage to generate the screenshot.
-      final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding.instance;
+      final TestWidgetsFlutterBinding binding =
+          TestWidgetsFlutterBinding.instance;
       return binding.runAsync<String?>(() async {
         assert(element.renderObject != null);
-        RenderObject renderObject = element.renderObject!;
+        RenderObject renderObject = element.renderObject;
         while (!renderObject.isRepaintBoundary) {
-          renderObject = renderObject.parent!;
+          renderObject = renderObject.parent;
         }
         assert(!renderObject.debugNeedsPaint);
         final OffsetLayer layer = renderObject.debugLayer! as OffsetLayer;
         final ui.Image image = await layer.toImage(renderObject.paintBounds);
         try {
-          final ByteData? bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+          final ByteData? bytes =
+              await image.toByteData(format: ui.ImageByteFormat.png);
           if (bytes == null) {
             return 'could not encode screenshot.';
           }
           if (autoUpdateGoldenFiles) {
-            await webGoldenComparator.updateBytes(bytes.buffer.asUint8List(), key);
+            await webGoldenComparator.updateBytes(
+                bytes.buffer.asUint8List(), key);
             return null;
           }
           try {
-            final bool success = await webGoldenComparator.compareBytes(bytes.buffer.asUint8List(), key);
+            final bool success = await webGoldenComparator.compareBytes(
+                bytes.buffer.asUint8List(), key);
             return success ? null : 'does not match';
           } on TestFailure catch (ex) {
             return ex.message;
@@ -108,7 +115,8 @@ class MatchesGoldenFile extends AsyncMatcher {
           return null;
         }
         try {
-          final bool success = await webGoldenComparator.compare(size.width, size.height, key);
+          final bool success =
+              await webGoldenComparator.compare(size.width, size.height, key);
           return success ? null : 'does not match';
         } on TestFailure catch (ex) {
           return ex.message;
@@ -122,22 +130,23 @@ class MatchesGoldenFile extends AsyncMatcher {
   @override
   Description describe(Description description) {
     final Uri testNameUri = webGoldenComparator.getTestUri(key, version);
-    return description.add('one widget whose rasterized image matches golden image "$testNameUri"');
+    return description.add(
+        'one widget whose rasterized image matches golden image "$testNameUri"');
   }
 }
 
 RenderObject _findRepaintBoundary(Element element) {
   assert(element.renderObject != null);
-  RenderObject renderObject = element.renderObject!;
+  RenderObject renderObject = element.renderObject;
   while (!renderObject.isRepaintBoundary) {
-    renderObject = renderObject.parent!;
+    renderObject = renderObject.parent;
   }
   return renderObject;
 }
 
 void _renderElement(ui.FlutterView window, RenderObject renderObject) {
   assert(renderObject.debugLayer != null);
-  final Layer layer = renderObject.debugLayer!;
+  final Layer layer = renderObject.debugLayer;
   final ui.SceneBuilder sceneBuilder = ui.SceneBuilder();
   if (layer is OffsetLayer) {
     sceneBuilder.pushOffset(-layer.offset.dx, -layer.offset.dy);

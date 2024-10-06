@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../base/project_migrator.dart';
 import '../base/version.dart';
 import '../ios/xcodeproj.dart';
@@ -28,7 +27,8 @@ class CocoaPodsToolchainDirectoryMigration extends ProjectMigrator {
   @override
   Future<void> migrate() async {
     if (!_podRunnerTargetSupportFiles.existsSync()) {
-      logger.printTrace('CocoaPods Pods-Runner Target Support Files not found, skipping TOOLCHAIN_DIR workaround.');
+      logger.printTrace(
+          'CocoaPods Pods-Runner Target Support Files not found, skipping TOOLCHAIN_DIR workaround.');
       return;
     }
 
@@ -36,11 +36,13 @@ class CocoaPodsToolchainDirectoryMigration extends ProjectMigrator {
 
     // If Xcode not installed or less than 15, skip this migration.
     if (version == null || version < Version(15, 0, 0)) {
-      logger.printTrace('Detected Xcode version is $version, below 15.0, skipping TOOLCHAIN_DIR workaround.');
+      logger.printTrace(
+          'Detected Xcode version is $version, below 15.0, skipping TOOLCHAIN_DIR workaround.');
       return;
     }
 
-    final List<FileSystemEntity> files = _podRunnerTargetSupportFiles.listSync();
+    final List<FileSystemEntity> files =
+        _podRunnerTargetSupportFiles.listSync();
     for (final FileSystemEntity file in files) {
       if (file.basename.endsWith('xcconfig') && file is File) {
         processFileLines(file);
@@ -51,7 +53,8 @@ class CocoaPodsToolchainDirectoryMigration extends ProjectMigrator {
   @override
   String? migrateLine(String line) {
     final String trimmedString = line.trim();
-    if (trimmedString.startsWith('LD_RUNPATH_SEARCH_PATHS') || trimmedString.startsWith('LIBRARY_SEARCH_PATHS')) {
+    if (trimmedString.startsWith('LD_RUNPATH_SEARCH_PATHS') ||
+        trimmedString.startsWith('LIBRARY_SEARCH_PATHS')) {
       const String originalReadLinkLine = r'{DT_TOOLCHAIN_DIR}';
       const String replacementReadLinkLine = r'{TOOLCHAIN_DIR}';
 

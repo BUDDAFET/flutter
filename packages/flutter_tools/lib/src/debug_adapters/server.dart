@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:dds/dap.dart' hide DapServer;
 
-import '../base/file_system.dart';
 import '../base/platform.dart';
 import '../debug_adapters/flutter_adapter.dart';
 import '../debug_adapters/flutter_adapter_args.dart';
@@ -55,7 +54,8 @@ class DapServer {
   }
 
   final ByteStreamServerChannel channel;
-  late final DartDebugAdapter<FlutterLaunchRequestArguments, FlutterAttachRequestArguments> adapter;
+  late final DartDebugAdapter<FlutterLaunchRequestArguments,
+      FlutterAttachRequestArguments> adapter;
   final bool ipv6;
   final bool enableDds;
   final bool enableAuthCodes;

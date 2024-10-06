@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../base/file_system.dart';
 import '../../base/logger.dart';
 import '../../base/project_migrator.dart';
 import '../../project.dart';
@@ -12,14 +11,16 @@ class ScrubGeneratedPluginRegistrant extends ProjectMigrator {
   ScrubGeneratedPluginRegistrant(
     WebProject project,
     super.logger,
-  ) : _project = project, _logger = logger;
+  )   : _project = project,
+        _logger = logger;
 
   final WebProject _project;
   final Logger _logger;
 
   @override
   Future<void> migrate() async {
-    final File registrant = _project.libDirectory.childFile('generated_plugin_registrant.dart');
+    final File registrant =
+        _project.libDirectory.childFile('generated_plugin_registrant.dart');
     final File gitignore = _project.parent.directory.childFile('.gitignore');
 
     if (!removeFile(registrant)) {

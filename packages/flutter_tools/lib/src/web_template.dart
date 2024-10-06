@@ -6,7 +6,6 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 
 import 'base/common.dart';
-import 'base/file_system.dart';
 
 /// Placeholder for base href
 const String kBaseHrefPlaceholder = r'$FLUTTER_BASE_HREF';
@@ -85,7 +84,8 @@ class WebTemplate {
     ];
   }
 
-  List<WebTemplateWarning> _getWarningsForPattern(Pattern pattern, String warningText) {
+  List<WebTemplateWarning> _getWarningsForPattern(
+      Pattern pattern, String warningText) {
     return <WebTemplateWarning>[
       for (final Match match in pattern.allMatches(_content))
         _getWarningForMatch(match, warningText)
@@ -93,7 +93,9 @@ class WebTemplate {
   }
 
   WebTemplateWarning _getWarningForMatch(Match match, String warningText) {
-    final int lineCount = RegExp(r'(\r\n|\r|\n)').allMatches(_content.substring(0, match.start)).length;
+    final int lineCount = RegExp(r'(\r\n|\r|\n)')
+        .allMatches(_content.substring(0, match.start))
+        .length;
     return WebTemplateWarning(warningText, lineCount + 1);
   }
 

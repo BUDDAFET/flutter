@@ -59,7 +59,7 @@ Widget buildFrame(MultiChildLayoutDelegate delegate) {
 }
 
 class PreferredSizeDelegate extends MultiChildLayoutDelegate {
-  PreferredSizeDelegate({ required this.preferredSize });
+  PreferredSizeDelegate({required this.preferredSize});
 
   final Size preferredSize;
 
@@ -67,7 +67,7 @@ class PreferredSizeDelegate extends MultiChildLayoutDelegate {
   Size getSize(BoxConstraints constraints) => preferredSize;
 
   @override
-  void performLayout(Size size) { }
+  void performLayout(Size size) {}
 
   @override
   bool shouldRelayout(PreferredSizeDelegate oldDelegate) {
@@ -84,7 +84,7 @@ class NotifierLayoutDelegate extends MultiChildLayoutDelegate {
   Size getSize(BoxConstraints constraints) => size.value;
 
   @override
-  void performLayout(Size size) { }
+  void performLayout(Size size) {}
 
   @override
   bool shouldRelayout(NotifierLayoutDelegate oldDelegate) {
@@ -120,6 +120,7 @@ class DuplicateLayoutDelegate extends MultiChildLayoutDelegate {
   @override
   bool shouldRelayout(MultiChildLayoutDelegate oldDelegate) => true;
 }
+
 // Used in the 'performLayout error control test' test case
 //  to trigger an error when positioning non existent child
 class NonExistentPositionDelegate extends MultiChildLayoutDelegate {
@@ -163,8 +164,10 @@ class LayoutWithMissingId extends ParentDataWidget<MultiChildLayoutParentData> {
 }
 
 void main() {
-  testWidgets('Control test for CustomMultiChildLayout', (WidgetTester tester) async {
-    final TestMultiChildLayoutDelegate delegate = TestMultiChildLayoutDelegate();
+  testWidgets('Control test for CustomMultiChildLayout',
+      (WidgetTester tester) async {
+    final TestMultiChildLayoutDelegate delegate =
+        TestMultiChildLayoutDelegate();
     await tester.pumpWidget(buildFrame(delegate));
 
     expect(delegate.getSizeConstraints.minWidth, 0.0);
@@ -181,7 +184,8 @@ void main() {
     expect(delegate.performLayoutIsChild, false);
   });
 
-  testWidgets('Test MultiChildDelegate shouldRelayout method', (WidgetTester tester) async {
+  testWidgets('Test MultiChildDelegate shouldRelayout method',
+      (WidgetTester tester) async {
     TestMultiChildLayoutDelegate delegate = TestMultiChildLayoutDelegate();
     await tester.pumpWidget(buildFrame(delegate));
 
@@ -205,7 +209,8 @@ void main() {
   });
 
   testWidgets('Nested CustomMultiChildLayouts', (WidgetTester tester) async {
-    final TestMultiChildLayoutDelegate delegate = TestMultiChildLayoutDelegate();
+    final TestMultiChildLayoutDelegate delegate =
+        TestMultiChildLayoutDelegate();
     await tester.pumpWidget(Center(
       child: CustomMultiChildLayout(
         delegate: delegate,
@@ -215,8 +220,10 @@ void main() {
             child: CustomMultiChildLayout(
               delegate: delegate,
               children: <Widget>[
-                LayoutId(id: 0, child: const SizedBox(width: 150.0, height: 100.0)),
-                LayoutId(id: 1, child: const SizedBox(width: 100.0, height: 200.0)),
+                LayoutId(
+                    id: 0, child: const SizedBox(width: 150.0, height: 100.0)),
+                LayoutId(
+                    id: 1, child: const SizedBox(width: 100.0, height: 200.0)),
               ],
             ),
           ),
@@ -224,7 +231,6 @@ void main() {
         ],
       ),
     ));
-
   });
 
   testWidgets('Loose constraints', (WidgetTester tester) async {
@@ -232,7 +238,8 @@ void main() {
     await tester.pumpWidget(Center(
       child: CustomMultiChildLayout(
         key: key,
-        delegate: PreferredSizeDelegate(preferredSize: const Size(300.0, 200.0)),
+        delegate:
+            PreferredSizeDelegate(preferredSize: const Size(300.0, 200.0)),
       ),
     ));
 
@@ -243,7 +250,8 @@ void main() {
     await tester.pumpWidget(Center(
       child: CustomMultiChildLayout(
         key: key,
-        delegate: PreferredSizeDelegate(preferredSize: const Size(350.0, 250.0)),
+        delegate:
+            PreferredSizeDelegate(preferredSize: const Size(350.0, 250.0)),
       ),
     ));
 
@@ -252,7 +260,8 @@ void main() {
   });
 
   testWidgets('Can use listener for relayout', (WidgetTester tester) async {
-    final ValueNotifier<Size> size = ValueNotifier<Size>(const Size(100.0, 200.0));
+    final ValueNotifier<Size> size =
+        ValueNotifier<Size>(const Size(100.0, 200.0));
     addTearDown(size.dispose);
 
     await tester.pumpWidget(
@@ -293,25 +302,26 @@ void main() {
       final List<FlutterErrorDetails> errors = <FlutterErrorDetails>[];
       FlutterError.onError = (FlutterErrorDetails error) => errors.add(error);
       try {
-        await tester.pumpWidget(widget ?? buildSingleChildFrame(delegate!));
+        await tester.pumpWidget(widget ?? buildSingleChildFrame(delegate));
       } finally {
         FlutterError.onError = oldHandler;
       }
       expect(errors.length, isNonZero);
       expect(errors.first, isNotNull);
       expect(errors.first.exception, isFlutterError);
-      expect((errors.first.exception as FlutterError).toStringDeep(), equalsIgnoringHashCodes(message));
+      expect((errors.first.exception as FlutterError).toStringDeep(),
+          equalsIgnoringHashCodes(message));
     }
 
-    testWidgets('layoutChild on non existent child', (WidgetTester tester) async {
+    testWidgets('layoutChild on non existent child',
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
         tester: tester,
         delegate: ZeroAndOneIdLayoutDelegate(),
-        message:
-          'FlutterError\n'
-          '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate\n'
-          '   tried to lay out a non-existent child.\n'
-          '   There is no child with the id "1".\n',
+        message: 'FlutterError\n'
+            '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate\n'
+            '   tried to lay out a non-existent child.\n'
+            '   There is no child with the id "1".\n',
       );
     });
 
@@ -319,71 +329,73 @@ void main() {
       await expectFlutterErrorMessage(
         tester: tester,
         delegate: DuplicateLayoutDelegate(),
-        message:
-          'FlutterError\n'
-          '   The DuplicateLayoutDelegate custom multichild layout delegate\n'
-          '   tried to lay out the child with id "0" more than once.\n'
-          '   Each child must be laid out exactly once.\n',
+        message: 'FlutterError\n'
+            '   The DuplicateLayoutDelegate custom multichild layout delegate\n'
+            '   tried to lay out the child with id "0" more than once.\n'
+            '   Each child must be laid out exactly once.\n',
       );
     });
 
-    testWidgets('layoutChild on invalid size constraint', (WidgetTester tester) async {
+    testWidgets('layoutChild on invalid size constraint',
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
         tester: tester,
         delegate: InvalidConstraintsChildLayoutDelegate(),
-        message:
-          'FlutterError\n'
-          '   The InvalidConstraintsChildLayoutDelegate custom multichild\n'
-          '   layout delegate provided invalid box constraints for the child\n'
-          '   with id "0".\n'
-          '   FlutterError\n'
-          '   The minimum width and height must be greater than or equal to\n'
-          '   zero.\n'
-          '   The maximum width must be greater than or equal to the minimum\n'
-          '   width.\n'
-          '   The maximum height must be greater than or equal to the minimum\n'
-          '   height.\n',
+        message: 'FlutterError\n'
+            '   The InvalidConstraintsChildLayoutDelegate custom multichild\n'
+            '   layout delegate provided invalid box constraints for the child\n'
+            '   with id "0".\n'
+            '   FlutterError\n'
+            '   The minimum width and height must be greater than or equal to\n'
+            '   zero.\n'
+            '   The maximum width must be greater than or equal to the minimum\n'
+            '   width.\n'
+            '   The maximum height must be greater than or equal to the minimum\n'
+            '   height.\n',
       );
     });
 
-    testWidgets('positionChild on non existent child', (WidgetTester tester) async {
+    testWidgets('positionChild on non existent child',
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
         tester: tester,
         delegate: NonExistentPositionDelegate(),
-        message:
-          'FlutterError\n'
-          '   The NonExistentPositionDelegate custom multichild layout delegate\n'
-          '   tried to position out a non-existent child:\n'
-          '   There is no child with the id "1".\n',
+        message: 'FlutterError\n'
+            '   The NonExistentPositionDelegate custom multichild layout delegate\n'
+            '   tried to position out a non-existent child:\n'
+            '   There is no child with the id "1".\n',
       );
     });
 
-    testWidgets("_callPerformLayout on child that doesn't have id", (WidgetTester tester) async {
+    testWidgets("_callPerformLayout on child that doesn't have id",
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
-        widget: Center(
-          child: CustomMultiChildLayout(
-            delegate: PreferredSizeDelegate(preferredSize: const Size(10, 10)),
-            children: <Widget>[LayoutWithMissingId(child: Container(width: 100))],
+          widget: Center(
+            child: CustomMultiChildLayout(
+              delegate:
+                  PreferredSizeDelegate(preferredSize: const Size(10, 10)),
+              children: <Widget>[
+                LayoutWithMissingId(child: Container(width: 100))
+              ],
+            ),
           ),
-        ),
-        tester: tester,
-        message:
-          'FlutterError\n'
-          '   Every child of a RenderCustomMultiChildLayoutBox must have an ID\n'
-          '   in its parent data.\n'
-          '   The following child has no ID: RenderConstrainedBox#00000 NEEDS-LAYOUT NEEDS-PAINT:\n'
-          '     creator: ConstrainedBox ← Container ← LayoutWithMissingId ←\n'
-          '       CustomMultiChildLayout ← Center ← _FocusInheritedScope ←\n'
-          '       _FocusScopeWithExternalFocusNode ← _FocusInheritedScope ← Focus\n'
-          '       ← FocusTraversalGroup ← MediaQuery ← _MediaQueryFromView ← ⋯\n'
-          '     parentData: offset=Offset(0.0, 0.0); id=null\n'
-          '     constraints: MISSING\n'
-          '     size: MISSING\n'
-          '     additionalConstraints: BoxConstraints(w=100.0, 0.0<=h<=Infinity)\n'
-      );
+          tester: tester,
+          message: 'FlutterError\n'
+              '   Every child of a RenderCustomMultiChildLayoutBox must have an ID\n'
+              '   in its parent data.\n'
+              '   The following child has no ID: RenderConstrainedBox#00000 NEEDS-LAYOUT NEEDS-PAINT:\n'
+              '     creator: ConstrainedBox ← Container ← LayoutWithMissingId ←\n'
+              '       CustomMultiChildLayout ← Center ← _FocusInheritedScope ←\n'
+              '       _FocusScopeWithExternalFocusNode ← _FocusInheritedScope ← Focus\n'
+              '       ← FocusTraversalGroup ← MediaQuery ← _MediaQueryFromView ← ⋯\n'
+              '     parentData: offset=Offset(0.0, 0.0); id=null\n'
+              '     constraints: MISSING\n'
+              '     size: MISSING\n'
+              '     additionalConstraints: BoxConstraints(w=100.0, 0.0<=h<=Infinity)\n');
     });
 
-    testWidgets('performLayout did not layout a child', (WidgetTester tester) async {
+    testWidgets('performLayout did not layout a child',
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
         widget: Center(
           child: CustomMultiChildLayout(
@@ -396,16 +408,16 @@ void main() {
           ),
         ),
         tester: tester,
-        message:
-          'FlutterError\n'
-          '   Each child must be laid out exactly once.\n'
-          '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate'
-          ' forgot to lay out the following child:\n'
-          '     2: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n',
+        message: 'FlutterError\n'
+            '   Each child must be laid out exactly once.\n'
+            '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate'
+            ' forgot to lay out the following child:\n'
+            '     2: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n',
       );
     });
 
-    testWidgets('performLayout did not layout multiple child', (WidgetTester tester) async {
+    testWidgets('performLayout did not layout multiple child',
+        (WidgetTester tester) async {
       await expectFlutterErrorMessage(
         widget: Center(
           child: CustomMultiChildLayout(
@@ -419,13 +431,12 @@ void main() {
           ),
         ),
         tester: tester,
-        message:
-          'FlutterError\n'
-          '   Each child must be laid out exactly once.\n'
-          '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate'
-          ' forgot to lay out the following children:\n'
-          '     2: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n'
-          '     3: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n',
+        message: 'FlutterError\n'
+            '   Each child must be laid out exactly once.\n'
+            '   The ZeroAndOneIdLayoutDelegate custom multichild layout delegate'
+            ' forgot to lay out the following children:\n'
+            '     2: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n'
+            '     3: RenderConstrainedBox#62a34 NEEDS-LAYOUT NEEDS-PAINT\n',
       );
     });
   });

@@ -6,7 +6,6 @@ import 'package:native_assets_builder/native_assets_builder.dart'
     hide NativeAssetsBuildRunner;
 import 'package:native_assets_cli/native_assets_cli_internal.dart';
 
-import '../../../base/file_system.dart';
 import '../../../build_info.dart';
 import '../../../globals.dart' as globals;
 
@@ -28,7 +27,8 @@ Future<Uri?> dryRunNativeAssetsIOS({
   }
 
   final Uri buildUri = nativeAssetsBuildUri(projectUri, OSImpl.iOS);
-  final Iterable<KernelAsset> assetTargetLocations = await dryRunNativeAssetsIOSInternal(
+  final Iterable<KernelAsset> assetTargetLocations =
+      await dryRunNativeAssetsIOSInternal(
     fileSystem,
     projectUri,
     buildRunner,
@@ -84,7 +84,8 @@ Future<List<Uri>> buildNativeAssetsIOS({
   required FileSystem fileSystem,
 }) async {
   if (!await nativeBuildRequired(buildRunner)) {
-    await writeNativeAssetsYaml(KernelAssets(), yamlParentDirectory, fileSystem);
+    await writeNativeAssetsYaml(
+        KernelAssets(), yamlParentDirectory, fileSystem);
     return <Uri>[];
   }
 
@@ -95,7 +96,8 @@ Future<List<Uri>> buildNativeAssetsIOS({
   final Uri buildUri = nativeAssetsBuildUri(projectUri, targetOS);
   final IOSSdkImpl iosSdk = _getIOSSdkImpl(environmentType);
 
-  globals.logger.printTrace('Building native assets for $targets $buildModeCli.');
+  globals.logger
+      .printTrace('Building native assets for $targets $buildModeCli.');
   final List<AssetImpl> nativeAssets = <AssetImpl>[];
   final Set<Uri> dependencies = <Uri>{};
   for (final Target target in targets) {
@@ -149,7 +151,7 @@ Future<List<Uri>> buildNativeAssetsIOS({
 
 IOSSdkImpl _getIOSSdkImpl(EnvironmentType environmentType) {
   return switch (environmentType) {
-    EnvironmentType.physical  => IOSSdkImpl.iPhoneOS,
+    EnvironmentType.physical => IOSSdkImpl.iPhoneOS,
     EnvironmentType.simulator => IOSSdkImpl.iPhoneSimulator,
   };
 }
@@ -157,8 +159,8 @@ IOSSdkImpl _getIOSSdkImpl(EnvironmentType environmentType) {
 /// Extract the [Target] from a [DarwinArch].
 Target _getNativeTarget(DarwinArch darwinArch) {
   return switch (darwinArch) {
-    DarwinArch.armv7  => Target.iOSArm,
-    DarwinArch.arm64  => Target.iOSArm64,
+    DarwinArch.armv7 => Target.iOSArm,
+    DarwinArch.arm64 => Target.iOSArm64,
     DarwinArch.x86_64 => Target.iOSX64,
   };
 }
@@ -189,8 +191,8 @@ Map<AssetImpl, KernelAsset> _assetTargetLocations(
   final Map<String, KernelAssetPath> idToPath = <String, KernelAssetPath>{};
   final Map<AssetImpl, KernelAsset> result = <AssetImpl, KernelAsset>{};
   for (final AssetImpl asset in nativeAssets) {
-    final KernelAssetPath path = idToPath[asset.id] ??
-        _targetLocationIOS(asset, alreadyTakenNames).path;
+    final KernelAssetPath path =
+        idToPath[asset.id] ?? _targetLocationIOS(asset, alreadyTakenNames).path;
     idToPath[asset.id] = path;
     result[asset] = KernelAsset(
       id: (asset as NativeCodeAssetImpl).id,
@@ -202,8 +204,8 @@ Map<AssetImpl, KernelAsset> _assetTargetLocations(
 }
 
 KernelAsset _targetLocationIOS(AssetImpl asset, Set<String> alreadyTakenNames) {
-final LinkModeImpl linkMode = (asset as NativeCodeAssetImpl).linkMode;
-final KernelAssetPath kernelAssetPath;
+  final LinkModeImpl linkMode = (asset as NativeCodeAssetImpl).linkMode;
+  final KernelAssetPath kernelAssetPath;
   switch (linkMode) {
     case DynamicLoadingSystemImpl _:
       kernelAssetPath = KernelAssetSystemPath(linkMode.uri);
@@ -265,7 +267,8 @@ Future<void> _copyNativeAssetsIOS(
       await setInstallNameDylib(dylibFile);
       // TODO(knopp): Wire the value once there is a way to configure that in the hook.
       // https://github.com/dart-lang/native/issues/1133
-      await createInfoPlist(targetUri.pathSegments.last, frameworkDir, minimumIOSVersion: '12.0');
+      await createInfoPlist(targetUri.pathSegments.last, frameworkDir,
+          minimumIOSVersion: '12.0');
       await codesignDylib(codesignIdentity, buildMode, frameworkDir);
     }
     globals.logger.printTrace('Copying native assets done.');

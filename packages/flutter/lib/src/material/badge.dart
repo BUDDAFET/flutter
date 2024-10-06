@@ -171,16 +171,20 @@ class Badge extends StatelessWidget {
     final BadgeThemeData badgeTheme = BadgeTheme.of(context);
     final BadgeThemeData defaults = _BadgeDefaultsM3(context);
     final Decoration effectiveDecoration = ShapeDecoration(
-      color: backgroundColor ?? badgeTheme.backgroundColor ?? defaults.backgroundColor!,
+      color: backgroundColor ??
+          badgeTheme.backgroundColor ??
+          defaults.backgroundColor!,
       shape: const StadiumBorder(),
     );
     final double effectiveWidthOffset;
     final Widget badge;
     final bool hasLabel = label != null;
     if (hasLabel) {
-      final double minSize = effectiveWidthOffset = largeSize ?? badgeTheme.largeSize ?? defaults.largeSize!;
+      final double minSize = effectiveWidthOffset =
+          largeSize ?? badgeTheme.largeSize ?? defaults.largeSize!;
       badge = DefaultTextStyle(
-        style: (textStyle ?? badgeTheme.textStyle ?? defaults.textStyle!).copyWith(
+        style:
+            (textStyle ?? badgeTheme.textStyle ?? defaults.textStyle!).copyWith(
           color: textColor ?? badgeTheme.textColor ?? defaults.textColor!,
         ),
         child: _IntrinsicHorizontalStadium(
@@ -195,7 +199,8 @@ class Badge extends StatelessWidget {
         ),
       );
     } else {
-      final double effectiveSmallSize = effectiveWidthOffset = smallSize ?? badgeTheme.smallSize ?? defaults.smallSize!;
+      final double effectiveSmallSize = effectiveWidthOffset =
+          smallSize ?? badgeTheme.smallSize ?? defaults.smallSize!;
       badge = Container(
         width: effectiveSmallSize,
         height: effectiveSmallSize,
@@ -208,31 +213,34 @@ class Badge extends StatelessWidget {
       return badge;
     }
 
-    final AlignmentGeometry effectiveAlignment = alignment ?? badgeTheme.alignment ?? defaults.alignment!;
+    final AlignmentGeometry effectiveAlignment =
+        alignment ?? badgeTheme.alignment ?? defaults.alignment!;
     final TextDirection textDirection = Directionality.of(context);
-    final Offset defaultOffset = textDirection == TextDirection.ltr ? const Offset(4, -4) : const Offset(-4, -4);
+    final Offset defaultOffset = textDirection == TextDirection.ltr
+        ? const Offset(4, -4)
+        : const Offset(-4, -4);
     // Adds a offset const Offset(0, 8) to avoiding breaking customers after
     // the offset calculation changes.
     // See https://github.com/flutter/flutter/pull/146853.
-    final Offset effectiveOffset = (offset ?? badgeTheme.offset ?? defaultOffset) + const Offset(0, 8);
+    final Offset effectiveOffset =
+        (offset ?? badgeTheme.offset ?? defaultOffset) + const Offset(0, 8);
 
-    return
-      Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          child!,
-          Positioned.fill(
-            child: _Badge(
-              alignment: effectiveAlignment,
-              offset: hasLabel ? effectiveOffset : Offset.zero,
-              hasLabel: hasLabel,
-              widthOffset: effectiveWidthOffset,
-              textDirection: textDirection,
-              child: badge,
-            ),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        child,
+        Positioned.fill(
+          child: _Badge(
+            alignment: effectiveAlignment,
+            offset: hasLabel ? effectiveOffset : Offset.zero,
+            hasLabel: hasLabel,
+            widthOffset: effectiveWidthOffset,
+            textDirection: textDirection,
+            child: badge,
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }
 
@@ -276,7 +284,8 @@ class _Badge extends SingleChildRenderObjectWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment));
+    properties
+        .add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment));
     properties.add(DiagnosticsProperty<Offset>('offset', offset));
   }
 }
@@ -288,9 +297,9 @@ class _RenderBadge extends RenderAligningShiftedBox {
     required Offset offset,
     required bool hasLabel,
     required double widthOffset,
-  }) : _offset = offset,
-       _hasLabel = hasLabel,
-       _widthOffset = widthOffset;
+  })  : _offset = offset,
+        _hasLabel = hasLabel,
+        _widthOffset = widthOffset;
 
   Offset get offset => _offset;
   Offset _offset;
@@ -333,7 +342,9 @@ class _RenderBadge extends RenderAligningShiftedBox {
     final double badgeSize = child!.size.height;
     final Alignment resolvedAlignment = alignment.resolve(textDirection);
     final BoxParentData childParentData = child!.parentData! as BoxParentData;
-    Offset badgeLocation = offset + resolvedAlignment.alongOffset(Offset(size.width - widthOffset, size.height));
+    Offset badgeLocation = offset +
+        resolvedAlignment
+            .alongOffset(Offset(size.width - widthOffset, size.height));
     if (hasLabel) {
       // Adjust for label height.
       badgeLocation = badgeLocation - Offset(0, badgeSize / 2);
@@ -362,8 +373,8 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
   _RenderIntrinsicHorizontalStadium({
     RenderBox? child,
     required double minSize,
-  }) : _minSize = minSize,
-       super(child);
+  })  : _minSize = minSize,
+        super(child);
 
   double get minSize => _minSize;
   double _minSize;
@@ -382,7 +393,8 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return math.max(getMaxIntrinsicHeight(double.infinity), super.computeMaxIntrinsicWidth(height));
+    return math.max(getMaxIntrinsicHeight(double.infinity),
+        super.computeMaxIntrinsicWidth(height));
   }
 
   @override
@@ -395,15 +407,21 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
     return math.max(minSize, super.computeMaxIntrinsicHeight(width));
   }
 
-  BoxConstraints _childConstraints(RenderBox child, BoxConstraints constraints) {
-    final double childHeight = math.max(minSize, child.getMaxIntrinsicHeight(constraints.maxWidth));
+  BoxConstraints _childConstraints(
+      RenderBox child, BoxConstraints constraints) {
+    final double childHeight =
+        math.max(minSize, child.getMaxIntrinsicHeight(constraints.maxWidth));
     final double childWidth = child.getMaxIntrinsicWidth(constraints.maxHeight);
-    return constraints.tighten(width: math.max(childWidth, childHeight), height: childHeight);
+    return constraints.tighten(
+        width: math.max(childWidth, childHeight), height: childHeight);
   }
 
-  Size _computeSize({required ChildLayouter layoutChild, required BoxConstraints constraints}) {
-    final RenderBox child = this.child!;
-    final Size childSize = layoutChild(child, _childConstraints(child, constraints));
+  Size _computeSize(
+      {required ChildLayouter layoutChild,
+      required BoxConstraints constraints}) {
+    final RenderBox child = this.child;
+    final Size childSize =
+        layoutChild(child, _childConstraints(child, constraints));
     if (childSize.height > childSize.width) {
       return Size(childSize.height, childSize.height);
     }
@@ -420,9 +438,11 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
   }
 
   @override
-  double? computeDryBaseline(BoxConstraints constraints, TextBaseline baseline) {
-    final RenderBox child = this.child!;
-    return child.getDryBaseline(_childConstraints(child, constraints), baseline);
+  double? computeDryBaseline(
+      BoxConstraints constraints, TextBaseline baseline) {
+    final RenderBox child = this.child;
+    return child.getDryBaseline(
+        _childConstraints(child, constraints), baseline);
   }
 
   @override
@@ -434,7 +454,6 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
   }
 }
 
-
 // BEGIN GENERATED TOKEN PROPERTIES - Badge
 
 // Do not edit by hand. The code between the "BEGIN GENERATED" and
@@ -443,12 +462,13 @@ class _RenderIntrinsicHorizontalStadium extends RenderProxyBox {
 //   dev/tools/gen_defaults/bin/gen_defaults.dart.
 
 class _BadgeDefaultsM3 extends BadgeThemeData {
-  _BadgeDefaultsM3(this.context) : super(
-    smallSize: 6.0,
-    largeSize: 16.0,
-    padding: const EdgeInsets.symmetric(horizontal: 4),
-    alignment: AlignmentDirectional.topEnd,
-  );
+  _BadgeDefaultsM3(this.context)
+      : super(
+          smallSize: 6.0,
+          largeSize: 16.0,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          alignment: AlignmentDirectional.topEnd,
+        );
 
   final BuildContext context;
   late final ThemeData _theme = Theme.of(context);

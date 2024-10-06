@@ -10,8 +10,10 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 void main() {
-  testWidgets('Material3 - Shadow effect is not doubled', (WidgetTester tester) async {
+  testWidgets('Material3 - Shadow effect is not doubled',
+      (WidgetTester tester) async {
     // Regression test for https://github.com/flutter/flutter/issues/123064
     debugDisableShadows = false;
 
@@ -37,7 +39,8 @@ void main() {
     debugDisableShadows = true;
   });
 
-  testWidgets('Material3 - Only one layer with `color` is painted', (WidgetTester tester) async {
+  testWidgets('Material3 - Only one layer with `color` is painted',
+      (WidgetTester tester) async {
     // Regression test for https://github.com/flutter/flutter/issues/122667
     const Color bottomAppBarColor = Colors.black45;
 
@@ -65,14 +68,16 @@ void main() {
       }),
     );
     switch (tester.widgetList(finder).single) {
-      case PhysicalShape(:final Color color) || PhysicalModel(:final Color color):
+      case PhysicalShape(:final Color color) ||
+            PhysicalModel(:final Color color):
         expect(color, bottomAppBarColor);
       default:
         assert(false); // Should be unreachable: compare with the finder.
     }
   });
 
-  testWidgets('No overlap with floating action button', (WidgetTester tester) async {
+  testWidgets('No overlap with floating action button',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
@@ -88,10 +93,10 @@ void main() {
       ),
     );
 
-    final ShapeListenerState shapeListenerState = tester.state(find.byType(ShapeListener));
+    final ShapeListenerState shapeListenerState =
+        tester.state(find.byType(ShapeListener));
     final RenderBox renderBox = tester.renderObject(find.byType(BottomAppBar));
-    final Path expectedPath = Path()
-      ..addRect(Offset.zero & renderBox.size);
+    final Path expectedPath = Path()..addRect(Offset.zero & renderBox.size);
 
     final Path actualPath = shapeListenerState.cache.value;
     expect(
@@ -116,13 +121,15 @@ void main() {
               theme: ThemeData(useMaterial3: false),
               home: Scaffold(
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () { },
+                  onPressed: () {},
                 ),
                 floatingActionButtonLocation: location,
                 bottomNavigationBar: const BottomAppBar(
                   shape: AutomaticNotchedShape(
-                    BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                    ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                    BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                    ContinuousRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
                   ),
                   notchMargin: 10.0,
                   color: Colors.green,
@@ -134,6 +141,7 @@ void main() {
         ),
       );
     }
+
     await pump(FloatingActionButtonLocation.endDocked);
     await expectLater(
       find.byKey(key),
@@ -160,13 +168,15 @@ void main() {
               theme: ThemeData(useMaterial3: true),
               home: Scaffold(
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () { },
+                  onPressed: () {},
                 ),
                 floatingActionButtonLocation: location,
                 bottomNavigationBar: const BottomAppBar(
                   shape: AutomaticNotchedShape(
-                    BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                    ContinuousRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                    BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                    ContinuousRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
                   ),
                   notchMargin: 10.0,
                   color: Colors.green,
@@ -178,6 +188,7 @@ void main() {
         ),
       );
     }
+
     await pump(FloatingActionButtonLocation.endDocked);
     await expectLater(
       find.byKey(key),
@@ -223,14 +234,17 @@ void main() {
     expect(babRect, const Rect.fromLTRB(240, 520, 560, 600));
   });
 
-  testWidgets('Material2 - Color defaults to Theme.bottomAppBarColor', (WidgetTester tester) async {
+  testWidgets('Material2 - Color defaults to Theme.bottomAppBarColor',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(useMaterial3: false),
         home: Builder(
           builder: (BuildContext context) {
             return Theme(
-              data: Theme.of(context).copyWith(bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xffffff00))),
+              data: Theme.of(context).copyWith(
+                  bottomAppBarTheme:
+                      const BottomAppBarTheme(color: Color(0xffffff00))),
               child: const Scaffold(
                 floatingActionButton: FloatingActionButton(
                   onPressed: null,
@@ -244,19 +258,22 @@ void main() {
     );
 
     final PhysicalShape physicalShape =
-      tester.widget(find.byType(PhysicalShape).at(0));
+        tester.widget(find.byType(PhysicalShape).at(0));
 
     expect(physicalShape.color, const Color(0xffffff00));
   });
 
-  testWidgets('Material2 - Color overrides theme color', (WidgetTester tester) async {
+  testWidgets('Material2 - Color overrides theme color',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData(useMaterial3: false),
         home: Builder(
           builder: (BuildContext context) {
             return Theme(
-              data: Theme.of(context).copyWith(bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xffffff00))),
+              data: Theme.of(context).copyWith(
+                  bottomAppBarTheme:
+                      const BottomAppBarTheme(color: Color(0xffffff00))),
               child: const Scaffold(
                 floatingActionButton: FloatingActionButton(
                   onPressed: null,
@@ -272,15 +289,15 @@ void main() {
     );
 
     final PhysicalShape physicalShape =
-      tester.widget(find.byType(PhysicalShape).at(0));
+        tester.widget(find.byType(PhysicalShape).at(0));
     final Material material = tester.widget(find.byType(Material).at(1));
 
     expect(physicalShape.color, const Color(0xff0000ff));
     expect(material.color, null); /* no value in Material 2. */
   });
 
-
-  testWidgets('Material3 - Color overrides theme color', (WidgetTester tester) async {
+  testWidgets('Material3 - Color overrides theme color',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData.light(useMaterial3: true).copyWith(
@@ -289,51 +306,53 @@ void main() {
         home: Builder(
           builder: (BuildContext context) {
             return const Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: null,
-                ),
-                bottomNavigationBar: BottomAppBar(
-                  color: Color(0xff0000ff),
-                  surfaceTintColor: Colors.transparent,
-                ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: null,
+              ),
+              bottomNavigationBar: BottomAppBar(
+                color: Color(0xff0000ff),
+                surfaceTintColor: Colors.transparent,
+              ),
             );
           },
         ),
       ),
     );
 
-    final PhysicalShape physicalShape = tester.widget(
-        find.descendant(of: find.byType(BottomAppBar), matching: find.byType(PhysicalShape)));
+    final PhysicalShape physicalShape = tester.widget(find.descendant(
+        of: find.byType(BottomAppBar), matching: find.byType(PhysicalShape)));
 
     expect(physicalShape.color, const Color(0xff0000ff));
   });
 
-  testWidgets('Material3 - Shadow color is transparent', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: ThemeData(useMaterial3: true,
+  testWidgets('Material3 - Shadow color is transparent',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
+      home: const Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: null,
         ),
-        home: const Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: null,
-          ),
-          bottomNavigationBar: BottomAppBar(
-            color: Color(0xff0000ff),
-          ),
+        bottomNavigationBar: BottomAppBar(
+          color: Color(0xff0000ff),
         ),
-      )
-    );
+      ),
+    ));
 
-    final PhysicalShape physicalShape = tester.widget(
-        find.descendant(of: find.byType(BottomAppBar), matching: find.byType(PhysicalShape)));
+    final PhysicalShape physicalShape = tester.widget(find.descendant(
+        of: find.byType(BottomAppBar), matching: find.byType(PhysicalShape)));
 
     expect(physicalShape.shadowColor, Colors.transparent);
   });
 
-  testWidgets('Material2 - Dark theme applies an elevation overlay color', (WidgetTester tester) async {
+  testWidgets('Material2 - Dark theme applies an elevation overlay color',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData.from(useMaterial3: false, colorScheme: const ColorScheme.dark()),
+        theme: ThemeData.from(
+            useMaterial3: false, colorScheme: const ColorScheme.dark()),
         home: Scaffold(
           bottomNavigationBar: BottomAppBar(
             color: const ColorScheme.dark().surface,
@@ -342,13 +361,15 @@ void main() {
       ),
     );
 
-    final PhysicalShape physicalShape = tester.widget(find.byType(PhysicalShape).at(0));
+    final PhysicalShape physicalShape =
+        tester.widget(find.byType(PhysicalShape).at(0));
 
     // For the default dark theme the overlay color for elevation 8 is 0xFF2D2D2D
     expect(physicalShape.color, const Color(0xFF2D2D2D));
   });
 
-  testWidgets('Material3 - Dark theme applies an elevation overlay color', (WidgetTester tester) async {
+  testWidgets('Material3 - Dark theme applies an elevation overlay color',
+      (WidgetTester tester) async {
     const ColorScheme colorScheme = ColorScheme.dark();
     await tester.pumpWidget(
       MaterialApp(
@@ -361,10 +382,12 @@ void main() {
       ),
     );
 
-    final PhysicalShape physicalShape = tester.widget(find.byType(PhysicalShape).at(0));
+    final PhysicalShape physicalShape =
+        tester.widget(find.byType(PhysicalShape).at(0));
 
     const double elevation = 3.0; // Default for M3.
-    final Color overlayColor = ElevationOverlay.applySurfaceTint(colorScheme.surfaceContainer, colorScheme.surfaceTint, elevation);
+    final Color overlayColor = ElevationOverlay.applySurfaceTint(
+        colorScheme.surfaceContainer, colorScheme.surfaceTint, elevation);
     expect(physicalShape.color, isNot(overlayColor));
     expect(physicalShape.color, colorScheme.surfaceContainer);
   });
@@ -411,15 +434,16 @@ void main() {
             onPressed: null,
             child: Icon(Icons.add),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ),
     );
 
-    final ShapeListenerState shapeListenerState = tester.state(find.byType(ShapeListener));
+    final ShapeListenerState shapeListenerState =
+        tester.state(find.byType(ShapeListener));
     final RenderBox renderBox = tester.renderObject(find.byType(BottomAppBar));
-    final Path expectedPath = Path()
-      ..addRect(Offset.zero & renderBox.size);
+    final Path expectedPath = Path()..addRect(Offset.zero & renderBox.size);
 
     final Path actualPath = shapeListenerState.cache.value;
 
@@ -447,15 +471,18 @@ void main() {
             onPressed: null,
             child: Icon(Icons.add),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ),
     );
 
-    final ShapeListenerState shapeListenerState = tester.state(find.byType(ShapeListener));
+    final ShapeListenerState shapeListenerState =
+        tester.state(find.byType(ShapeListener));
     final RenderBox babBox = tester.renderObject(find.byType(BottomAppBar));
     final Size babSize = babBox.size;
-    final RenderBox fabBox = tester.renderObject(find.byType(FloatingActionButton));
+    final RenderBox fabBox =
+        tester.renderObject(find.byType(FloatingActionButton));
     final Size fabSize = fabBox.size;
 
     final double fabLeft = (babSize.width / 2.0) - (fabSize.width / 2.0);
@@ -499,15 +526,18 @@ void main() {
             onPressed: null,
             child: Icon(Icons.add),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ),
     );
 
-    final ShapeListenerState shapeListenerState = tester.state(find.byType(ShapeListener));
+    final ShapeListenerState shapeListenerState =
+        tester.state(find.byType(ShapeListener));
     final RenderBox babBox = tester.renderObject(find.byType(BottomAppBar));
     final Size babSize = babBox.size;
-    final RenderBox fabBox = tester.renderObject(find.byType(FloatingActionButton));
+    final RenderBox fabBox =
+        tester.renderObject(find.byType(FloatingActionButton));
     final Size fabSize = fabBox.size;
 
     final double fabLeft = (babSize.width / 2.0) - (fabSize.width / 2.0) - 6.0;
@@ -611,8 +641,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          bottomNavigationBar:
-          BottomAppBar(
+          bottomNavigationBar: BottomAppBar(
             shape: RectangularNotch(),
             notchMargin: 0.0,
             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -626,14 +655,17 @@ void main() {
     expect(physicalShape.clipBehavior, Clip.antiAliasWithSaveLayer);
   });
 
-  testWidgets('Material2 - BottomAppBar with shape when Scaffold.bottomNavigationBar == null', (WidgetTester tester) async {
+  testWidgets(
+      'Material2 - BottomAppBar with shape when Scaffold.bottomNavigationBar == null',
+      (WidgetTester tester) async {
     // Regression test for https://github.com/flutter/flutter/issues/80878
     final ThemeData theme = ThemeData(useMaterial3: false);
     await tester.pumpWidget(
       MaterialApp(
         theme: theme,
         home: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.green,
             child: const Icon(Icons.home),
@@ -658,18 +690,22 @@ void main() {
       ),
     );
 
-    expect(tester.getRect(find.byType(FloatingActionButton)), const Rect.fromLTRB(372, 528, 428, 584));
+    expect(tester.getRect(find.byType(FloatingActionButton)),
+        const Rect.fromLTRB(372, 528, 428, 584));
     expect(tester.getSize(find.byType(BottomAppBar)), const Size(800, 50));
   });
 
-  testWidgets('Material3 - BottomAppBar with shape when Scaffold.bottomNavigationBar == null', (WidgetTester tester) async {
+  testWidgets(
+      'Material3 - BottomAppBar with shape when Scaffold.bottomNavigationBar == null',
+      (WidgetTester tester) async {
     // Regression test for https://github.com/flutter/flutter/issues/80878
     final ThemeData theme = ThemeData(useMaterial3: true);
     await tester.pumpWidget(
       MaterialApp(
         theme: theme,
         home: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.green,
             child: const Icon(Icons.home),
@@ -694,11 +730,13 @@ void main() {
       ),
     );
 
-    expect(tester.getRect(find.byType(FloatingActionButton)), const Rect.fromLTRB(372, 528, 428, 584));
+    expect(tester.getRect(find.byType(FloatingActionButton)),
+        const Rect.fromLTRB(372, 528, 428, 584));
     expect(tester.getSize(find.byType(BottomAppBar)), const Size(800, 80));
   });
 
-  testWidgets('notch with margin and top padding, home safe area', (WidgetTester tester) async {
+  testWidgets('notch with margin and top padding, home safe area',
+      (WidgetTester tester) async {
     // Regression test for https://github.com/flutter/flutter/issues/90024
     await tester.pumpWidget(
       const MediaQuery(
@@ -720,17 +758,20 @@ void main() {
                 onPressed: null,
                 child: Icon(Icons.add),
               ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
             ),
           ),
         ),
       ),
     );
 
-    final ShapeListenerState shapeListenerState = tester.state(find.byType(ShapeListener));
+    final ShapeListenerState shapeListenerState =
+        tester.state(find.byType(ShapeListener));
     final RenderBox babBox = tester.renderObject(find.byType(BottomAppBar));
     final Size babSize = babBox.size;
-    final RenderBox fabBox = tester.renderObject(find.byType(FloatingActionButton));
+    final RenderBox fabBox =
+        tester.renderObject(find.byType(FloatingActionButton));
     final Size fabSize = fabBox.size;
 
     final double fabLeft = (babSize.width / 2.0) - (fabSize.width / 2.0) - 6.0;
@@ -759,11 +800,13 @@ void main() {
     );
   });
 
-  testWidgets('BottomAppBar does not apply custom clipper without FAB', (WidgetTester tester) async {
+  testWidgets('BottomAppBar does not apply custom clipper without FAB',
+      (WidgetTester tester) async {
     Widget buildWidget({Widget? fab}) {
       return MaterialApp(
         home: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           floatingActionButton: fab,
           bottomNavigationBar: BottomAppBar(
             color: Colors.green,
@@ -773,9 +816,12 @@ void main() {
         ),
       );
     }
-    await tester.pumpWidget(buildWidget(fab: FloatingActionButton(onPressed: () { })));
 
-    PhysicalShape physicalShape = tester.widget(find.byType(PhysicalShape).at(0));
+    await tester
+        .pumpWidget(buildWidget(fab: FloatingActionButton(onPressed: () {})));
+
+    PhysicalShape physicalShape =
+        tester.widget(find.byType(PhysicalShape).at(0));
     expect(physicalShape.clipper.toString(), '_BottomAppBarClipper');
 
     await tester.pumpWidget(buildWidget());
@@ -784,40 +830,42 @@ void main() {
     expect(physicalShape.clipper.toString(), 'ShapeBorderClipper');
   });
 
-  testWidgets('Material3 - BottomAppBar adds bottom padding to height', (WidgetTester tester) async {
+  testWidgets('Material3 - BottomAppBar adds bottom padding to height',
+      (WidgetTester tester) async {
     const double bottomPadding = 35.0;
 
-    await tester.pumpWidget(
-      MediaQuery(
-        data: const MediaQueryData(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          viewPadding: EdgeInsets.only(bottom: bottomPadding),
-        ),
-        child: MaterialApp(
-          theme: ThemeData(useMaterial3: true),
-          home: Scaffold(
-            floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-            floatingActionButton: FloatingActionButton(onPressed: () { }),
-            bottomNavigationBar: BottomAppBar(
-              child: IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
+    await tester.pumpWidget(MediaQuery(
+      data: const MediaQueryData(
+        padding: EdgeInsets.only(bottom: bottomPadding),
+        viewPadding: EdgeInsets.only(bottom: bottomPadding),
+      ),
+      child: MaterialApp(
+        theme: ThemeData(useMaterial3: true),
+        home: Scaffold(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.endContained,
+          floatingActionButton: FloatingActionButton(onPressed: () {}),
+          bottomNavigationBar: BottomAppBar(
+            child: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {},
             ),
           ),
         ),
-      )
-    );
+      ),
+    ));
 
     final Rect bottomAppBar = tester.getRect(find.byType(BottomAppBar));
-    final Rect iconButton = tester.getRect(find.widgetWithIcon(IconButton, Icons.search));
+    final Rect iconButton =
+        tester.getRect(find.widgetWithIcon(IconButton, Icons.search));
     final Rect fab = tester.getRect(find.byType(FloatingActionButton));
 
     // The height of the bottom app bar should be its height(default is 80.0) + bottom safe area height.
     expect(bottomAppBar.height, 80.0 + bottomPadding);
 
     // The vertical position of the icon button and fab should be center of the area excluding the bottom padding.
-    final double barCenter = bottomAppBar.topLeft.dy + (bottomAppBar.height - bottomPadding) / 2;
+    final double barCenter =
+        bottomAppBar.topLeft.dy + (bottomAppBar.height - bottomPadding) / 2;
     expect(iconButton.center.dy, barCenter);
     expect(fab.center.dy, barCenter);
   });
@@ -835,14 +883,14 @@ class ClipCachePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final RenderPhysicalShape physicalShape = findPhysicalShapeChild(context)!;
+    final RenderPhysicalShape physicalShape = findPhysicalShapeChild(context);
     value = physicalShape.clipper!.getClip(size);
   }
 
   RenderPhysicalShape? findPhysicalShapeChild(BuildContext context) {
     RenderPhysicalShape? result;
     context.visitChildElements((Element e) {
-      final RenderObject renderObject = e.findRenderObject()!;
+      final RenderObject renderObject = e.findRenderObject();
       if (renderObject.runtimeType == RenderPhysicalShape) {
         assert(result == null);
         result = renderObject as RenderPhysicalShape;
@@ -860,13 +908,12 @@ class ClipCachePainter extends CustomPainter {
 }
 
 class ShapeListener extends StatefulWidget {
-  const ShapeListener(this.child, { super.key });
+  const ShapeListener(this.child, {super.key});
 
   final Widget child;
 
   @override
   State createState() => ShapeListenerState();
-
 }
 
 class ShapeListenerState extends State<ShapeListener> {
@@ -885,7 +932,6 @@ class ShapeListenerState extends State<ShapeListener> {
     super.didChangeDependencies();
     cache = ClipCachePainter(context);
   }
-
 }
 
 class RectangularNotch extends NotchedShape {

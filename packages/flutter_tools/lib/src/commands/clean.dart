@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 
 import '../../src/macos/xcode.dart';
 import '../base/common.dart';
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../build_info.dart';
 import '../globals.dart' as globals;
@@ -37,7 +36,8 @@ class CleanCommand extends FlutterCommand {
   String get category => FlutterCommandCategory.project;
 
   @override
-  Future<Set<DevelopmentArtifact>> get requiredArtifacts async => const <DevelopmentArtifact>{};
+  Future<Set<DevelopmentArtifact>> get requiredArtifacts async =>
+      const <DevelopmentArtifact>{};
 
   @override
   Future<FlutterCommandResult> runCommand() async {
@@ -84,8 +84,10 @@ class CleanCommand extends FlutterCommand {
       'Cleaning Xcode workspace...',
     );
     try {
-      final XcodeProjectInterpreter xcodeProjectInterpreter = globals.xcodeProjectInterpreter!;
-      final XcodeProjectInfo projectInfo = (await xcodeProjectInterpreter.getInfo(xcodeWorkspace.parent.path))!;
+      final XcodeProjectInterpreter xcodeProjectInterpreter =
+          globals.xcodeProjectInterpreter!;
+      final XcodeProjectInfo projectInfo =
+          (await xcodeProjectInterpreter.getInfo(xcodeWorkspace.parent.path))!;
       if (argResults?.wasParsed('scheme') ?? false) {
         final String scheme = argResults!['scheme'] as String;
         if (scheme.isEmpty) {
@@ -94,10 +96,12 @@ class CleanCommand extends FlutterCommand {
         if (!projectInfo.schemes.contains(scheme)) {
           throwToolExit('Scheme "$scheme" not found in ${projectInfo.schemes}');
         }
-        await xcodeProjectInterpreter.cleanWorkspace(xcodeWorkspace.path, scheme, verbose: _verbose);
+        await xcodeProjectInterpreter
+            .cleanWorkspace(xcodeWorkspace.path, scheme, verbose: _verbose);
       } else {
         for (final String scheme in projectInfo.schemes) {
-          await xcodeProjectInterpreter.cleanWorkspace(xcodeWorkspace.path, scheme, verbose: _verbose);
+          await xcodeProjectInterpreter
+              .cleanWorkspace(xcodeWorkspace.path, scheme, verbose: _verbose);
         }
       }
     } on Exception catch (error) {

@@ -5,7 +5,6 @@
 import 'package:process/process.dart';
 
 import '../base/common.dart';
-import '../base/file_system.dart';
 import '../base/io.dart';
 import '../base/logger.dart';
 import '../base/platform.dart';
@@ -33,11 +32,11 @@ class AndroidDevices extends PollingDeviceDiscovery {
     required FileSystem fileSystem,
     required Platform platform,
     required UserMessages userMessages,
-  }) : _androidWorkflow = androidWorkflow,
-       _androidSdk = androidSdk,
-       _processUtils = ProcessUtils(
-         logger: logger,
-         processManager: processManager,
+  })  : _androidWorkflow = androidWorkflow,
+        _androidSdk = androidSdk,
+        _processUtils = ProcessUtils(
+          logger: logger,
+          processManager: processManager,
         ),
         _processManager = processManager,
         _logger = logger,
@@ -62,15 +61,18 @@ class AndroidDevices extends PollingDeviceDiscovery {
   bool get canListAnything => _androidWorkflow.canListDevices;
 
   @override
-  Future<List<Device>> pollingGetDevices({ Duration? timeout }) async {
+  Future<List<Device>> pollingGetDevices({Duration? timeout}) async {
     if (_doesNotHaveAdb()) {
       return <AndroidDevice>[];
     }
     String text;
     try {
-      text = (await _processUtils.run(<String>[_androidSdk!.adbPath!, 'devices', '-l'],
+      text = (await _processUtils.run(
+        <String>[_androidSdk!.adbPath!, 'devices', '-l'],
         throwOnError: true,
-      )).stdout.trim();
+      ))
+          .stdout
+          .trim();
     } on ProcessException catch (exception) {
       throwToolExit(
         'Unable to run "adb", check your Android SDK installation and '
@@ -92,7 +94,8 @@ class AndroidDevices extends PollingDeviceDiscovery {
       return <String>[];
     }
 
-    final RunResult result = await _processUtils.run(<String>[_androidSdk!.adbPath!, 'devices', '-l']);
+    final RunResult result = await _processUtils
+        .run(<String>[_androidSdk!.adbPath!, 'devices', '-l']);
     if (result.exitCode != 0) {
       return <String>[];
     }
@@ -106,8 +109,8 @@ class AndroidDevices extends PollingDeviceDiscovery {
 
   bool _doesNotHaveAdb() {
     return _androidSdk == null ||
-      _androidSdk.adbPath == null ||
-      !_processManager.canRun(_androidSdk.adbPath);
+        _androidSdk.adbPath == null ||
+        !_processManager.canRun(_androidSdk.adbPath);
   }
 
   // 015d172c98400a03       device usb:340787200X product:nakasi model:Nexus_7 device:grouper
@@ -168,10 +171,8 @@ class AndroidDevices extends PollingDeviceDiscovery {
 
         switch (deviceState) {
           case 'unauthorized':
-            diagnostics?.add(
-              'Device $deviceID is not authorized.\n'
-              'You might need to check your device for an authorization dialog.'
-            );
+            diagnostics?.add('Device $deviceID is not authorized.\n'
+                'You might need to check your device for an authorization dialog.');
           case 'offline':
             diagnostics?.add('Device $deviceID is offline.');
           default:
@@ -189,9 +190,9 @@ class AndroidDevices extends PollingDeviceDiscovery {
         }
       } else {
         diagnostics?.add(
-          'Unexpected failure parsing device information from adb output:\n'
-          '$line\n'
-          '${_userMessages.flutterToolBugInstructions}');
+            'Unexpected failure parsing device information from adb output:\n'
+            '$line\n'
+            '${_userMessages.flutterToolBugInstructions}');
       }
     }
   }

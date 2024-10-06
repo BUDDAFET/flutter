@@ -5,11 +5,10 @@
 import 'package:flutter_devicelab/framework/ab.dart';
 import 'package:flutter_devicelab/framework/task_result.dart';
 
-import 'common.dart';
-
 void main() {
   test('ABTest', () {
-    final ABTest ab = ABTest(localEngine: 'engine', localEngineHost: 'engine', taskName: 'test');
+    final ABTest ab = ABTest(
+        localEngine: 'engine', localEngineHost: 'engine', taskName: 'test');
 
     for (int i = 0; i < 5; i++) {
       final TaskResult aResult = TaskResult.fromJson(<String, dynamic>{

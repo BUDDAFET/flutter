@@ -9,14 +9,9 @@ import 'package:flutter/material.dart';
 
 import '../codeviewer/code_displayer.dart';
 import '../deferred_widget.dart';
-import '../demos/cupertino/cupertino_demos.dart'
-    deferred as cupertino_demos;
 import '../demos/cupertino/demo_types.dart';
 import '../demos/material/material_demo_types.dart';
-import '../demos/material/material_demos.dart'
-    deferred as material_demos;
-import '../demos/reference/colors_demo.dart'
-    deferred as colors_demo;
+import '../demos/reference/colors_demo.dart' deferred as colors_demo;
 import '../demos/reference/motion_demo_container_transition.dart'
     deferred as motion_demo_container;
 import '../demos/reference/motion_demo_fade_scale_transition.dart';
@@ -26,8 +21,7 @@ import '../demos/reference/motion_demo_shared_y_axis_transition.dart';
 import '../demos/reference/motion_demo_shared_z_axis_transition.dart';
 import '../demos/reference/transformations_demo.dart'
     deferred as transformations_demo;
-import '../demos/reference/typography_demo.dart'
-    deferred as typography;
+import '../demos/reference/typography_demo.dart' deferred as typography;
 import '../gallery_localizations.dart';
 import '../gallery_localizations_en.dart';
 import 'icons.dart';
@@ -117,7 +111,8 @@ Future<void> pumpDeferredLibraries() {
 
 class Demos {
   static Map<String?, GalleryDemo> asSlugToDemoMap(BuildContext context) {
-    final GalleryLocalizations localizations = GalleryLocalizations.of(context)!;
+    final GalleryLocalizations localizations =
+        GalleryLocalizations.of(context)!;
     return LinkedHashMap<String?, GalleryDemo>.fromIterable(
       all(localizations),
       // ignore: avoid_dynamic_calls
@@ -131,8 +126,9 @@ class Demos {
       cupertinoDemos(localizations) +
       otherDemos(localizations);
 
-  static List<String> allDescriptions() =>
-      all(GalleryLocalizationsEn()).map((GalleryDemo demo) => demo.describe).toList();
+  static List<String> allDescriptions() => all(GalleryLocalizationsEn())
+      .map((GalleryDemo demo) => demo.describe)
+      .toList();
 
   static Map<String, GalleryDemo> studies(GalleryLocalizations localizations) {
     return <String, GalleryDemo>{
@@ -192,7 +188,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.AppBarDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -211,7 +207,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.BannerDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -229,7 +225,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.BottomAppBarDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -250,7 +246,7 @@ class Demos {
                       type: BottomNavigationDemoType.withLabels,
                       restorationId: 'bottom_navigation_labels_demo',
                     )),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoBottomNavigationSelectedLabel,
             description: localizations.demoBottomNavigationDescription,
@@ -262,7 +258,7 @@ class Demos {
                       type: BottomNavigationDemoType.withoutLabels,
                       restorationId: 'bottom_navigation_without_labels_demo',
                     )),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -281,7 +277,7 @@ class Demos {
                 () => material_demos.BottomSheetDemo(
                       type: BottomSheetDemoType.persistent,
                     )),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoBottomSheetModalTitle,
             description: localizations.demoBottomSheetModalDescription,
@@ -291,7 +287,7 @@ class Demos {
                 () => material_demos.BottomSheetDemo(
                       type: BottomSheetDemoType.modal,
                     )),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -307,7 +303,7 @@ class Demos {
             documentationUrl: '$_docsBaseUrl/material/TextButton-class.html',
             buildRoute: (_) => DeferredWidget(materialDemosLibrary,
                 () => material_demos.ButtonDemo(type: ButtonDemoType.text)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoElevatedButtonTitle,
             description: localizations.demoElevatedButtonDescription,
@@ -315,7 +311,7 @@ class Demos {
                 '$_docsBaseUrl/material/ElevatedButton-class.html',
             buildRoute: (_) => DeferredWidget(materialDemosLibrary,
                 () => material_demos.ButtonDemo(type: ButtonDemoType.elevated)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoOutlinedButtonTitle,
             description: localizations.demoOutlinedButtonDescription,
@@ -323,14 +319,14 @@ class Demos {
                 '$_docsBaseUrl/material/OutlinedButton-class.html',
             buildRoute: (_) => DeferredWidget(materialDemosLibrary,
                 () => material_demos.ButtonDemo(type: ButtonDemoType.outlined)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoToggleButtonTitle,
             description: localizations.demoToggleButtonDescription,
             documentationUrl: '$_docsBaseUrl/material/ToggleButtons-class.html',
             buildRoute: (_) => DeferredWidget(materialDemosLibrary,
                 () => material_demos.ButtonDemo(type: ButtonDemoType.toggle)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoFloatingButtonTitle,
             description: localizations.demoFloatingButtonDescription,
@@ -338,7 +334,7 @@ class Demos {
                 '$_docsBaseUrl/material/FloatingActionButton-class.html',
             buildRoute: (_) => DeferredWidget(materialDemosLibrary,
                 () => material_demos.ButtonDemo(type: ButtonDemoType.floating)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -356,7 +352,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.CardsDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -370,30 +366,34 @@ class Demos {
             title: localizations.demoActionChipTitle,
             description: localizations.demoActionChipDescription,
             documentationUrl: '$_docsBaseUrl/material/ActionChip-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ChipDemo(type: ChipDemoType.action)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoChoiceChipTitle,
             description: localizations.demoChoiceChipDescription,
             documentationUrl: '$_docsBaseUrl/material/ChoiceChip-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ChipDemo(type: ChipDemoType.choice)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoFilterChipTitle,
             description: localizations.demoFilterChipDescription,
             documentationUrl: '$_docsBaseUrl/material/FilterChip-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ChipDemo(type: ChipDemoType.filter)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoInputChipTitle,
             description: localizations.demoInputChipDescription,
             documentationUrl: '$_docsBaseUrl/material/InputChip-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ChipDemo(type: ChipDemoType.input)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -411,7 +411,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.DataTableDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -425,9 +425,10 @@ class Demos {
             title: localizations.demoAlertDialogTitle,
             description: localizations.demoAlertDialogDescription,
             documentationUrl: '$_docsBaseUrl/material/AlertDialog-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.DialogDemo(type: DialogDemoType.alert)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoAlertTitleDialogTitle,
             description: localizations.demoAlertDialogDescription,
@@ -436,14 +437,15 @@ class Demos {
                 materialDemosLibrary,
                 () =>
                     material_demos.DialogDemo(type: DialogDemoType.alertTitle)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSimpleDialogTitle,
             description: localizations.demoSimpleDialogDescription,
             documentationUrl: '$_docsBaseUrl/material/SimpleDialog-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.DialogDemo(type: DialogDemoType.simple)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoFullscreenDialogTitle,
             description: localizations.demoFullscreenDialogDescription,
@@ -453,7 +455,7 @@ class Demos {
                 materialDemosLibrary,
                 () =>
                     material_demos.DialogDemo(type: DialogDemoType.fullscreen)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -471,7 +473,7 @@ class Demos {
                 materialDemosLibrary,
                 () => material_demos.DividerDemo(
                     type: DividerDemoType.horizontal)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoVerticalDividerTitle,
             description: localizations.demoDividerDescription,
@@ -481,7 +483,7 @@ class Demos {
                 materialDemosLibrary,
                 () =>
                     material_demos.DividerDemo(type: DividerDemoType.vertical)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -499,7 +501,7 @@ class Demos {
                 materialDemosLibrary,
                 () => material_demos.GridListDemo(
                     type: GridListDemoType.imageOnly)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoGridListsHeaderTitle,
             description: localizations.demoGridListsDescription,
@@ -508,7 +510,7 @@ class Demos {
                 materialDemosLibrary,
                 () =>
                     material_demos.GridListDemo(type: GridListDemoType.header)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoGridListsFooterTitle,
             description: localizations.demoGridListsDescription,
@@ -517,7 +519,7 @@ class Demos {
                 materialDemosLibrary,
                 () =>
                     material_demos.GridListDemo(type: GridListDemoType.footer)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -531,16 +533,18 @@ class Demos {
             title: localizations.demoOneLineListsTitle,
             description: localizations.demoListsDescription,
             documentationUrl: '$_docsBaseUrl/material/ListTile-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ListDemo(type: ListDemoType.oneLine)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoTwoLineListsTitle,
             description: localizations.demoListsDescription,
             documentationUrl: '$_docsBaseUrl/material/ListTile-class.html',
-            buildRoute: (BuildContext context) => DeferredWidget(materialDemosLibrary,
+            buildRoute: (BuildContext context) => DeferredWidget(
+                materialDemosLibrary,
                 () => material_demos.ListDemo(type: ListDemoType.twoLine)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -558,7 +562,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.MenuDemo(type: MenuDemoType.contextMenu),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSectionedMenuTitle,
             description: localizations.demoMenuDescription,
@@ -567,7 +571,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.MenuDemo(type: MenuDemoType.sectionedMenu),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoChecklistMenuTitle,
             description: localizations.demoMenuDescription,
@@ -577,7 +581,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.MenuDemo(type: MenuDemoType.checklistMenu),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSimpleMenuTitle,
             description: localizations.demoMenuDescription,
@@ -586,7 +590,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.MenuDemo(type: MenuDemoType.simpleMenu),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -604,7 +608,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.NavDrawerDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -623,7 +627,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.NavRailDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -641,7 +645,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.PickerDemo(type: PickerDemoType.date),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoTimePickerTitle,
             description: localizations.demoTimePickerDescription,
@@ -650,7 +654,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.PickerDemo(type: PickerDemoType.time),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoDateRangePickerTitle,
             description: localizations.demoDateRangePickerDescription,
@@ -659,7 +663,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.PickerDemo(type: PickerDemoType.range),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -680,7 +684,7 @@ class Demos {
                 type: ProgressIndicatorDemoType.circular,
               ),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoLinearProgressIndicatorTitle,
             description: localizations.demoLinearProgressIndicatorDescription,
@@ -692,7 +696,7 @@ class Demos {
                 type: ProgressIndicatorDemoType.linear,
               ),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -712,7 +716,7 @@ class Demos {
                 type: SelectionControlsDemoType.checkbox,
               ),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSelectionControlsRadioTitle,
             description: localizations.demoSelectionControlsRadioDescription,
@@ -723,7 +727,7 @@ class Demos {
                 type: SelectionControlsDemoType.radio,
               ),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSelectionControlsSwitchTitle,
             description: localizations.demoSelectionControlsSwitchDescription,
@@ -734,7 +738,7 @@ class Demos {
                 type: SelectionControlsDemoType.switches,
               ),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -752,7 +756,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.SlidersDemo(type: SlidersDemoType.sliders),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoRangeSlidersTitle,
             description: localizations.demoRangeSlidersDescription,
@@ -762,7 +766,7 @@ class Demos {
               () => material_demos.SlidersDemo(
                   type: SlidersDemoType.rangeSliders),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoCustomSlidersTitle,
             description: localizations.demoCustomSlidersDescription,
@@ -772,7 +776,7 @@ class Demos {
               () => material_demos.SlidersDemo(
                   type: SlidersDemoType.customSliders),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -790,7 +794,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.SnackbarsDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -808,7 +812,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.TabsDemo(type: TabsDemoType.scrollable),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoTabsNonScrollingTitle,
             description: localizations.demoTabsDescription,
@@ -817,7 +821,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.TabsDemo(type: TabsDemoType.nonScrollable),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -835,7 +839,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.TextFieldDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -853,7 +857,7 @@ class Demos {
               materialDemosLibrary,
               () => material_demos.TooltipDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.material,
       ),
@@ -879,7 +883,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoProgressIndicatorDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -898,7 +902,7 @@ class Demos {
                 cupertinoLoader,
                 () => cupertino_demos.CupertinoAlertDemo(
                     type: AlertDemoType.alert)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoCupertinoAlertWithTitleTitle,
             description: localizations.demoCupertinoAlertDescription,
@@ -908,7 +912,7 @@ class Demos {
                 cupertinoLoader,
                 () => cupertino_demos.CupertinoAlertDemo(
                     type: AlertDemoType.alertTitle)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoCupertinoAlertButtonsTitle,
             description: localizations.demoCupertinoAlertDescription,
@@ -918,7 +922,7 @@ class Demos {
                 cupertinoLoader,
                 () => cupertino_demos.CupertinoAlertDemo(
                     type: AlertDemoType.alertButtons)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoCupertinoAlertButtonsOnlyTitle,
             description: localizations.demoCupertinoAlertDescription,
@@ -928,7 +932,7 @@ class Demos {
                 cupertinoLoader,
                 () => cupertino_demos.CupertinoAlertDemo(
                     type: AlertDemoType.alertButtonsOnly)),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoCupertinoActionSheetTitle,
             description: localizations.demoCupertinoActionSheetDescription,
@@ -938,7 +942,7 @@ class Demos {
                 cupertinoLoader,
                 () => cupertino_demos.CupertinoAlertDemo(
                     type: AlertDemoType.actionSheet)),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -957,7 +961,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoButtonDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -976,7 +980,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoContextMenuDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -995,7 +999,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoNavigationBarDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1014,7 +1018,7 @@ class Demos {
                 cupertinoLoader,
                 // ignore: prefer_const_constructors
                 () => cupertino_demos.CupertinoPickerDemo()),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1033,7 +1037,7 @@ class Demos {
                 cupertinoLoader,
                 // ignore: prefer_const_constructors
                 () => cupertino_demos.CupertinoScrollbarDemo()),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1052,7 +1056,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoSegmentedControlDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1071,7 +1075,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoSliderDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1090,7 +1094,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoSwitchDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1109,7 +1113,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoTabBarDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1128,7 +1132,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoTextFieldDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1147,7 +1151,7 @@ class Demos {
               cupertinoLoader,
               () => cupertino_demos.CupertinoSearchTextFieldDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.cupertino,
       ),
@@ -1170,42 +1174,42 @@ class Demos {
               motion_demo_container.loadLibrary,
               () => motion_demo_container.OpenContainerTransformDemo(),
             ),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSharedXAxisTitle,
             description: localizations.demoSharedAxisDescription,
             documentationUrl:
                 '$_docsAnimationsUrl/SharedAxisTransition-class.html',
             buildRoute: (_) => const SharedXAxisTransitionDemo(),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSharedYAxisTitle,
             description: localizations.demoSharedAxisDescription,
             documentationUrl:
                 '$_docsAnimationsUrl/SharedAxisTransition-class.html',
             buildRoute: (_) => const SharedYAxisTransitionDemo(),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoSharedZAxisTitle,
             description: localizations.demoSharedAxisDescription,
             documentationUrl:
                 '$_docsAnimationsUrl/SharedAxisTransition-class.html',
             buildRoute: (_) => const SharedZAxisTransitionDemo(),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoFadeThroughTitle,
             description: localizations.demoFadeThroughDescription,
             documentationUrl:
                 '$_docsAnimationsUrl/FadeThroughTransition-class.html',
             buildRoute: (_) => const FadeThroughTransitionDemo(),
-                      ),
+          ),
           GalleryDemoConfiguration(
             title: localizations.demoFadeScaleTitle,
             description: localizations.demoFadeScaleDescription,
             documentationUrl:
                 '$_docsAnimationsUrl/FadeScaleTransition-class.html',
             buildRoute: (_) => const FadeScaleTransitionDemo(),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.other,
       ),
@@ -1223,7 +1227,7 @@ class Demos {
               colors_demo.loadLibrary,
               () => colors_demo.ColorsDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.other,
       ),
@@ -1241,7 +1245,7 @@ class Demos {
               typography.loadLibrary,
               () => typography.TypographyDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.other,
       ),
@@ -1260,7 +1264,7 @@ class Demos {
               transformations_demo.loadLibrary,
               () => transformations_demo.TransformationsDemo(),
             ),
-                      ),
+          ),
         ],
         category: GalleryDemoCategory.other,
       ),

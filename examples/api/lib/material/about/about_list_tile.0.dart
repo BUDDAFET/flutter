@@ -25,7 +25,7 @@ class AboutListTileExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final TextStyle textStyle = theme.textTheme.bodyMedium!;
+    final TextStyle textStyle = theme.textTheme.bodyMedium;
     final List<Widget> aboutBoxChildren = <Widget>[
       const SizedBox(height: 24),
       RichText(
@@ -36,7 +36,9 @@ class AboutListTileExample extends StatelessWidget {
                 text: "Flutter is Google's UI toolkit for building beautiful, "
                     'natively compiled applications for mobile, web, and desktop '
                     'from a single codebase. Learn more about Flutter at '),
-            TextSpan(style: textStyle.copyWith(color: theme.colorScheme.primary), text: 'https://flutter.dev'),
+            TextSpan(
+                style: textStyle.copyWith(color: theme.colorScheme.primary),
+                text: 'https://flutter.dev'),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),

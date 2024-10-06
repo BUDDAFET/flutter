@@ -34,7 +34,7 @@ class SelectionControlsDemo extends StatelessWidget {
       ),
       body: switch (type) {
         SelectionControlsDemoType.checkbox => _CheckboxDemo(),
-        SelectionControlsDemoType.radio    => _RadioDemo(),
+        SelectionControlsDemoType.radio => _RadioDemo(),
         SelectionControlsDemoType.switches => _SwitchDemo(),
       },
     );
@@ -152,7 +152,7 @@ class _RadioDemoState extends State<_RadioDemo> with RestorationMixin {
 
   void handleRadioValueChanged(int? value) {
     setState(() {
-      radioValue.value = value!;
+      radioValue.value = value;
     });
   }
 

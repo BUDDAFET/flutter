@@ -4,8 +4,6 @@
 
 import 'package:flutter_devicelab/framework/utils.dart';
 
-import 'common.dart';
-
 void main() {
   group('grep', () {
     test('greps lines', () {
@@ -20,10 +18,10 @@ void main() {
   group('parse service', () {
     const String badOutput = 'No uri here';
     const String sampleOutput = 'A Dart VM Service on '
-      'Pixel 3 XL is available at: http://127.0.0.1:9090/LpjUpsdEjqI=/';
+        'Pixel 3 XL is available at: http://127.0.0.1:9090/LpjUpsdEjqI=/';
 
     test('uri', () {
-        expect(parseServiceUri(sampleOutput),
+      expect(parseServiceUri(sampleOutput),
           Uri.parse('http://127.0.0.1:9090/LpjUpsdEjqI=/'));
       expect(parseServiceUri(badOutput), null);
     });

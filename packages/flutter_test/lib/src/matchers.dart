@@ -17,7 +17,8 @@ import 'package:matcher/expect.dart';
 import 'package:matcher/src/expect/async_matcher.dart'; // ignore: implementation_imports
 import 'package:vector_math/vector_math_64.dart' show Matrix3;
 
-import '_matchers_io.dart' if (dart.library.js_interop) '_matchers_web.dart' show MatchesGoldenFile, captureImage;
+import '_matchers_io.dart' if (dart.library.js_interop) '_matchers_web.dart'
+    show MatchesGoldenFile, captureImage;
 import 'accessibility.dart';
 import 'binding.dart';
 import 'controller.dart';
@@ -323,7 +324,8 @@ TypeMatcher<T> isInstanceOf<T>() => isA<T>();
 ///    range.
 ///  * [rectMoreOrLessEquals] and [offsetMoreOrLessEquals], which do something
 ///    similar but for [Rect]s and [Offset]s respectively.
-Matcher moreOrLessEquals(double value, { double epsilon = precisionErrorTolerance }) {
+Matcher moreOrLessEquals(double value,
+    {double epsilon = precisionErrorTolerance}) {
   return _MoreOrLessEquals(value, epsilon);
 }
 
@@ -337,7 +339,8 @@ Matcher moreOrLessEquals(double value, { double epsilon = precisionErrorToleranc
 ///  * [offsetMoreOrLessEquals], which is for [Offset]s.
 ///  * [within], which offers a generic version of this functionality that can
 ///    be used to match [Rect]s as well as other types.
-Matcher rectMoreOrLessEquals(Rect value, { double epsilon = precisionErrorTolerance }) {
+Matcher rectMoreOrLessEquals(Rect value,
+    {double epsilon = precisionErrorTolerance}) {
   return _IsWithinDistance<Rect>(_rectDistance, value, epsilon);
 }
 
@@ -350,7 +353,8 @@ Matcher rectMoreOrLessEquals(Rect value, { double epsilon = precisionErrorTolera
 ///  * [moreOrLessEquals], which is for [double]s.
 ///  * [offsetMoreOrLessEquals], which is for [Offset]s.
 ///  * [matrix3MoreOrLessEquals], which is for [Matrix3]s.
-Matcher matrixMoreOrLessEquals(Matrix4 value, { double epsilon = precisionErrorTolerance }) {
+Matcher matrixMoreOrLessEquals(Matrix4 value,
+    {double epsilon = precisionErrorTolerance}) {
   return _IsWithinDistance<Matrix4>(_matrixDistance, value, epsilon);
 }
 
@@ -363,7 +367,8 @@ Matcher matrixMoreOrLessEquals(Matrix4 value, { double epsilon = precisionErrorT
 ///  * [moreOrLessEquals], which is for [double]s.
 ///  * [offsetMoreOrLessEquals], which is for [Offset]s.
 ///  * [matrixMoreOrLessEquals], which is for [Matrix4]s.
-Matcher matrix3MoreOrLessEquals(Matrix3 value, { double epsilon = precisionErrorTolerance }) {
+Matcher matrix3MoreOrLessEquals(Matrix3 value,
+    {double epsilon = precisionErrorTolerance}) {
   return _IsWithinDistance<Matrix3>(_matrix3Distance, value, epsilon);
 }
 
@@ -377,7 +382,8 @@ Matcher matrix3MoreOrLessEquals(Matrix3 value, { double epsilon = precisionError
 ///  * [rectMoreOrLessEquals], which is for [Rect]s.
 ///  * [within], which offers a generic version of this functionality that can
 ///    be used to match [Offset]s as well as other types.
-Matcher offsetMoreOrLessEquals(Offset value, { double epsilon = precisionErrorTolerance }) {
+Matcher offsetMoreOrLessEquals(Offset value,
+    {double epsilon = precisionErrorTolerance}) {
   return _IsWithinDistance<Offset>(_offsetDistance, value, epsilon);
 }
 
@@ -398,7 +404,8 @@ Matcher offsetMoreOrLessEquals(Offset value, { double epsilon = precisionErrorTo
 ///  * [DiagnosticableTree.toStringDeep], a method that returns a [String]
 ///    typically containing multiple hash codes.
 Matcher equalsIgnoringHashCodes(Object value) {
-  assert(value is String || value is Iterable<String>, "Only String or Iterable<String> are allowed types for equalsIgnoringHashCodes, it doesn't accept ${value.runtimeType}");
+  assert(value is String || value is Iterable<String>,
+      "Only String or Iterable<String> are allowed types for equalsIgnoringHashCodes, it doesn't accept ${value.runtimeType}");
   return _EqualsIgnoringHashCodes(value);
 }
 
@@ -406,7 +413,7 @@ Matcher equalsIgnoringHashCodes(Object value) {
 /// method [name] and [arguments].
 ///
 /// Arguments checking implements deep equality for [List] and [Map] types.
-Matcher isMethodCall(String name, { required dynamic arguments }) {
+Matcher isMethodCall(String name, {required dynamic arguments}) {
   return _IsMethodCall(name, arguments);
 }
 
@@ -419,8 +426,10 @@ Matcher isMethodCall(String name, { required dynamic arguments }) {
 /// When using this matcher you typically want to use a rectangle larger than
 /// the area you expect to paint in for [areaToCompare] to catch errors where
 /// the path draws outside the expected area.
-Matcher coversSameAreaAs(Path expectedPath, { required Rect areaToCompare, int sampleSize = 20 })
-  => _CoversSameAreaAs(expectedPath, areaToCompare: areaToCompare, sampleSize: sampleSize);
+Matcher coversSameAreaAs(Path expectedPath,
+        {required Rect areaToCompare, int sampleSize = 20}) =>
+    _CoversSameAreaAs(expectedPath,
+        areaToCompare: areaToCompare, sampleSize: sampleSize);
 
 // Examples can assume:
 // late Image image;
@@ -550,9 +559,10 @@ Matcher coversSameAreaAs(Path expectedPath, { required Rect areaToCompare, int s
 ///    may swap out the backend for this matcher.
 AsyncMatcher matchesGoldenFile(Object key, {int? version}) {
   return switch (key) {
-    Uri()    => MatchesGoldenFile(key, version),
+    Uri() => MatchesGoldenFile(key, version),
     String() => MatchesGoldenFile.forStringPath(key, version),
-    _ => throw ArgumentError('Unexpected type for golden file: ${key.runtimeType}'),
+    _ => throw ArgumentError(
+        'Unexpected type for golden file: ${key.runtimeType}'),
   };
 }
 
@@ -766,8 +776,10 @@ Matcher matchesSemantics({
     hasIncreaseAction: hasIncreaseAction,
     hasDecreaseAction: hasDecreaseAction,
     hasShowOnScreenAction: hasShowOnScreenAction,
-    hasMoveCursorForwardByCharacterAction: hasMoveCursorForwardByCharacterAction,
-    hasMoveCursorBackwardByCharacterAction: hasMoveCursorBackwardByCharacterAction,
+    hasMoveCursorForwardByCharacterAction:
+        hasMoveCursorForwardByCharacterAction,
+    hasMoveCursorBackwardByCharacterAction:
+        hasMoveCursorBackwardByCharacterAction,
     hasMoveCursorForwardByWordAction: hasMoveCursorForwardByWordAction,
     hasMoveCursorBackwardByWordAction: hasMoveCursorBackwardByWordAction,
     hasSetTextAction: hasSetTextAction,
@@ -954,8 +966,10 @@ Matcher containsSemantics({
     hasIncreaseAction: hasIncreaseAction,
     hasDecreaseAction: hasDecreaseAction,
     hasShowOnScreenAction: hasShowOnScreenAction,
-    hasMoveCursorForwardByCharacterAction: hasMoveCursorForwardByCharacterAction,
-    hasMoveCursorBackwardByCharacterAction: hasMoveCursorBackwardByCharacterAction,
+    hasMoveCursorForwardByCharacterAction:
+        hasMoveCursorForwardByCharacterAction,
+    hasMoveCursorBackwardByCharacterAction:
+        hasMoveCursorBackwardByCharacterAction,
     hasMoveCursorForwardByWordAction: hasMoveCursorForwardByWordAction,
     hasMoveCursorBackwardByWordAction: hasMoveCursorBackwardByWordAction,
     hasSetTextAction: hasSetTextAction,
@@ -1015,7 +1029,8 @@ class _FindsCountMatcher extends Matcher {
   final int? max;
 
   @override
-  bool matches(covariant FinderBase<dynamic> finder, Map<dynamic, dynamic> matchState) {
+  bool matches(
+      covariant FinderBase<dynamic> finder, Map<dynamic, dynamic> matchState) {
     assert(min != null || max != null);
     assert(min == null || max == null || min! <= max!);
     matchState[FinderBase] = finder;
@@ -1064,7 +1079,8 @@ class _FindsCountMatcher extends Matcher {
       }
       return description.add('at least $min matching candidates');
     }
-    return description.add('between $min and $max matching candidates (inclusive)');
+    return description
+        .add('between $min and $max matching candidates (inclusive)');
   }
 
   @override
@@ -1074,20 +1090,25 @@ class _FindsCountMatcher extends Matcher {
     Map<dynamic, dynamic> matchState,
     bool verbose,
   ) {
-    final FinderBase<dynamic> finder = matchState[FinderBase] as FinderBase<dynamic>;
+    final FinderBase<dynamic> finder =
+        matchState[FinderBase] as FinderBase<dynamic>;
     final int count = finder.found.length;
     if (count == 0) {
       assert(min != null && min! > 0);
       if (min == 1 && max == 1) {
-        return mismatchDescription.add('means none were found but one was expected');
+        return mismatchDescription
+            .add('means none were found but one was expected');
       }
-      return mismatchDescription.add('means none were found but some were expected');
+      return mismatchDescription
+          .add('means none were found but some were expected');
     }
     if (max == 0) {
       if (count == 1) {
-        return mismatchDescription.add('means one was found but none were expected');
+        return mismatchDescription
+            .add('means one was found but none were expected');
       }
-      return mismatchDescription.add('means some were found but none were expected');
+      return mismatchDescription
+          .add('means some were found but none were expected');
     }
     if (min != null && count < min!) {
       return mismatchDescription.add('is not enough');
@@ -1097,7 +1118,8 @@ class _FindsCountMatcher extends Matcher {
   }
 }
 
-bool _hasAncestorMatching(Finder finder, bool Function(Widget widget) predicate) {
+bool _hasAncestorMatching(
+    Finder finder, bool Function(Widget widget) predicate) {
   final Iterable<Element> nodes = finder.evaluate();
   if (nodes.length != 1) {
     return false;
@@ -1114,7 +1136,8 @@ bool _hasAncestorMatching(Finder finder, bool Function(Widget widget) predicate)
 }
 
 bool _hasAncestorOfType(Finder finder, Type targetType) {
-  return _hasAncestorMatching(finder, (Widget widget) => widget.runtimeType == targetType);
+  return _hasAncestorMatching(
+      finder, (Widget widget) => widget.runtimeType == targetType);
 }
 
 class _IsOffstage extends Matcher {
@@ -1163,7 +1186,8 @@ class _IsInCard extends Matcher {
   const _IsInCard();
 
   @override
-  bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) => _hasAncestorOfType(finder, Card);
+  bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) =>
+      _hasAncestorOfType(finder, Card);
 
   @override
   Description describe(Description description) => description.add('in card');
@@ -1173,10 +1197,12 @@ class _IsNotInCard extends Matcher {
   const _IsNotInCard();
 
   @override
-  bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) => !_hasAncestorOfType(finder, Card);
+  bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) =>
+      !_hasAncestorOfType(finder, Card);
 
   @override
-  Description describe(Description description) => description.add('not in card');
+  Description describe(Description description) =>
+      description.add('not in card');
 }
 
 class _HasOneLineDescription extends Matcher {
@@ -1185,14 +1211,15 @@ class _HasOneLineDescription extends Matcher {
   @override
   bool matches(dynamic object, Map<dynamic, dynamic> matchState) {
     final String description = object.toString();
-    return description.isNotEmpty
-        && !description.contains('\n')
-        && !description.contains('Instance of ')
-        && description.trim() == description;
+    return description.isNotEmpty &&
+        !description.contains('\n') &&
+        !description.contains('Instance of ') &&
+        description.trim() == description;
   }
 
   @override
-  Description describe(Description description) => description.add('one line description');
+  Description describe(Description description) =>
+      description.add('one line description');
 }
 
 class _EqualsIgnoringHashCodes extends Matcher {
@@ -1211,9 +1238,11 @@ class _EqualsIgnoringHashCodes extends Matcher {
       return _normalizeString(value);
     }
     if (value is Iterable<String>) {
-      return value.map<String>((dynamic item) => _normalizeString(item.toString()));
+      return value
+          .map<String>((dynamic item) => _normalizeString(item.toString()));
     }
-    throw ArgumentError('The specified ${expected ? 'expected' : 'comparison'} value for '
+    throw ArgumentError(
+        'The specified ${expected ? 'expected' : 'comparison'} value for '
         'equalsIgnoringHashCodes must be a String or an Iterable<String>, '
         'not a ${value.runtimeType}');
   }
@@ -1233,7 +1262,9 @@ class _EqualsIgnoringHashCodes extends Matcher {
     if (_value is String) {
       return description.add('normalized value matches $_value');
     }
-    return description.add('normalized value matches\n').addDescriptionOf(_value);
+    return description
+        .add('normalized value matches\n')
+        .addDescriptionOf(_value);
   }
 
   @override
@@ -1294,7 +1325,8 @@ class _HasGoodToStringDeep extends Matcher {
   @override
   bool matches(dynamic object, Map<dynamic, dynamic> matchState) {
     final List<String> issues = <String>[];
-    String description = object.toStringDeep() as String; // ignore: avoid_dynamic_calls
+    String description =
+        object.toStringDeep() as String; // ignore: avoid_dynamic_calls
     if (description.endsWith('\n')) {
       // Trim off trailing \n as the remaining calculations assume
       // the description does not end with a trailing \n.
@@ -1338,7 +1370,9 @@ class _HasGoodToStringDeep extends Matcher {
     const String prefixOtherLines = 'PREFIX_OTHER_LINES_';
     final List<String> prefixIssues = <String>[];
     // ignore: avoid_dynamic_calls
-    String descriptionWithPrefixes = object.toStringDeep(prefixLineOne: prefixLineOne, prefixOtherLines: prefixOtherLines) as String;
+    String descriptionWithPrefixes = object.toStringDeep(
+        prefixLineOne: prefixLineOne,
+        prefixOtherLines: prefixOtherLines) as String;
     if (descriptionWithPrefixes.endsWith('\n')) {
       // Trim off trailing \n as the remaining calculations assume
       // the description does not end with a trailing \n.
@@ -1386,7 +1420,8 @@ class _HasGoodToStringDeep extends Matcher {
     bool verbose,
   ) {
     if (matchState.containsKey(_toStringDeepErrorDescriptionKey)) {
-      return mismatchDescription.add(matchState[_toStringDeepErrorDescriptionKey] as String);
+      return mismatchDescription
+          .add(matchState[_toStringDeepErrorDescriptionKey] as String);
     }
     return mismatchDescription;
   }
@@ -1425,7 +1460,8 @@ typedef DistanceFunction<T> = num Function(T a, T b);
 /// first casting it to a [DistanceFunction<T>] for some concrete T.
 typedef AnyDistanceFunction = num Function(Never a, Never b);
 
-const Map<Type, AnyDistanceFunction> _kStandardDistanceFunctions = <Type, AnyDistanceFunction>{
+const Map<Type, AnyDistanceFunction> _kStandardDistanceFunctions =
+    <Type, AnyDistanceFunction>{
   Color: _maxComponentColorDistance,
   HSVColor: _maxComponentHSVColorDistance,
   HSLColor: _maxComponentHSLColorDistance,
@@ -1450,7 +1486,8 @@ double _maxComponentColorDistance(Color a, Color b) {
 // Compares hue by converting it to a 0.0 - 1.0 range, so that the comparison
 // can be a similar error percentage per component.
 double _maxComponentHSVColorDistance(HSVColor a, HSVColor b) {
-  double delta = math.max<double>((a.saturation - b.saturation).abs(), (a.value - b.value).abs());
+  double delta = math.max<double>(
+      (a.saturation - b.saturation).abs(), (a.value - b.value).abs());
   delta = math.max<double>(delta, ((a.hue - b.hue) / 360.0).abs());
   return math.max<double>(delta, (a.alpha - b.alpha).abs());
 }
@@ -1458,13 +1495,15 @@ double _maxComponentHSVColorDistance(HSVColor a, HSVColor b) {
 // Compares hue by converting it to a 0.0 - 1.0 range, so that the comparison
 // can be a similar error percentage per component.
 double _maxComponentHSLColorDistance(HSLColor a, HSLColor b) {
-  double delta = math.max<double>((a.saturation - b.saturation).abs(), (a.lightness - b.lightness).abs());
+  double delta = math.max<double>(
+      (a.saturation - b.saturation).abs(), (a.lightness - b.lightness).abs());
   delta = math.max<double>(delta, ((a.hue - b.hue) / 360.0).abs());
   return math.max<double>(delta, (a.alpha - b.alpha).abs());
 }
 
 double _rectDistance(Rect a, Rect b) {
-  double delta = math.max<double>((a.left - b.left).abs(), (a.top - b.top).abs());
+  double delta =
+      math.max<double>((a.left - b.left).abs(), (a.top - b.top).abs());
   delta = math.max<double>(delta, (a.right - b.right).abs());
   delta = math.max<double>(delta, (a.bottom - b.bottom).abs());
   return delta;
@@ -1524,10 +1563,9 @@ Matcher within<T>({
 
   if (distanceFunction == null) {
     throw ArgumentError(
-      'The specified distanceFunction was null, and a standard distance '
-      'function was not found for type ${from.runtimeType} of the provided '
-      '`from` argument.'
-    );
+        'The specified distanceFunction was null, and a standard distance '
+        'function was not found for type ${from.runtimeType} of the provided '
+        '`from` argument.');
   }
 
   return _IsWithinDistance<T>(distanceFunction, from, distance);
@@ -1551,17 +1589,17 @@ class _IsWithinDistance<T> extends Matcher {
     final num distance = distanceFunction(object, value);
     if (distance < 0) {
       throw ArgumentError(
-        'Invalid distance function was used to compare a ${value.runtimeType} '
-        'to a ${object.runtimeType}. The function must return a non-negative '
-        'double value, but it returned $distance.'
-      );
+          'Invalid distance function was used to compare a ${value.runtimeType} '
+          'to a ${object.runtimeType}. The function must return a non-negative '
+          'double value, but it returned $distance.');
     }
     matchState['distance'] = distance;
     return distance <= epsilon;
   }
 
   @override
-  Description describe(Description description) => description.add('$value (±$epsilon)');
+  Description describe(Description description) =>
+      description.add('$value (±$epsilon)');
 
   @override
   Description describeMismatch(
@@ -1570,14 +1608,14 @@ class _IsWithinDistance<T> extends Matcher {
     Map<dynamic, dynamic> matchState,
     bool verbose,
   ) {
-    mismatchDescription.add('was ${matchState['distance']} away from the desired value.');
+    mismatchDescription
+        .add('was ${matchState['distance']} away from the desired value.');
     return mismatchDescription;
   }
 }
 
 class _MoreOrLessEquals extends Matcher {
-  const _MoreOrLessEquals(this.value, this.epsilon)
-    : assert(epsilon >= 0);
+  const _MoreOrLessEquals(this.value, this.epsilon) : assert(epsilon >= 0);
 
   final double value;
   final double epsilon;
@@ -1594,11 +1632,14 @@ class _MoreOrLessEquals extends Matcher {
   }
 
   @override
-  Description describe(Description description) => description.add('$value (±$epsilon)');
+  Description describe(Description description) =>
+      description.add('$value (±$epsilon)');
 
   @override
-  Description describeMismatch(dynamic item, Description mismatchDescription, Map<dynamic, dynamic> matchState, bool verbose) {
-    return super.describeMismatch(item, mismatchDescription, matchState, verbose)
+  Description describeMismatch(dynamic item, Description mismatchDescription,
+      Map<dynamic, dynamic> matchState, bool verbose) {
+    return super
+        .describeMismatch(item, mismatchDescription, matchState, verbose)
       ..add('$item is not in the range of $value (±$epsilon).');
   }
 }
@@ -1660,8 +1701,10 @@ class _IsMethodCall extends Matcher {
   @override
   Description describe(Description description) {
     return description
-        .add('has method name: ').addDescriptionOf(name)
-        .add(' with arguments: ').addDescriptionOf(arguments);
+        .add('has method name: ')
+        .addDescriptionOf(name)
+        .add(' with arguments: ')
+        .addDescriptionOf(arguments);
   }
 }
 
@@ -1678,14 +1721,14 @@ const Matcher hasNoImmediateClip = _MatchAnythingExceptClip();
 /// Asserts that a [Finder] locates a single object whose root RenderObject
 /// is a [RenderClipRRect] with no clipper set, and border radius equals to
 /// [borderRadius], or an equivalent [RenderClipPath].
-Matcher clipsWithBoundingRRect({ required BorderRadius borderRadius }) {
+Matcher clipsWithBoundingRRect({required BorderRadius borderRadius}) {
   return _ClipsWithBoundingRRect(borderRadius: borderRadius);
 }
 
 /// Asserts that a [Finder] locates a single object whose root RenderObject
 /// is a [RenderClipPath] with a [ShapeBorderClipper] that clips to
 /// [shape].
-Matcher clipsWithShapeBorder({ required ShapeBorder shape }) {
+Matcher clipsWithShapeBorder({required ShapeBorder shape}) {
   return _ClipsWithShapeBorder(shape: shape);
 }
 
@@ -1736,7 +1779,8 @@ Matcher rendersOnPhysicalShape({
 abstract class _FailWithDescriptionMatcher extends Matcher {
   const _FailWithDescriptionMatcher();
 
-  bool failWithDescription(Map<dynamic, dynamic> matchState, String description) {
+  bool failWithDescription(
+      Map<dynamic, dynamic> matchState, String description) {
     matchState['failure'] = description;
     return false;
   }
@@ -1759,16 +1803,18 @@ class _MatchAnythingExceptClip extends _FailWithDescriptionMatcher {
   bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) {
     final Iterable<Element> nodes = finder.evaluate();
     if (nodes.length != 1) {
-      return failWithDescription(matchState, 'did not have a exactly one child element');
+      return failWithDescription(
+          matchState, 'did not have a exactly one child element');
     }
-    final RenderObject renderObject = nodes.single.renderObject!;
+    final RenderObject renderObject = nodes.single.renderObject;
 
     switch (renderObject.runtimeType) {
       case const (RenderClipPath):
       case const (RenderClipOval):
       case const (RenderClipRect):
       case const (RenderClipRRect):
-        return failWithDescription(matchState, 'had a root render object of type: ${renderObject.runtimeType}');
+        return failWithDescription(matchState,
+            'had a root render object of type: ${renderObject.runtimeType}');
       default:
         return true;
     }
@@ -1780,7 +1826,8 @@ class _MatchAnythingExceptClip extends _FailWithDescriptionMatcher {
   }
 }
 
-abstract class _MatchRenderObject<M extends RenderObject, T extends RenderObject> extends _FailWithDescriptionMatcher {
+abstract class _MatchRenderObject<M extends RenderObject,
+    T extends RenderObject> extends _FailWithDescriptionMatcher {
   const _MatchRenderObject();
 
   bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, T renderObject);
@@ -1790,9 +1837,10 @@ abstract class _MatchRenderObject<M extends RenderObject, T extends RenderObject
   bool matches(covariant Finder finder, Map<dynamic, dynamic> matchState) {
     final Iterable<Element> nodes = finder.evaluate();
     if (nodes.length != 1) {
-      return failWithDescription(matchState, 'did not have a exactly one child element');
+      return failWithDescription(
+          matchState, 'did not have a exactly one child element');
     }
-    final RenderObject renderObject = nodes.single.renderObject!;
+    final RenderObject renderObject = nodes.single.renderObject;
 
     if (renderObject.runtimeType == T) {
       return renderObjectMatchesT(matchState, renderObject as T);
@@ -1802,11 +1850,13 @@ abstract class _MatchRenderObject<M extends RenderObject, T extends RenderObject
       return renderObjectMatchesM(matchState, renderObject as M);
     }
 
-    return failWithDescription(matchState, 'had a root render object of type: ${renderObject.runtimeType}');
+    return failWithDescription(matchState,
+        'had a root render object of type: ${renderObject.runtimeType}');
   }
 }
 
-class _RendersOnPhysicalModel extends _MatchRenderObject<RenderPhysicalShape, RenderPhysicalModel> {
+class _RendersOnPhysicalModel
+    extends _MatchRenderObject<RenderPhysicalShape, RenderPhysicalModel> {
   const _RendersOnPhysicalModel({
     this.shape,
     this.borderRadius,
@@ -1818,66 +1868,81 @@ class _RendersOnPhysicalModel extends _MatchRenderObject<RenderPhysicalShape, Re
   final double? elevation;
 
   @override
-  bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, RenderPhysicalModel renderObject) {
+  bool renderObjectMatchesT(
+      Map<dynamic, dynamic> matchState, RenderPhysicalModel renderObject) {
     if (shape != null && renderObject.shape != shape) {
-      return failWithDescription(matchState, 'had shape: ${renderObject.shape}');
+      return failWithDescription(
+          matchState, 'had shape: ${renderObject.shape}');
     }
 
     if (borderRadius != null && renderObject.borderRadius != borderRadius) {
-      return failWithDescription(matchState, 'had borderRadius: ${renderObject.borderRadius}');
+      return failWithDescription(
+          matchState, 'had borderRadius: ${renderObject.borderRadius}');
     }
 
     if (elevation != null && renderObject.elevation != elevation) {
-      return failWithDescription(matchState, 'had elevation: ${renderObject.elevation}');
+      return failWithDescription(
+          matchState, 'had elevation: ${renderObject.elevation}');
     }
 
     return true;
   }
 
   @override
-  bool renderObjectMatchesM(Map<dynamic, dynamic> matchState, RenderPhysicalShape renderObject) {
+  bool renderObjectMatchesM(
+      Map<dynamic, dynamic> matchState, RenderPhysicalShape renderObject) {
     if (renderObject.clipper.runtimeType != ShapeBorderClipper) {
-      return failWithDescription(matchState, 'clipper was: ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'clipper was: ${renderObject.clipper}');
     }
-    final ShapeBorderClipper shapeClipper = renderObject.clipper! as ShapeBorderClipper;
+    final ShapeBorderClipper shapeClipper =
+        renderObject.clipper! as ShapeBorderClipper;
 
-    if (borderRadius != null && !assertRoundedRectangle(shapeClipper, borderRadius!, matchState)) {
+    if (borderRadius != null &&
+        !assertRoundedRectangle(shapeClipper, borderRadius, matchState)) {
       return false;
     }
 
     if (borderRadius == null &&
-      shape == BoxShape.rectangle &&
-      !assertRoundedRectangle(shapeClipper, BorderRadius.zero, matchState)) {
+        shape == BoxShape.rectangle &&
+        !assertRoundedRectangle(shapeClipper, BorderRadius.zero, matchState)) {
       return false;
     }
 
     if (borderRadius == null &&
-      shape == BoxShape.circle &&
-      !assertCircle(shapeClipper, matchState)) {
+        shape == BoxShape.circle &&
+        !assertCircle(shapeClipper, matchState)) {
       return false;
     }
 
     if (elevation != null && renderObject.elevation != elevation) {
-      return failWithDescription(matchState, 'had elevation: ${renderObject.elevation}');
+      return failWithDescription(
+          matchState, 'had elevation: ${renderObject.elevation}');
     }
 
     return true;
   }
 
-  bool assertRoundedRectangle(ShapeBorderClipper shapeClipper, BorderRadius borderRadius, Map<dynamic, dynamic> matchState) {
+  bool assertRoundedRectangle(ShapeBorderClipper shapeClipper,
+      BorderRadius borderRadius, Map<dynamic, dynamic> matchState) {
     if (shapeClipper.shape.runtimeType != RoundedRectangleBorder) {
-      return failWithDescription(matchState, 'had shape border: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'had shape border: ${shapeClipper.shape}');
     }
-    final RoundedRectangleBorder border = shapeClipper.shape as RoundedRectangleBorder;
+    final RoundedRectangleBorder border =
+        shapeClipper.shape as RoundedRectangleBorder;
     if (border.borderRadius != borderRadius) {
-      return failWithDescription(matchState, 'had borderRadius: ${border.borderRadius}');
+      return failWithDescription(
+          matchState, 'had borderRadius: ${border.borderRadius}');
     }
     return true;
   }
 
-  bool assertCircle(ShapeBorderClipper shapeClipper, Map<dynamic, dynamic> matchState) {
+  bool assertCircle(
+      ShapeBorderClipper shapeClipper, Map<dynamic, dynamic> matchState) {
     if (shapeClipper.shape.runtimeType != CircleBorder) {
-      return failWithDescription(matchState, 'had shape border: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'had shape border: ${shapeClipper.shape}');
     }
     return true;
   }
@@ -1898,7 +1963,8 @@ class _RendersOnPhysicalModel extends _MatchRenderObject<RenderPhysicalShape, Re
   }
 }
 
-class _RendersOnPhysicalShape extends _MatchRenderObject<RenderPhysicalShape, RenderPhysicalModel> {
+class _RendersOnPhysicalShape
+    extends _MatchRenderObject<RenderPhysicalShape, RenderPhysicalModel> {
   const _RendersOnPhysicalShape({
     required this.shape,
     this.elevation,
@@ -1908,25 +1974,31 @@ class _RendersOnPhysicalShape extends _MatchRenderObject<RenderPhysicalShape, Re
   final double? elevation;
 
   @override
-  bool renderObjectMatchesM(Map<dynamic, dynamic> matchState, RenderPhysicalShape renderObject) {
+  bool renderObjectMatchesM(
+      Map<dynamic, dynamic> matchState, RenderPhysicalShape renderObject) {
     if (renderObject.clipper.runtimeType != ShapeBorderClipper) {
-      return failWithDescription(matchState, 'clipper was: ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'clipper was: ${renderObject.clipper}');
     }
-    final ShapeBorderClipper shapeClipper = renderObject.clipper! as ShapeBorderClipper;
+    final ShapeBorderClipper shapeClipper =
+        renderObject.clipper! as ShapeBorderClipper;
 
     if (shapeClipper.shape != shape) {
-      return failWithDescription(matchState, 'shape was: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'shape was: ${shapeClipper.shape}');
     }
 
     if (elevation != null && renderObject.elevation != elevation) {
-      return failWithDescription(matchState, 'had elevation: ${renderObject.elevation}');
+      return failWithDescription(
+          matchState, 'had elevation: ${renderObject.elevation}');
     }
 
     return true;
   }
 
   @override
-  bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, RenderPhysicalModel renderObject) {
+  bool renderObjectMatchesT(
+      Map<dynamic, dynamic> matchState, RenderPhysicalModel renderObject) {
     return false;
   }
 
@@ -1940,104 +2012,127 @@ class _RendersOnPhysicalShape extends _MatchRenderObject<RenderPhysicalShape, Re
   }
 }
 
-class _ClipsWithBoundingRect extends _MatchRenderObject<RenderClipPath, RenderClipRect> {
+class _ClipsWithBoundingRect
+    extends _MatchRenderObject<RenderClipPath, RenderClipRect> {
   const _ClipsWithBoundingRect();
 
   @override
-  bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, RenderClipRect renderObject) {
+  bool renderObjectMatchesT(
+      Map<dynamic, dynamic> matchState, RenderClipRect renderObject) {
     if (renderObject.clipper != null) {
-      return failWithDescription(matchState, 'had a non null clipper ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'had a non null clipper ${renderObject.clipper}');
     }
     return true;
   }
 
   @override
-  bool renderObjectMatchesM(Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
+  bool renderObjectMatchesM(
+      Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
     if (renderObject.clipper.runtimeType != ShapeBorderClipper) {
-      return failWithDescription(matchState, 'clipper was: ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'clipper was: ${renderObject.clipper}');
     }
-    final ShapeBorderClipper shapeClipper = renderObject.clipper! as ShapeBorderClipper;
+    final ShapeBorderClipper shapeClipper =
+        renderObject.clipper! as ShapeBorderClipper;
     if (shapeClipper.shape.runtimeType != RoundedRectangleBorder) {
-      return failWithDescription(matchState, 'shape was: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'shape was: ${shapeClipper.shape}');
     }
-    final RoundedRectangleBorder border = shapeClipper.shape as RoundedRectangleBorder;
+    final RoundedRectangleBorder border =
+        shapeClipper.shape as RoundedRectangleBorder;
     if (border.borderRadius != BorderRadius.zero) {
-      return failWithDescription(matchState, 'borderRadius was: ${border.borderRadius}');
+      return failWithDescription(
+          matchState, 'borderRadius was: ${border.borderRadius}');
     }
     return true;
   }
 
   @override
   Description describe(Description description) =>
-    description.add('clips with bounding rectangle');
+      description.add('clips with bounding rectangle');
 }
 
-class _ClipsWithBoundingRRect extends _MatchRenderObject<RenderClipPath, RenderClipRRect> {
+class _ClipsWithBoundingRRect
+    extends _MatchRenderObject<RenderClipPath, RenderClipRRect> {
   const _ClipsWithBoundingRRect({required this.borderRadius});
 
   final BorderRadius borderRadius;
 
-
   @override
-  bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, RenderClipRRect renderObject) {
+  bool renderObjectMatchesT(
+      Map<dynamic, dynamic> matchState, RenderClipRRect renderObject) {
     if (renderObject.clipper != null) {
-      return failWithDescription(matchState, 'had a non null clipper ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'had a non null clipper ${renderObject.clipper}');
     }
 
     if (renderObject.borderRadius != borderRadius) {
-      return failWithDescription(matchState, 'had borderRadius: ${renderObject.borderRadius}');
+      return failWithDescription(
+          matchState, 'had borderRadius: ${renderObject.borderRadius}');
     }
 
     return true;
   }
 
   @override
-  bool renderObjectMatchesM(Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
+  bool renderObjectMatchesM(
+      Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
     if (renderObject.clipper.runtimeType != ShapeBorderClipper) {
-      return failWithDescription(matchState, 'clipper was: ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'clipper was: ${renderObject.clipper}');
     }
-    final ShapeBorderClipper shapeClipper = renderObject.clipper! as ShapeBorderClipper;
+    final ShapeBorderClipper shapeClipper =
+        renderObject.clipper! as ShapeBorderClipper;
     if (shapeClipper.shape.runtimeType != RoundedRectangleBorder) {
-      return failWithDescription(matchState, 'shape was: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'shape was: ${shapeClipper.shape}');
     }
-    final RoundedRectangleBorder border = shapeClipper.shape as RoundedRectangleBorder;
+    final RoundedRectangleBorder border =
+        shapeClipper.shape as RoundedRectangleBorder;
     if (border.borderRadius != borderRadius) {
-      return failWithDescription(matchState, 'had borderRadius: ${border.borderRadius}');
+      return failWithDescription(
+          matchState, 'had borderRadius: ${border.borderRadius}');
     }
     return true;
   }
 
   @override
-  Description describe(Description description) =>
-    description.add('clips with bounding rounded rectangle with borderRadius: $borderRadius');
+  Description describe(Description description) => description.add(
+      'clips with bounding rounded rectangle with borderRadius: $borderRadius');
 }
 
-class _ClipsWithShapeBorder extends _MatchRenderObject<RenderClipPath, RenderClipRRect> {
+class _ClipsWithShapeBorder
+    extends _MatchRenderObject<RenderClipPath, RenderClipRRect> {
   const _ClipsWithShapeBorder({required this.shape});
 
   final ShapeBorder shape;
 
   @override
-  bool renderObjectMatchesM(Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
+  bool renderObjectMatchesM(
+      Map<dynamic, dynamic> matchState, RenderClipPath renderObject) {
     if (renderObject.clipper.runtimeType != ShapeBorderClipper) {
-      return failWithDescription(matchState, 'clipper was: ${renderObject.clipper}');
+      return failWithDescription(
+          matchState, 'clipper was: ${renderObject.clipper}');
     }
-    final ShapeBorderClipper shapeClipper = renderObject.clipper! as ShapeBorderClipper;
+    final ShapeBorderClipper shapeClipper =
+        renderObject.clipper! as ShapeBorderClipper;
     if (shapeClipper.shape != shape) {
-      return failWithDescription(matchState, 'shape was: ${shapeClipper.shape}');
+      return failWithDescription(
+          matchState, 'shape was: ${shapeClipper.shape}');
     }
     return true;
   }
 
   @override
-  bool renderObjectMatchesT(Map<dynamic, dynamic> matchState, RenderClipRRect renderObject) {
+  bool renderObjectMatchesT(
+      Map<dynamic, dynamic> matchState, RenderClipRRect renderObject) {
     return false;
   }
 
-
   @override
   Description describe(Description description) =>
-    description.add('clips with shape: $shape');
+      description.add('clips with shape: $shape');
 }
 
 class _CoversSameAreaAs extends Matcher {
@@ -2045,8 +2140,8 @@ class _CoversSameAreaAs extends Matcher {
     this.expectedPath, {
     required this.areaToCompare,
     this.sampleSize = 20,
-  }) : maxHorizontalNoise = areaToCompare.width / sampleSize,
-       maxVerticalNoise = areaToCompare.height / sampleSize {
+  })  : maxHorizontalNoise = areaToCompare.width / sampleSize,
+        maxVerticalNoise = areaToCompare.height / sampleSize {
     // Use a fixed random seed to make sure tests are deterministic.
     random = math.Random(1);
   }
@@ -2084,19 +2179,23 @@ class _CoversSameAreaAs extends Matcher {
     return true;
   }
 
-  bool _samplePoint(Map<dynamic, dynamic> matchState, Path actualPath, Offset offset) {
+  bool _samplePoint(
+      Map<dynamic, dynamic> matchState, Path actualPath, Offset offset) {
     if (expectedPath.contains(offset) == actualPath.contains(offset)) {
       return true;
     }
 
     if (actualPath.contains(offset)) {
-      return failWithDescription(matchState, '$offset is contained in the actual path but not in the expected path');
+      return failWithDescription(matchState,
+          '$offset is contained in the actual path but not in the expected path');
     } else {
-      return failWithDescription(matchState, '$offset is contained in the expected path but not in the actual path');
+      return failWithDescription(matchState,
+          '$offset is contained in the expected path but not in the actual path');
     }
   }
 
-  bool failWithDescription(Map<dynamic, dynamic> matchState, String description) {
+  bool failWithDescription(
+      Map<dynamic, dynamic> matchState, String description) {
     matchState['failure'] = description;
     return false;
   }
@@ -2113,7 +2212,7 @@ class _CoversSameAreaAs extends Matcher {
 
   @override
   Description describe(Description description) =>
-    description.add('covers expected area and only expected area');
+      description.add('covers expected area and only expected area');
 }
 
 class _ColorMatcher extends Matcher {
@@ -2132,13 +2231,14 @@ class _ColorMatcher extends Matcher {
   }
 
   @override
-  Description describe(Description description) => description.add('matches color $targetColor');
+  Description describe(Description description) =>
+      description.add('matches color $targetColor');
 }
 
 int _countDifferentPixels(Uint8List imageA, Uint8List imageB) {
   assert(imageA.length == imageB.length);
   int delta = 0;
-  for (int i = 0; i < imageA.length; i+=4) {
+  for (int i = 0; i < imageA.length; i += 4) {
     if (imageA[i] != imageB[i] ||
         imageA[i + 1] != imageB[i + 1] ||
         imageA[i + 2] != imageB[i + 2] ||
@@ -2157,7 +2257,8 @@ class _MatchesReferenceImage extends AsyncMatcher {
   @override
   Future<String?> matchAsync(dynamic item) async {
     Future<ui.Image> imageFuture;
-    final bool disposeImage; // set to true if the matcher created and owns the image and must therefore dispose it.
+    final bool
+        disposeImage; // set to true if the matcher created and owns the image and must therefore dispose it.
     if (item is Future<ui.Image>) {
       imageFuture = item;
       disposeImage = false;
@@ -2176,7 +2277,8 @@ class _MatchesReferenceImage extends AsyncMatcher {
       disposeImage = true;
     }
 
-    final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding.instance;
+    final TestWidgetsFlutterBinding binding =
+        TestWidgetsFlutterBinding.instance;
     return binding.runAsync<String?>(() async {
       final ui.Image image = await imageFuture;
       try {
@@ -2190,7 +2292,8 @@ class _MatchesReferenceImage extends AsyncMatcher {
           return 'could not have its reference image encoded.';
         }
 
-        if (referenceImage.height != image.height || referenceImage.width != image.width) {
+        if (referenceImage.height != image.height ||
+            referenceImage.width != image.width) {
           return 'does not match as width or height do not match. $image != $referenceImage';
         }
 
@@ -2198,7 +2301,9 @@ class _MatchesReferenceImage extends AsyncMatcher {
           Uint8List.view(bytes.buffer),
           Uint8List.view(referenceBytes.buffer),
         );
-        return countDifferentPixels == 0 ? null : 'does not match on $countDifferentPixels pixels';
+        return countDifferentPixels == 0
+            ? null
+            : 'does not match on $countDifferentPixels pixels';
       } finally {
         if (disposeImage) {
           image.dispose();
@@ -2209,7 +2314,8 @@ class _MatchesReferenceImage extends AsyncMatcher {
 
   @override
   Description describe(Description description) {
-    return description.add('rasterized image matches that of a $referenceImage reference image');
+    return description.add(
+        'rasterized image matches that of a $referenceImage reference image');
   }
 }
 
@@ -2297,9 +2403,11 @@ class _MatchesSemanticsData extends Matcher {
     required this.customActions,
     required this.children,
   })  : flags = <SemanticsFlag, bool>{
-          if (hasCheckedState != null) SemanticsFlag.hasCheckedState: hasCheckedState,
+          if (hasCheckedState != null)
+            SemanticsFlag.hasCheckedState: hasCheckedState,
           if (isChecked != null) SemanticsFlag.isChecked: isChecked,
-          if (isCheckStateMixed != null) SemanticsFlag.isCheckStateMixed: isCheckStateMixed,
+          if (isCheckStateMixed != null)
+            SemanticsFlag.isCheckStateMixed: isCheckStateMixed,
           if (isSelected != null) SemanticsFlag.isSelected: isSelected,
           if (isButton != null) SemanticsFlag.isButton: isButton,
           if (isSlider != null) SemanticsFlag.isSlider: isSlider,
@@ -2309,9 +2417,12 @@ class _MatchesSemanticsData extends Matcher {
           if (isReadOnly != null) SemanticsFlag.isReadOnly: isReadOnly,
           if (isFocused != null) SemanticsFlag.isFocused: isFocused,
           if (isFocusable != null) SemanticsFlag.isFocusable: isFocusable,
-          if (hasEnabledState != null) SemanticsFlag.hasEnabledState: hasEnabledState,
+          if (hasEnabledState != null)
+            SemanticsFlag.hasEnabledState: hasEnabledState,
           if (isEnabled != null) SemanticsFlag.isEnabled: isEnabled,
-          if (isInMutuallyExclusiveGroup != null) SemanticsFlag.isInMutuallyExclusiveGroup: isInMutuallyExclusiveGroup,
+          if (isInMutuallyExclusiveGroup != null)
+            SemanticsFlag.isInMutuallyExclusiveGroup:
+                isInMutuallyExclusiveGroup,
           if (isHeader != null) SemanticsFlag.isHeader: isHeader,
           if (isObscured != null) SemanticsFlag.isObscured: isObscured,
           if (isMultiline != null) SemanticsFlag.isMultiline: isMultiline,
@@ -2320,11 +2431,14 @@ class _MatchesSemanticsData extends Matcher {
           if (isHidden != null) SemanticsFlag.isHidden: isHidden,
           if (isImage != null) SemanticsFlag.isImage: isImage,
           if (isLiveRegion != null) SemanticsFlag.isLiveRegion: isLiveRegion,
-          if (hasToggledState != null) SemanticsFlag.hasToggledState: hasToggledState,
+          if (hasToggledState != null)
+            SemanticsFlag.hasToggledState: hasToggledState,
           if (isToggled != null) SemanticsFlag.isToggled: isToggled,
-          if (hasImplicitScrolling != null) SemanticsFlag.hasImplicitScrolling: hasImplicitScrolling,
+          if (hasImplicitScrolling != null)
+            SemanticsFlag.hasImplicitScrolling: hasImplicitScrolling,
           if (isSlider != null) SemanticsFlag.isSlider: isSlider,
-          if (hasExpandedState != null) SemanticsFlag.hasExpandedState: hasExpandedState,
+          if (hasExpandedState != null)
+            SemanticsFlag.hasExpandedState: hasExpandedState,
           if (isExpanded != null) SemanticsFlag.isExpanded: isExpanded,
         },
         actions = <SemanticsAction, bool>{
@@ -2332,27 +2446,51 @@ class _MatchesSemanticsData extends Matcher {
           // TODO(gspencergoog): Once this has landed, and customer tests have
           // been updated, add a line here that adds handling for
           // hasFocusAction. https://github.com/flutter/flutter/issues/149842
-          if (hasLongPressAction != null) SemanticsAction.longPress: hasLongPressAction,
-          if (hasScrollLeftAction != null) SemanticsAction.scrollLeft: hasScrollLeftAction,
-          if (hasScrollRightAction != null) SemanticsAction.scrollRight: hasScrollRightAction,
-          if (hasScrollUpAction != null) SemanticsAction.scrollUp: hasScrollUpAction,
-          if (hasScrollDownAction != null) SemanticsAction.scrollDown: hasScrollDownAction,
-          if (hasIncreaseAction != null) SemanticsAction.increase: hasIncreaseAction,
-          if (hasDecreaseAction != null) SemanticsAction.decrease: hasDecreaseAction,
-          if (hasShowOnScreenAction != null) SemanticsAction.showOnScreen: hasShowOnScreenAction,
-          if (hasMoveCursorForwardByCharacterAction != null) SemanticsAction.moveCursorForwardByCharacter: hasMoveCursorForwardByCharacterAction,
-          if (hasMoveCursorBackwardByCharacterAction != null) SemanticsAction.moveCursorBackwardByCharacter: hasMoveCursorBackwardByCharacterAction,
-          if (hasSetSelectionAction != null) SemanticsAction.setSelection: hasSetSelectionAction,
+          if (hasLongPressAction != null)
+            SemanticsAction.longPress: hasLongPressAction,
+          if (hasScrollLeftAction != null)
+            SemanticsAction.scrollLeft: hasScrollLeftAction,
+          if (hasScrollRightAction != null)
+            SemanticsAction.scrollRight: hasScrollRightAction,
+          if (hasScrollUpAction != null)
+            SemanticsAction.scrollUp: hasScrollUpAction,
+          if (hasScrollDownAction != null)
+            SemanticsAction.scrollDown: hasScrollDownAction,
+          if (hasIncreaseAction != null)
+            SemanticsAction.increase: hasIncreaseAction,
+          if (hasDecreaseAction != null)
+            SemanticsAction.decrease: hasDecreaseAction,
+          if (hasShowOnScreenAction != null)
+            SemanticsAction.showOnScreen: hasShowOnScreenAction,
+          if (hasMoveCursorForwardByCharacterAction != null)
+            SemanticsAction.moveCursorForwardByCharacter:
+                hasMoveCursorForwardByCharacterAction,
+          if (hasMoveCursorBackwardByCharacterAction != null)
+            SemanticsAction.moveCursorBackwardByCharacter:
+                hasMoveCursorBackwardByCharacterAction,
+          if (hasSetSelectionAction != null)
+            SemanticsAction.setSelection: hasSetSelectionAction,
           if (hasCopyAction != null) SemanticsAction.copy: hasCopyAction,
           if (hasCutAction != null) SemanticsAction.cut: hasCutAction,
           if (hasPasteAction != null) SemanticsAction.paste: hasPasteAction,
-          if (hasDidGainAccessibilityFocusAction != null) SemanticsAction.didGainAccessibilityFocus: hasDidGainAccessibilityFocusAction,
-          if (hasDidLoseAccessibilityFocusAction != null) SemanticsAction.didLoseAccessibilityFocus: hasDidLoseAccessibilityFocusAction,
-          if (customActions != null) SemanticsAction.customAction: customActions.isNotEmpty,
-          if (hasDismissAction != null) SemanticsAction.dismiss: hasDismissAction,
-          if (hasMoveCursorForwardByWordAction != null) SemanticsAction.moveCursorForwardByWord: hasMoveCursorForwardByWordAction,
-          if (hasMoveCursorBackwardByWordAction != null) SemanticsAction.moveCursorBackwardByWord: hasMoveCursorBackwardByWordAction,
-          if (hasSetTextAction != null) SemanticsAction.setText: hasSetTextAction,
+          if (hasDidGainAccessibilityFocusAction != null)
+            SemanticsAction.didGainAccessibilityFocus:
+                hasDidGainAccessibilityFocusAction,
+          if (hasDidLoseAccessibilityFocusAction != null)
+            SemanticsAction.didLoseAccessibilityFocus:
+                hasDidLoseAccessibilityFocusAction,
+          if (customActions != null)
+            SemanticsAction.customAction: customActions.isNotEmpty,
+          if (hasDismissAction != null)
+            SemanticsAction.dismiss: hasDismissAction,
+          if (hasMoveCursorForwardByWordAction != null)
+            SemanticsAction.moveCursorForwardByWord:
+                hasMoveCursorForwardByWordAction,
+          if (hasMoveCursorBackwardByWordAction != null)
+            SemanticsAction.moveCursorBackwardByWord:
+                hasMoveCursorBackwardByWordAction,
+          if (hasSetTextAction != null)
+            SemanticsAction.setText: hasSetTextAction,
         },
         hintOverrides = onTapHint == null && onLongPressHint == null
             ? null
@@ -2418,13 +2556,15 @@ class _MatchesSemanticsData extends Matcher {
       description.add(' with increasedValue: $increasedValue ');
     }
     if (attributedIncreasedValue != null) {
-      description.add(' with attributedIncreasedValue: $attributedIncreasedValue');
+      description
+          .add(' with attributedIncreasedValue: $attributedIncreasedValue');
     }
     if (decreasedValue != null) {
       description.add(' with decreasedValue: $decreasedValue ');
     }
     if (attributedDecreasedValue != null) {
-      description.add(' with attributedDecreasedValue: $attributedDecreasedValue');
+      description
+          .add(' with attributedDecreasedValue: $attributedDecreasedValue');
     }
     if (tooltip != null) {
       description.add(' with tooltip: $tooltip');
@@ -2433,41 +2573,44 @@ class _MatchesSemanticsData extends Matcher {
     // with the proper actions information for focus.
     // https://github.com/flutter/flutter/issues/149842
     final Map<ui.SemanticsAction, bool> nonFocusActions =
-      Map<ui.SemanticsAction, bool>.fromEntries(actions.entries.where(
-        (MapEntry<ui.SemanticsAction, bool> e) => e.key != SemanticsAction.focus
-      ));
+        Map<ui.SemanticsAction, bool>.fromEntries(actions.entries.where(
+            (MapEntry<ui.SemanticsAction, bool> e) =>
+                e.key != SemanticsAction.focus));
     if (nonFocusActions.isNotEmpty) {
       final List<SemanticsAction> expectedActions = nonFocusActions.entries
-        .where((MapEntry<ui.SemanticsAction, bool> e) => e.value)
-        .map((MapEntry<ui.SemanticsAction, bool> e) => e.key)
-        .toList();
+          .where((MapEntry<ui.SemanticsAction, bool> e) => e.value)
+          .map((MapEntry<ui.SemanticsAction, bool> e) => e.key)
+          .toList();
       final List<SemanticsAction> notExpectedActions = nonFocusActions.entries
-        .where((MapEntry<ui.SemanticsAction, bool> e) => !e.value)
-        .map((MapEntry<ui.SemanticsAction, bool> e) => e.key)
-        .toList();
+          .where((MapEntry<ui.SemanticsAction, bool> e) => !e.value)
+          .map((MapEntry<ui.SemanticsAction, bool> e) => e.key)
+          .toList();
 
       if (expectedActions.isNotEmpty) {
-        description.add(' with actions: ${_createEnumsSummary(expectedActions)} ');
+        description
+            .add(' with actions: ${_createEnumsSummary(expectedActions)} ');
       }
       if (notExpectedActions.isNotEmpty) {
-        description.add(' without actions: ${_createEnumsSummary(notExpectedActions)} ');
+        description.add(
+            ' without actions: ${_createEnumsSummary(notExpectedActions)} ');
       }
     }
     if (flags.isNotEmpty) {
       final List<SemanticsFlag> expectedFlags = flags.entries
-        .where((MapEntry<ui.SemanticsFlag, bool> e) => e.value)
-        .map((MapEntry<ui.SemanticsFlag, bool> e) => e.key)
-        .toList();
+          .where((MapEntry<ui.SemanticsFlag, bool> e) => e.value)
+          .map((MapEntry<ui.SemanticsFlag, bool> e) => e.key)
+          .toList();
       final List<SemanticsFlag> notExpectedFlags = flags.entries
-        .where((MapEntry<ui.SemanticsFlag, bool> e) => !e.value)
-        .map((MapEntry<ui.SemanticsFlag, bool> e) => e.key)
-        .toList();
+          .where((MapEntry<ui.SemanticsFlag, bool> e) => !e.value)
+          .map((MapEntry<ui.SemanticsFlag, bool> e) => e.key)
+          .toList();
 
       if (expectedFlags.isNotEmpty) {
         description.add(' with flags: ${_createEnumsSummary(expectedFlags)} ');
       }
       if (notExpectedFlags.isNotEmpty) {
-        description.add(' without flags: ${_createEnumsSummary(notExpectedFlags)} ');
+        description
+            .add(' without flags: ${_createEnumsSummary(notExpectedFlags)} ');
       }
     }
     if (textDirection != null) {
@@ -2502,10 +2645,12 @@ class _MatchesSemanticsData extends Matcher {
     }
     if (children != null) {
       description.add(' with children:\n  ');
-      final List<_MatchesSemanticsData> childMatches = children!.cast<_MatchesSemanticsData>();
+      final List<_MatchesSemanticsData> childMatches =
+          children!.cast<_MatchesSemanticsData>();
       int childIndex = 1;
       for (final _MatchesSemanticsData child in childMatches) {
-        child.describe(description, index != null ? '$index:$childIndex': '$childIndex');
+        child.describe(
+            description, index != null ? '$index:$childIndex' : '$childIndex');
         if (child != childMatches.last) {
           description.add('\n  ');
         }
@@ -2515,20 +2660,22 @@ class _MatchesSemanticsData extends Matcher {
     return description;
   }
 
-  bool _stringAttributesEqual(List<StringAttribute> first, List<StringAttribute> second) {
+  bool _stringAttributesEqual(
+      List<StringAttribute> first, List<StringAttribute> second) {
     if (first.length != second.length) {
       return false;
     }
     for (int i = 0; i < first.length; i++) {
       if (first[i] is SpellOutStringAttribute &&
           (second[i] is! SpellOutStringAttribute ||
-           second[i].range != first[i].range)) {
+              second[i].range != first[i].range)) {
         return false;
       }
       if (first[i] is LocaleStringAttribute &&
           (second[i] is! LocaleStringAttribute ||
-           second[i].range != first[i].range ||
-           (second[i] as LocaleStringAttribute).locale != (second[i] as LocaleStringAttribute).locale)) {
+              second[i].range != first[i].range ||
+              (second[i] as LocaleStringAttribute).locale !=
+                  (second[i] as LocaleStringAttribute).locale)) {
         return false;
       }
     }
@@ -2538,8 +2685,10 @@ class _MatchesSemanticsData extends Matcher {
   @override
   bool matches(dynamic node, Map<dynamic, dynamic> matchState) {
     if (node == null) {
-      return failWithDescription(matchState, 'No SemanticsData provided. '
-        'Maybe you forgot to enable semantics?');
+      return failWithDescription(
+          matchState,
+          'No SemanticsData provided. '
+          'Maybe you forgot to enable semantics?');
     }
 
     final SemanticsData data = switch (node) {
@@ -2553,7 +2702,8 @@ class _MatchesSemanticsData extends Matcher {
     }
     if (attributedLabel != null &&
         (attributedLabel!.string != data.attributedLabel.string ||
-         !_stringAttributesEqual(attributedLabel!.attributes, data.attributedLabel.attributes))) {
+            !_stringAttributesEqual(attributedLabel!.attributes,
+                data.attributedLabel.attributes))) {
       return failWithDescription(
           matchState, 'attributedLabel was: ${data.attributedLabel}');
     }
@@ -2562,7 +2712,8 @@ class _MatchesSemanticsData extends Matcher {
     }
     if (attributedHint != null &&
         (attributedHint!.string != data.attributedHint.string ||
-         !_stringAttributesEqual(attributedHint!.attributes, data.attributedHint.attributes))) {
+            !_stringAttributesEqual(
+                attributedHint!.attributes, data.attributedHint.attributes))) {
       return failWithDescription(
           matchState, 'attributedHint was: ${data.attributedHint}');
     }
@@ -2571,33 +2722,41 @@ class _MatchesSemanticsData extends Matcher {
     }
     if (attributedValue != null &&
         (attributedValue!.string != data.attributedValue.string ||
-         !_stringAttributesEqual(attributedValue!.attributes, data.attributedValue.attributes))) {
+            !_stringAttributesEqual(attributedValue!.attributes,
+                data.attributedValue.attributes))) {
       return failWithDescription(
           matchState, 'attributedValue was: ${data.attributedValue}');
     }
     if (increasedValue != null && increasedValue != data.increasedValue) {
-      return failWithDescription(matchState, 'increasedValue was: ${data.increasedValue}');
+      return failWithDescription(
+          matchState, 'increasedValue was: ${data.increasedValue}');
     }
     if (attributedIncreasedValue != null &&
-        (attributedIncreasedValue!.string != data.attributedIncreasedValue.string ||
-         !_stringAttributesEqual(attributedIncreasedValue!.attributes, data.attributedIncreasedValue.attributes))) {
-      return failWithDescription(
-          matchState, 'attributedIncreasedValue was: ${data.attributedIncreasedValue}');
+        (attributedIncreasedValue!.string !=
+                data.attributedIncreasedValue.string ||
+            !_stringAttributesEqual(attributedIncreasedValue!.attributes,
+                data.attributedIncreasedValue.attributes))) {
+      return failWithDescription(matchState,
+          'attributedIncreasedValue was: ${data.attributedIncreasedValue}');
     }
     if (decreasedValue != null && decreasedValue != data.decreasedValue) {
-      return failWithDescription(matchState, 'decreasedValue was: ${data.decreasedValue}');
+      return failWithDescription(
+          matchState, 'decreasedValue was: ${data.decreasedValue}');
     }
     if (attributedDecreasedValue != null &&
-        (attributedDecreasedValue!.string != data.attributedDecreasedValue.string ||
-         !_stringAttributesEqual(attributedDecreasedValue!.attributes, data.attributedDecreasedValue.attributes))) {
-      return failWithDescription(
-          matchState, 'attributedDecreasedValue was: ${data.attributedDecreasedValue}');
+        (attributedDecreasedValue!.string !=
+                data.attributedDecreasedValue.string ||
+            !_stringAttributesEqual(attributedDecreasedValue!.attributes,
+                data.attributedDecreasedValue.attributes))) {
+      return failWithDescription(matchState,
+          'attributedDecreasedValue was: ${data.attributedDecreasedValue}');
     }
     if (tooltip != null && tooltip != data.tooltip) {
       return failWithDescription(matchState, 'tooltip was: ${data.tooltip}');
     }
     if (textDirection != null && textDirection != data.textDirection) {
-      return failWithDescription(matchState, 'textDirection was: $textDirection');
+      return failWithDescription(
+          matchState, 'textDirection was: $textDirection');
     }
     if (rect != null && rect != data.rect) {
       return failWithDescription(matchState, 'rect was: ${data.rect}');
@@ -2606,34 +2765,42 @@ class _MatchesSemanticsData extends Matcher {
       return failWithDescription(matchState, 'size was: ${data.rect.size}');
     }
     if (elevation != null && elevation != data.elevation) {
-      return failWithDescription(matchState, 'elevation was: ${data.elevation}');
+      return failWithDescription(
+          matchState, 'elevation was: ${data.elevation}');
     }
     if (thickness != null && thickness != data.thickness) {
-      return failWithDescription(matchState, 'thickness was: ${data.thickness}');
+      return failWithDescription(
+          matchState, 'thickness was: ${data.thickness}');
     }
     if (platformViewId != null && platformViewId != data.platformViewId) {
-      return failWithDescription(matchState, 'platformViewId was: ${data.platformViewId}');
+      return failWithDescription(
+          matchState, 'platformViewId was: ${data.platformViewId}');
     }
-    if (currentValueLength != null && currentValueLength != data.currentValueLength) {
-      return failWithDescription(matchState, 'currentValueLength was: ${data.currentValueLength}');
+    if (currentValueLength != null &&
+        currentValueLength != data.currentValueLength) {
+      return failWithDescription(
+          matchState, 'currentValueLength was: ${data.currentValueLength}');
     }
     if (maxValueLength != null && maxValueLength != data.maxValueLength) {
-      return failWithDescription(matchState, 'maxValueLength was: ${data.maxValueLength}');
+      return failWithDescription(
+          matchState, 'maxValueLength was: ${data.maxValueLength}');
     }
     // TODO(gspencergoog): Remove filter once customer tests have been updated
     // with the proper actions information for focus.
     // https://github.com/flutter/flutter/issues/149842
     final Map<ui.SemanticsAction, bool> nonFocusActions =
-      Map<ui.SemanticsAction, bool>.fromEntries(actions.entries.where(
-        (MapEntry<ui.SemanticsAction, bool> e) => e.key != SemanticsAction.focus
-      ));
+        Map<ui.SemanticsAction, bool>.fromEntries(actions.entries.where(
+            (MapEntry<ui.SemanticsAction, bool> e) =>
+                e.key != SemanticsAction.focus));
     if (nonFocusActions.isNotEmpty) {
       final List<SemanticsAction> unexpectedActions = <SemanticsAction>[];
       final List<SemanticsAction> missingActions = <SemanticsAction>[];
-      for (final MapEntry<ui.SemanticsAction, bool> actionEntry in nonFocusActions.entries) {
+      for (final MapEntry<ui.SemanticsAction, bool> actionEntry
+          in nonFocusActions.entries) {
         final ui.SemanticsAction action = actionEntry.key;
         final bool actionExpected = actionEntry.value;
-        final bool actionPresent = (action.index & data.actions) == action.index;
+        final bool actionPresent =
+            (action.index & data.actions) == action.index;
         if (actionPresent != actionExpected) {
           if (actionExpected) {
             missingActions.add(action);
@@ -2644,31 +2811,42 @@ class _MatchesSemanticsData extends Matcher {
       }
 
       if (unexpectedActions.isNotEmpty || missingActions.isNotEmpty) {
-        return failWithDescription(matchState, 'missing actions: ${_createEnumsSummary(missingActions)} unexpected actions: ${_createEnumsSummary(unexpectedActions)}');
+        return failWithDescription(matchState,
+            'missing actions: ${_createEnumsSummary(missingActions)} unexpected actions: ${_createEnumsSummary(unexpectedActions)}');
       }
     }
     if (customActions != null || hintOverrides != null) {
-      final List<CustomSemanticsAction> providedCustomActions = data.customSemanticsActionIds?.map<CustomSemanticsAction>((int id) {
-        return CustomSemanticsAction.getAction(id)!;
-      }).toList() ?? <CustomSemanticsAction>[];
-      final List<CustomSemanticsAction> expectedCustomActions = customActions?.toList() ?? <CustomSemanticsAction>[];
+      final List<CustomSemanticsAction> providedCustomActions =
+          data.customSemanticsActionIds?.map<CustomSemanticsAction>((int id) {
+                return CustomSemanticsAction.getAction(id);
+              }).toList() ??
+              <CustomSemanticsAction>[];
+      final List<CustomSemanticsAction> expectedCustomActions =
+          customActions?.toList() ?? <CustomSemanticsAction>[];
       if (hintOverrides?.onTapHint != null) {
-        expectedCustomActions.add(CustomSemanticsAction.overridingAction(hint: hintOverrides!.onTapHint!, action: SemanticsAction.tap));
+        expectedCustomActions.add(CustomSemanticsAction.overridingAction(
+            hint: hintOverrides!.onTapHint!, action: SemanticsAction.tap));
       }
       if (hintOverrides?.onLongPressHint != null) {
-        expectedCustomActions.add(CustomSemanticsAction.overridingAction(hint: hintOverrides!.onLongPressHint!, action: SemanticsAction.longPress));
+        expectedCustomActions.add(CustomSemanticsAction.overridingAction(
+            hint: hintOverrides!.onLongPressHint!,
+            action: SemanticsAction.longPress));
       }
       if (expectedCustomActions.length != providedCustomActions.length) {
-        return failWithDescription(matchState, 'custom actions were: $providedCustomActions');
+        return failWithDescription(
+            matchState, 'custom actions were: $providedCustomActions');
       }
       int sortActions(CustomSemanticsAction left, CustomSemanticsAction right) {
-        return CustomSemanticsAction.getIdentifier(left) - CustomSemanticsAction.getIdentifier(right);
+        return CustomSemanticsAction.getIdentifier(left) -
+            CustomSemanticsAction.getIdentifier(right);
       }
+
       expectedCustomActions.sort(sortActions);
       providedCustomActions.sort(sortActions);
       for (int i = 0; i < expectedCustomActions.length; i++) {
         if (expectedCustomActions[i] != providedCustomActions[i]) {
-          return failWithDescription(matchState, 'custom actions were: $providedCustomActions');
+          return failWithDescription(
+              matchState, 'custom actions were: $providedCustomActions');
         }
       }
     }
@@ -2689,7 +2867,8 @@ class _MatchesSemanticsData extends Matcher {
       }
 
       if (unexpectedFlags.isNotEmpty || missingFlags.isNotEmpty) {
-        return failWithDescription(matchState, 'missing flags: ${_createEnumsSummary(missingFlags)} unexpected flags: ${_createEnumsSummary(unexpectedFlags)}');
+        return failWithDescription(matchState,
+            'missing flags: ${_createEnumsSummary(missingFlags)} unexpected flags: ${_createEnumsSummary(unexpectedFlags)}');
       }
     }
     bool allMatched = true;
@@ -2704,7 +2883,8 @@ class _MatchesSemanticsData extends Matcher {
     return allMatched;
   }
 
-  bool failWithDescription(Map<dynamic, dynamic> matchState, String description) {
+  bool failWithDescription(
+      Map<dynamic, dynamic> matchState, String description) {
     matchState['failure'] = description;
     return false;
   }
@@ -2720,7 +2900,8 @@ class _MatchesSemanticsData extends Matcher {
   }
 
   static String _createEnumsSummary<T extends Object>(List<T> enums) {
-    assert(T == SemanticsAction || T == SemanticsFlag, 'This method is only intended for lists of SemanticsActions or SemanticsFlags.');
+    assert(T == SemanticsAction || T == SemanticsFlag,
+        'This method is only intended for lists of SemanticsActions or SemanticsFlags.');
     if (T == SemanticsAction) {
       return '[${(enums as List<SemanticsAction>).map((SemanticsAction d) => d.name).join(', ')}]';
     } else {

@@ -7,7 +7,6 @@ import 'dart:async';
 import 'package:process/process.dart';
 
 import '../application_package.dart';
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../base/os.dart';
 import '../base/platform.dart';
@@ -47,18 +46,22 @@ class MacOSDesignedForIPadDevice extends DesktopDevice {
   Future<TargetPlatform> get targetPlatform async => TargetPlatform.darwin;
 
   @override
-  bool isSupported() => _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
+  bool isSupported() =>
+      _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
 
   @override
   bool get supportsFlavors => true;
 
   @override
   bool isSupportedForProject(FlutterProject flutterProject) {
-    return flutterProject.ios.existsSync() && _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
+    return flutterProject.ios.existsSync() &&
+        _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
   }
 
   @override
-  String? executablePathForDevice(ApplicationPackage package, BuildInfo buildInfo) => null;
+  String? executablePathForDevice(
+          ApplicationPackage package, BuildInfo buildInfo) =>
+      null;
 
   @override
   VMServiceDiscoveryForAttach getVMServiceDiscoveryForAttach({
@@ -69,7 +72,8 @@ class MacOSDesignedForIPadDevice extends DesktopDevice {
     required bool ipv6,
     required Logger logger,
   }) {
-    final MdnsVMServiceDiscoveryForAttach mdnsVMServiceDiscoveryForAttach = MdnsVMServiceDiscoveryForAttach(
+    final MdnsVMServiceDiscoveryForAttach mdnsVMServiceDiscoveryForAttach =
+        MdnsVMServiceDiscoveryForAttach(
       device: this,
       appId: appId,
       deviceVmservicePort: filterDevicePort,
@@ -110,7 +114,8 @@ class MacOSDesignedForIPadDevice extends DesktopDevice {
   Future<bool> stopApp(
     ApplicationPackage? app, {
     String? userIdentifier,
-  }) async => false;
+  }) async =>
+      false;
 
   @override
   Future<void> buildForDevice({
@@ -153,7 +158,8 @@ class MacOSDesignedForIPadDevices extends PollingDeviceDiscovery {
   /// and discovery is allowed for this command.
   @override
   bool get canListAnything =>
-      _iosWorkflow.canListDevices && _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
+      _iosWorkflow.canListDevices &&
+      _operatingSystemUtils.hostPlatform == HostPlatform.darwin_arm64;
 
   @override
   Future<List<Device>> pollingGetDevices({Duration? timeout}) async {

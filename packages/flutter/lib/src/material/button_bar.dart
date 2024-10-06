@@ -105,9 +105,9 @@ class ButtonBar extends StatelessWidget {
     this.overflowDirection,
     this.overflowButtonSpacing,
     this.children = const <Widget>[],
-  }) : assert(buttonMinWidth == null || buttonMinWidth >= 0.0),
-       assert(buttonHeight == null || buttonHeight >= 0.0),
-       assert(overflowButtonSpacing == null || overflowButtonSpacing >= 0.0);
+  })  : assert(buttonMinWidth == null || buttonMinWidth >= 0.0),
+        assert(buttonHeight == null || buttonHeight >= 0.0),
+        assert(overflowButtonSpacing == null || overflowButtonSpacing >= 0.0);
 
   /// How the children should be placed along the horizontal axis.
   ///
@@ -209,12 +209,19 @@ class ButtonBar extends StatelessWidget {
     final ButtonBarThemeData barTheme = ButtonBarTheme.of(context);
 
     final ButtonThemeData buttonTheme = parentButtonTheme.copyWith(
-      textTheme: buttonTextTheme ?? barTheme.buttonTextTheme ?? ButtonTextTheme.primary,
+      textTheme: buttonTextTheme ??
+          barTheme.buttonTextTheme ??
+          ButtonTextTheme.primary,
       minWidth: buttonMinWidth ?? barTheme.buttonMinWidth ?? 64.0,
       height: buttonHeight ?? barTheme.buttonHeight ?? 36.0,
-      padding: buttonPadding ?? barTheme.buttonPadding ?? const EdgeInsets.symmetric(horizontal: 8.0),
-      alignedDropdown: buttonAlignedDropdown ?? barTheme.buttonAlignedDropdown ?? false,
-      layoutBehavior: layoutBehavior ?? barTheme.layoutBehavior ?? ButtonBarLayoutBehavior.padded,
+      padding: buttonPadding ??
+          barTheme.buttonPadding ??
+          const EdgeInsets.symmetric(horizontal: 8.0),
+      alignedDropdown:
+          buttonAlignedDropdown ?? barTheme.buttonAlignedDropdown ?? false,
+      layoutBehavior: layoutBehavior ??
+          barTheme.layoutBehavior ??
+          ButtonBarLayoutBehavior.padded,
     );
 
     // We divide by 4.0 because we want half of the average of the left and right padding.
@@ -222,9 +229,12 @@ class ButtonBar extends StatelessWidget {
     final Widget child = ButtonTheme.fromButtonThemeData(
       data: buttonTheme,
       child: _ButtonBarRow(
-        mainAxisAlignment: alignment ?? barTheme.alignment ?? MainAxisAlignment.end,
+        mainAxisAlignment:
+            alignment ?? barTheme.alignment ?? MainAxisAlignment.end,
         mainAxisSize: mainAxisSize ?? barTheme.mainAxisSize ?? MainAxisSize.max,
-        overflowDirection: overflowDirection ?? barTheme.overflowDirection ?? VerticalDirection.down,
+        overflowDirection: overflowDirection ??
+            barTheme.overflowDirection ??
+            VerticalDirection.down,
         overflowButtonSpacing: overflowButtonSpacing,
         children: children.map<Widget>((Widget child) {
           return Padding(
@@ -279,9 +289,9 @@ class _ButtonBarRow extends Flex {
     VerticalDirection overflowDirection = VerticalDirection.down,
     this.overflowButtonSpacing,
   }) : super(
-    direction: Axis.horizontal,
-    verticalDirection: overflowDirection,
-  );
+          direction: Axis.horizontal,
+          verticalDirection: overflowDirection,
+        );
 
   final double? overflowButtonSpacing;
 
@@ -292,7 +302,7 @@ class _ButtonBarRow extends Flex {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
       crossAxisAlignment: crossAxisAlignment,
-      textDirection: getEffectiveTextDirection(context)!,
+      textDirection: getEffectiveTextDirection(context),
       verticalDirection: verticalDirection,
       textBaseline: textBaseline,
       overflowButtonSpacing: overflowButtonSpacing,
@@ -300,7 +310,8 @@ class _ButtonBarRow extends Flex {
   }
 
   @override
-  void updateRenderObject(BuildContext context, covariant _RenderButtonBarRow renderObject) {
+  void updateRenderObject(
+      BuildContext context, covariant _RenderButtonBarRow renderObject) {
     renderObject
       ..direction = direction
       ..mainAxisAlignment = mainAxisAlignment
@@ -354,14 +365,16 @@ class _RenderButtonBarRow extends RenderFlex {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final Size size = super.computeDryLayout(constraints.copyWith(maxWidth: double.infinity));
+    final Size size =
+        super.computeDryLayout(constraints.copyWith(maxWidth: double.infinity));
     if (size.width <= constraints.maxWidth) {
       return super.computeDryLayout(constraints);
     }
     double currentHeight = 0.0;
     RenderBox? child = firstChild;
     while (child != null) {
-      final BoxConstraints childConstraints = constraints.copyWith(minWidth: 0.0);
+      final BoxConstraints childConstraints =
+          constraints.copyWith(minWidth: 0.0);
       final Size childSize = child.getDryLayout(childConstraints);
       currentHeight += childSize.height;
       child = childAfter(child);
@@ -391,15 +404,17 @@ class _RenderButtonBarRow extends RenderFlex {
       // a maximum width constraint of infinity.
       super.performLayout();
     } else {
-      final BoxConstraints childConstraints = constraints.copyWith(minWidth: 0.0);
+      final BoxConstraints childConstraints =
+          constraints.copyWith(minWidth: 0.0);
       double currentHeight = 0.0;
       RenderBox? child = switch (verticalDirection) {
         VerticalDirection.down => firstChild,
-        VerticalDirection.up   => lastChild,
+        VerticalDirection.up => lastChild,
       };
 
       while (child != null) {
-        final FlexParentData childParentData = child.parentData! as FlexParentData;
+        final FlexParentData childParentData =
+            child.parentData! as FlexParentData;
 
         // Lay out the child with the button bar's original constraints, but
         // with minimum width set to zero.
@@ -413,10 +428,12 @@ class _RenderButtonBarRow extends RenderFlex {
           case TextDirection.ltr:
             switch (mainAxisAlignment) {
               case MainAxisAlignment.center:
-                final double midpoint = (constraints.maxWidth - child.size.width) / 2.0;
+                final double midpoint =
+                    (constraints.maxWidth - child.size.width) / 2.0;
                 childParentData.offset = Offset(midpoint, currentHeight);
               case MainAxisAlignment.end:
-                childParentData.offset = Offset(constraints.maxWidth - child.size.width, currentHeight);
+                childParentData.offset = Offset(
+                    constraints.maxWidth - child.size.width, currentHeight);
               case MainAxisAlignment.spaceAround:
               case MainAxisAlignment.spaceBetween:
               case MainAxisAlignment.spaceEvenly:
@@ -426,7 +443,8 @@ class _RenderButtonBarRow extends RenderFlex {
           case TextDirection.rtl:
             switch (mainAxisAlignment) {
               case MainAxisAlignment.center:
-                final double midpoint = constraints.maxWidth / 2.0 - child.size.width / 2.0;
+                final double midpoint =
+                    constraints.maxWidth / 2.0 - child.size.width / 2.0;
                 childParentData.offset = Offset(midpoint, currentHeight);
               case MainAxisAlignment.end:
                 childParentData.offset = Offset(0, currentHeight);
@@ -434,13 +452,14 @@ class _RenderButtonBarRow extends RenderFlex {
               case MainAxisAlignment.spaceBetween:
               case MainAxisAlignment.spaceEvenly:
               case MainAxisAlignment.start:
-                childParentData.offset = Offset(constraints.maxWidth - child.size.width, currentHeight);
+                childParentData.offset = Offset(
+                    constraints.maxWidth - child.size.width, currentHeight);
             }
         }
         currentHeight += child.size.height;
         child = switch (verticalDirection) {
           VerticalDirection.down => childParentData.nextSibling,
-          VerticalDirection.up   => childParentData.previousSibling,
+          VerticalDirection.up => childParentData.previousSibling,
         };
 
         if (overflowButtonSpacing != null && child != null) {

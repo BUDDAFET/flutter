@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'feedback_tester.dart';
 import 'semantics_tester.dart';
 
-void main () {
+void main() {
   const Duration kWaitDuration = Duration(seconds: 1);
 
   late FeedbackTester feedback;
@@ -26,14 +26,19 @@ void main () {
 
     setUp(() {
       semanticEvents = <Map<String, Object>>[];
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockDecodedMessageHandler<dynamic>(SystemChannels.accessibility, (dynamic message) async {
-        final Map<dynamic, dynamic> typedMessage = message as Map<dynamic, dynamic>;
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockDecodedMessageHandler<dynamic>(SystemChannels.accessibility,
+              (dynamic message) async {
+        final Map<dynamic, dynamic> typedMessage =
+            message as Map<dynamic, dynamic>;
         semanticEvents.add(typedMessage.cast<String, Object>());
       });
     });
 
     tearDown(() {
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockDecodedMessageHandler<dynamic>(SystemChannels.accessibility, null);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockDecodedMessageHandler<dynamic>(
+              SystemChannels.accessibility, null);
     });
 
     testWidgets('forTap', (WidgetTester tester) async {
@@ -51,7 +56,8 @@ void main () {
 
       await tester.tap(find.text('X'));
       await tester.pumpAndSettle(kWaitDuration);
-      final RenderObject object = tester.firstRenderObject(find.byType(GestureDetector));
+      final RenderObject object =
+          tester.firstRenderObject(find.byType(GestureDetector));
 
       expect(feedback.hapticCount, 0);
       expect(feedback.clickSoundCount, 1);
@@ -60,7 +66,11 @@ void main () {
         'nodeId': object.debugSemantics!.id,
         'data': <String, dynamic>{},
       });
-      expect(object.debugSemantics!.getSemanticsData().hasAction(SemanticsAction.tap), true);
+      expect(
+          object.debugSemantics!
+              .getSemanticsData()
+              .hasAction(SemanticsAction.tap),
+          true);
 
       semanticsTester.dispose();
     });
@@ -75,7 +85,7 @@ void main () {
 
       await tester.pumpWidget(TestWidget(
         tapHandler: (BuildContext context) {
-          return Feedback.wrapForTap(callback, context)!;
+          return Feedback.wrapForTap(callback, context);
         },
       ));
       await tester.pumpAndSettle(kWaitDuration);
@@ -85,7 +95,8 @@ void main () {
 
       await tester.tap(find.text('X'));
       await tester.pumpAndSettle(kWaitDuration);
-      final RenderObject object = tester.firstRenderObject(find.byType(GestureDetector));
+      final RenderObject object =
+          tester.firstRenderObject(find.byType(GestureDetector));
 
       expect(feedback.hapticCount, 0);
       expect(feedback.clickSoundCount, 1);
@@ -95,7 +106,11 @@ void main () {
         'nodeId': object.debugSemantics!.id,
         'data': <String, dynamic>{},
       });
-      expect(object.debugSemantics!.getSemanticsData().hasAction(SemanticsAction.tap), true);
+      expect(
+          object.debugSemantics!
+              .getSemanticsData()
+              .hasAction(SemanticsAction.tap),
+          true);
 
       semanticsTester.dispose();
     });
@@ -114,7 +129,8 @@ void main () {
 
       await tester.longPress(find.text('X'));
       await tester.pumpAndSettle(kWaitDuration);
-      final RenderObject object = tester.firstRenderObject(find.byType(GestureDetector));
+      final RenderObject object =
+          tester.firstRenderObject(find.byType(GestureDetector));
 
       expect(feedback.hapticCount, 1);
       expect(feedback.clickSoundCount, 0);
@@ -123,7 +139,11 @@ void main () {
         'nodeId': object.debugSemantics!.id,
         'data': <String, dynamic>{},
       });
-      expect(object.debugSemantics!.getSemanticsData().hasAction(SemanticsAction.longPress), true);
+      expect(
+          object.debugSemantics!
+              .getSemanticsData()
+              .hasAction(SemanticsAction.longPress),
+          true);
 
       semanticsTester.dispose();
     });
@@ -137,11 +157,12 @@ void main () {
 
       await tester.pumpWidget(TestWidget(
         longPressHandler: (BuildContext context) {
-          return Feedback.wrapForLongPress(callback, context)!;
+          return Feedback.wrapForLongPress(callback, context);
         },
       ));
       await tester.pumpAndSettle(kWaitDuration);
-      final RenderObject object = tester.firstRenderObject(find.byType(GestureDetector));
+      final RenderObject object =
+          tester.firstRenderObject(find.byType(GestureDetector));
 
       expect(feedback.hapticCount, 0);
       expect(feedback.clickSoundCount, 0);
@@ -157,16 +178,20 @@ void main () {
         'nodeId': object.debugSemantics!.id,
         'data': <String, dynamic>{},
       });
-      expect(object.debugSemantics!.getSemanticsData().hasAction(SemanticsAction.longPress), true);
+      expect(
+          object.debugSemantics!
+              .getSemanticsData()
+              .hasAction(SemanticsAction.longPress),
+          true);
 
       semanticsTester.dispose();
     });
-
   });
 
   group('Feedback on iOS', () {
     testWidgets('forTap', (WidgetTester tester) async {
-      await tester.pumpWidget(TestWidget(
+      await tester.pumpWidget(
+        TestWidget(
           tapHandler: (BuildContext context) {
             return () => Feedback.forTap(context);
           },
@@ -177,11 +202,11 @@ void main () {
       await tester.pumpAndSettle(kWaitDuration);
       expect(feedback.hapticCount, 0);
       expect(feedback.clickSoundCount, 0);
-    },
-    variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
 
     testWidgets('forLongPress', (WidgetTester tester) async {
-      await tester.pumpWidget(TestWidget(
+      await tester.pumpWidget(
+        TestWidget(
           longPressHandler: (BuildContext context) {
             return () => Feedback.forLongPress(context);
           },
@@ -192,8 +217,7 @@ void main () {
       await tester.pumpAndSettle(kWaitDuration);
       expect(feedback.hapticCount, 1);
       expect(feedback.clickSoundCount, 1);
-    },
-    variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
   });
 }
 
@@ -212,9 +236,9 @@ class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: tapHandler(context),
-        onLongPress: longPressHandler(context),
-        child: const Text('X', textDirection: TextDirection.ltr),
+      onTap: tapHandler(context),
+      onLongPress: longPressHandler(context),
+      child: const Text('X', textDirection: TextDirection.ltr),
     );
   }
 }

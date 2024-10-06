@@ -30,13 +30,14 @@ class _CupertinoSegmentedControlDemoState
 
   void onValueChanged(int? newValue) {
     setState(() {
-      currentSegment.value = newValue!;
+      currentSegment.value = newValue;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final GalleryLocalizations localizations = GalleryLocalizations.of(context)!;
+    final GalleryLocalizations localizations =
+        GalleryLocalizations.of(context)!;
     const double segmentedControlMaxWidth = 500.0;
     final Map<int, Widget> children = <int, Widget>{
       0: Text(localizations.colorsIndigo),

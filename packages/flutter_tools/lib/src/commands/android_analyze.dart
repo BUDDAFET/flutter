@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../convert.dart';
 import '../project.dart';
@@ -33,7 +32,8 @@ class AndroidAnalyze {
     required this.userPath,
     this.buildVariant,
     required this.logger,
-  }) : assert(option == AndroidAnalyzeOption.listBuildVariant || buildVariant != null);
+  }) : assert(option == AndroidAnalyzeOption.listBuildVariant ||
+            buildVariant != null);
 
   final FileSystem fileSystem;
   final AndroidAnalyzeOption option;
@@ -42,13 +42,16 @@ class AndroidAnalyze {
   final Logger logger;
 
   Future<void> analyze() async {
-    final FlutterProject project = FlutterProject.fromDirectory(fileSystem.directory(userPath));
+    final FlutterProject project =
+        FlutterProject.fromDirectory(fileSystem.directory(userPath));
     switch (option) {
       case AndroidAnalyzeOption.listBuildVariant:
-        logger.printStatus(jsonEncode(await project.android.getBuildVariants()));
+        logger
+            .printStatus(jsonEncode(await project.android.getBuildVariants()));
       case AndroidAnalyzeOption.outputAppLinkSettings:
         assert(buildVariant != null);
-        final String filePath = await project.android.outputsAppLinkSettings(variant: buildVariant!);
+        final String filePath = await project.android
+            .outputsAppLinkSettings(variant: buildVariant!);
         logger.printStatus('result saved in $filePath');
     }
   }

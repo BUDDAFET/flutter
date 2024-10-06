@@ -31,14 +31,15 @@ void main() {
     );
   });
 
-  testWidgets('errorBuilder returns text with emoji', (WidgetTester tester) async {
+  testWidgets('errorBuilder returns text with emoji',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const example.ErrorBuilderExampleApp(),
     );
     await tester.pumpAndSettle();
 
     final Image image = tester.widget<Image>(find.byType(Image));
-    final ImageErrorWidgetBuilder errorBuilder = image.errorBuilder!;
+    final ImageErrorWidgetBuilder errorBuilder = image.errorBuilder;
     final BuildContext context = tester.element(find.byType(Image));
 
     expect(

@@ -35,6 +35,7 @@ enum ScrollViewKeyboardDismissBehavior {
   /// `manual` means there is no automatic dismissal of the on-screen keyboard.
   /// It is up to the client to dismiss the keyboard.
   manual,
+
   /// `onDrag` means that the [ScrollView] will dismiss an on-screen keyboard
   /// when a drag begins.
   onDrag,
@@ -115,16 +116,22 @@ abstract class ScrollView extends StatelessWidget {
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
     this.hitTestBehavior = HitTestBehavior.opaque,
-  }) : assert(
-         !(controller != null && (primary ?? false)),
-         'Primary ScrollViews obtain their ScrollController via inheritance '
-         'from a PrimaryScrollController widget. You cannot both set primary to '
-         'true and pass an explicit controller.',
-       ),
-       assert(!shrinkWrap || center == null),
-       assert(anchor >= 0.0 && anchor <= 1.0),
-       assert(semanticChildCount == null || semanticChildCount >= 0),
-       physics = physics ?? ((primary ?? false) || (primary == null && controller == null && identical(scrollDirection, Axis.vertical)) ? const AlwaysScrollableScrollPhysics() : null);
+  })  : assert(
+          !(controller != null && (primary ?? false)),
+          'Primary ScrollViews obtain their ScrollController via inheritance '
+          'from a PrimaryScrollController widget. You cannot both set primary to '
+          'true and pass an explicit controller.',
+        ),
+        assert(!shrinkWrap || center == null),
+        assert(anchor >= 0.0 && anchor <= 1.0),
+        assert(semanticChildCount == null || semanticChildCount >= 0),
+        physics = physics ??
+            ((primary ?? false) ||
+                    (primary == null &&
+                        controller == null &&
+                        identical(scrollDirection, Axis.vertical))
+                ? const AlwaysScrollableScrollPhysics()
+                : null);
 
   /// {@template flutter.widgets.scroll_view.scrollDirection}
   /// The [Axis] along which the scroll view's offset increases.
@@ -396,7 +403,8 @@ abstract class ScrollView extends StatelessWidget {
   /// [AxisDirection.right].
   @protected
   AxisDirection getDirection(BuildContext context) {
-    return getAxisDirectionFromAxisReverseAndDirectionality(context, scrollDirection, reverse);
+    return getAxisDirectionFromAxisReverseAndDirectionality(
+        context, scrollDirection, reverse);
   }
 
   /// Build the list of widgets to place inside the viewport.
@@ -435,8 +443,9 @@ abstract class ScrollView extends StatelessWidget {
           return debugCheckHasDirectionality(
             context,
             why: 'to determine the cross-axis direction of the scroll view',
-            hint: 'Vertical scroll views create Viewport widgets that try to determine their cross axis direction '
-                  'from the ambient Directionality.',
+            hint:
+                'Vertical scroll views create Viewport widgets that try to determine their cross axis direction '
+                'from the ambient Directionality.',
           );
         case AxisDirection.left:
         case AxisDirection.right:
@@ -467,8 +476,9 @@ abstract class ScrollView extends StatelessWidget {
     final List<Widget> slivers = buildSlivers(context);
     final AxisDirection axisDirection = getDirection(context);
 
-    final bool effectivePrimary = primary
-        ?? controller == null && PrimaryScrollController.shouldInherit(context, scrollDirection);
+    final bool effectivePrimary = primary ??
+        controller == null &&
+            PrimaryScrollController.shouldInherit(context, scrollDirection);
 
     final ScrollController? scrollController = effectivePrimary
         ? PrimaryScrollController.maybeOf(context)
@@ -499,7 +509,9 @@ abstract class ScrollView extends StatelessWidget {
         child: scrollableResult,
         onNotification: (ScrollUpdateNotification notification) {
           final FocusScopeNode currentScope = FocusScope.of(context);
-          if (notification.dragDetails != null && !currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+          if (notification.dragDetails != null &&
+              !currentScope.hasPrimaryFocus &&
+              currentScope.hasFocus) {
             FocusManager.instance.primaryFocus?.unfocus();
           }
           return false;
@@ -514,11 +526,17 @@ abstract class ScrollView extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<Axis>('scrollDirection', scrollDirection));
-    properties.add(FlagProperty('reverse', value: reverse, ifTrue: 'reversed', showName: true));
-    properties.add(DiagnosticsProperty<ScrollController>('controller', controller, showName: false, defaultValue: null));
-    properties.add(FlagProperty('primary', value: primary, ifTrue: 'using primary controller', showName: true));
-    properties.add(DiagnosticsProperty<ScrollPhysics>('physics', physics, showName: false, defaultValue: null));
-    properties.add(FlagProperty('shrinkWrap', value: shrinkWrap, ifTrue: 'shrink-wrapping', showName: true));
+    properties.add(FlagProperty('reverse',
+        value: reverse, ifTrue: 'reversed', showName: true));
+    properties.add(DiagnosticsProperty<ScrollController>(
+        'controller', controller,
+        showName: false, defaultValue: null));
+    properties.add(FlagProperty('primary',
+        value: primary, ifTrue: 'using primary controller', showName: true));
+    properties.add(DiagnosticsProperty<ScrollPhysics>('physics', physics,
+        showName: false, defaultValue: null));
+    properties.add(FlagProperty('shrinkWrap',
+        value: shrinkWrap, ifTrue: 'shrink-wrapping', showName: true));
   }
 }
 
@@ -849,7 +867,7 @@ abstract class BoxScrollView extends ScrollView {
     if (effectivePadding != null) {
       sliver = SliverPadding(padding: effectivePadding, sliver: sliver);
     }
-    return <Widget>[ sliver ];
+    return <Widget>[sliver];
   }
 
   /// Subclasses should override this method to build the layout model.
@@ -859,7 +877,8 @@ abstract class BoxScrollView extends ScrollView {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
   }
 }
 
@@ -1250,21 +1269,21 @@ class ListView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : assert(
-         (itemExtent == null && prototypeItem == null) ||
-         (itemExtent == null && itemExtentBuilder == null) ||
-         (prototypeItem == null && itemExtentBuilder == null),
-         'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
-       ),
-       childrenDelegate = SliverChildListDelegate(
-         children,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? children.length,
-       );
+  })  : assert(
+          (itemExtent == null && prototypeItem == null) ||
+              (itemExtent == null && itemExtentBuilder == null) ||
+              (prototypeItem == null && itemExtentBuilder == null),
+          'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+        ),
+        childrenDelegate = SliverChildListDelegate(
+          children,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? children.length,
+        );
 
   /// Creates a scrollable, linear array of widgets that are created on demand.
   ///
@@ -1329,25 +1348,25 @@ class ListView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : assert(itemCount == null || itemCount >= 0),
-       assert(semanticChildCount == null || semanticChildCount <= itemCount!),
-       assert(
-         (itemExtent == null && prototypeItem == null) ||
-         (itemExtent == null && itemExtentBuilder == null) ||
-         (prototypeItem == null && itemExtentBuilder == null),
-         'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
-       ),
-       childrenDelegate = SliverChildBuilderDelegate(
-         itemBuilder,
-         findChildIndexCallback: findChildIndexCallback,
-         childCount: itemCount,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? itemCount,
-       );
+  })  : assert(itemCount == null || itemCount >= 0),
+        assert(semanticChildCount == null || semanticChildCount <= itemCount!),
+        assert(
+          (itemExtent == null && prototypeItem == null) ||
+              (itemExtent == null && itemExtentBuilder == null) ||
+              (prototypeItem == null && itemExtentBuilder == null),
+          'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+        ),
+        childrenDelegate = SliverChildBuilderDelegate(
+          itemBuilder,
+          findChildIndexCallback: findChildIndexCallback,
+          childCount: itemCount,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? itemCount,
+        );
 
   /// Creates a fixed-length scrollable linear array of list "items" separated
   /// by list item "separators".
@@ -1422,30 +1441,30 @@ class ListView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : assert(itemCount >= 0),
-       itemExtent = null,
-       itemExtentBuilder = null,
-       prototypeItem = null,
-       childrenDelegate = SliverChildBuilderDelegate(
-         (BuildContext context, int index) {
-           final int itemIndex = index ~/ 2;
-           if (index.isEven) {
-             return itemBuilder(context, itemIndex);
-           }
-           return separatorBuilder(context, itemIndex);
-         },
-         findChildIndexCallback: findChildIndexCallback,
-         childCount: _computeActualChildCount(itemCount),
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-         semanticIndexCallback: (Widget widget, int index) {
-           return index.isEven ? index ~/ 2 : null;
-         },
-       ),
-       super(
-         semanticChildCount: itemCount,
-       );
+  })  : assert(itemCount >= 0),
+        itemExtent = null,
+        itemExtentBuilder = null,
+        prototypeItem = null,
+        childrenDelegate = SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            final int itemIndex = index ~/ 2;
+            if (index.isEven) {
+              return itemBuilder(context, itemIndex);
+            }
+            return separatorBuilder(context, itemIndex);
+          },
+          findChildIndexCallback: findChildIndexCallback,
+          childCount: _computeActualChildCount(itemCount),
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          semanticIndexCallback: (Widget widget, int index) {
+            return index.isEven ? index ~/ 2 : null;
+          },
+        ),
+        super(
+          semanticChildCount: itemCount,
+        );
 
   /// Creates a scrollable, linear array of widgets with a custom child model.
   ///
@@ -1479,11 +1498,11 @@ class ListView extends BoxScrollView {
     super.clipBehavior,
     super.hitTestBehavior,
   }) : assert(
-         (itemExtent == null && prototypeItem == null) ||
-         (itemExtent == null && itemExtentBuilder == null) ||
-         (prototypeItem == null && itemExtentBuilder == null),
-         'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
-       );
+          (itemExtent == null && prototypeItem == null) ||
+              (itemExtent == null && itemExtentBuilder == null) ||
+              (prototypeItem == null && itemExtentBuilder == null),
+          'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+        );
 
   /// {@template flutter.widgets.list_view.itemExtent}
   /// If non-null, forces the children to have the given extent in the scroll
@@ -1575,7 +1594,7 @@ class ListView extends BoxScrollView {
     } else if (itemExtentBuilder != null) {
       return SliverVariedExtentList(
         delegate: childrenDelegate,
-        itemExtentBuilder: itemExtentBuilder!,
+        itemExtentBuilder: itemExtentBuilder,
       );
     } else if (prototypeItem != null) {
       return SliverPrototypeExtentList(
@@ -1589,7 +1608,8 @@ class ListView extends BoxScrollView {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('itemExtent', itemExtent, defaultValue: null));
+    properties
+        .add(DoubleProperty('itemExtent', itemExtent, defaultValue: null));
   }
 
   // Helper method to compute the actual child count for the separated constructor.
@@ -1870,15 +1890,15 @@ class GridView extends BoxScrollView {
     super.keyboardDismissBehavior,
     super.restorationId,
     super.hitTestBehavior,
-  }) : childrenDelegate = SliverChildListDelegate(
-         children,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? children.length,
-       );
+  })  : childrenDelegate = SliverChildListDelegate(
+          children,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? children.length,
+        );
 
   /// Creates a scrollable, 2D array of widgets that are created on demand.
   ///
@@ -1927,17 +1947,17 @@ class GridView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : childrenDelegate = SliverChildBuilderDelegate(
-         itemBuilder,
-         findChildIndexCallback: findChildIndexCallback,
-         childCount: itemCount,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? itemCount,
-       );
+  })  : childrenDelegate = SliverChildBuilderDelegate(
+          itemBuilder,
+          findChildIndexCallback: findChildIndexCallback,
+          childCount: itemCount,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? itemCount,
+        );
 
   /// Creates a scrollable, 2D array of widgets with both a custom
   /// [SliverGridDelegate] and a custom [SliverChildDelegate].
@@ -2002,21 +2022,21 @@ class GridView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-         crossAxisCount: crossAxisCount,
-         mainAxisSpacing: mainAxisSpacing,
-         crossAxisSpacing: crossAxisSpacing,
-         childAspectRatio: childAspectRatio,
-       ),
-       childrenDelegate = SliverChildListDelegate(
-         children,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? children.length,
-       );
+  })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          mainAxisSpacing: mainAxisSpacing,
+          crossAxisSpacing: crossAxisSpacing,
+          childAspectRatio: childAspectRatio,
+        ),
+        childrenDelegate = SliverChildListDelegate(
+          children,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? children.length,
+        );
 
   /// Creates a scrollable, 2D array of widgets with tiles that each have a
   /// maximum cross-axis extent.
@@ -2056,21 +2076,21 @@ class GridView extends BoxScrollView {
     super.restorationId,
     super.clipBehavior,
     super.hitTestBehavior,
-  }) : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-         maxCrossAxisExtent: maxCrossAxisExtent,
-         mainAxisSpacing: mainAxisSpacing,
-         crossAxisSpacing: crossAxisSpacing,
-         childAspectRatio: childAspectRatio,
-       ),
-       childrenDelegate = SliverChildListDelegate(
-         children,
-         addAutomaticKeepAlives: addAutomaticKeepAlives,
-         addRepaintBoundaries: addRepaintBoundaries,
-         addSemanticIndexes: addSemanticIndexes,
-       ),
-       super(
-         semanticChildCount: semanticChildCount ?? children.length,
-       );
+  })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: maxCrossAxisExtent,
+          mainAxisSpacing: mainAxisSpacing,
+          crossAxisSpacing: crossAxisSpacing,
+          childAspectRatio: childAspectRatio,
+        ),
+        childrenDelegate = SliverChildListDelegate(
+          children,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
+        super(
+          semanticChildCount: semanticChildCount ?? children.length,
+        );
 
   /// A delegate that controls the layout of the children within the [GridView].
   ///

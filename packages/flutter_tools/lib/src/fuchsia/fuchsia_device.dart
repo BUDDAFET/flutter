@@ -11,7 +11,6 @@ import '../application_package.dart';
 import '../artifacts.dart';
 import '../base/common.dart';
 import '../base/context.dart';
-import '../base/file_system.dart';
 import '../base/io.dart';
 import '../base/logger.dart';
 import '../base/net.dart';
@@ -102,7 +101,8 @@ class _FuchsiaLogReader extends DeviceLogReader {
         : RegExp('INFO: ${app.name}(\\.cm)?\\(flutter\\): ');
     return Stream<String>.eventTransformed(
       lines,
-      (EventSink<String> output) => _FuchsiaLogSink(output, matchRegExp, startTime),
+      (EventSink<String> output) =>
+          _FuchsiaLogSink(output, matchRegExp, startTime),
     );
   }
 
@@ -159,11 +159,11 @@ class FuchsiaDevices extends PollingDeviceDiscovery {
     required FuchsiaWorkflow fuchsiaWorkflow,
     required FuchsiaSdk fuchsiaSdk,
     required Logger logger,
-  }) : _platform = platform,
-       _fuchsiaWorkflow = fuchsiaWorkflow,
-       _fuchsiaSdk = fuchsiaSdk,
-       _logger = logger,
-       super('Fuchsia devices');
+  })  : _platform = platform,
+        _fuchsiaWorkflow = fuchsiaWorkflow,
+        _fuchsiaSdk = fuchsiaSdk,
+        _logger = logger,
+        super('Fuchsia devices');
 
   final Platform _platform;
   final FuchsiaWorkflow _fuchsiaWorkflow;
@@ -177,14 +177,15 @@ class FuchsiaDevices extends PollingDeviceDiscovery {
   bool get canListAnything => _fuchsiaWorkflow.canListDevices;
 
   @override
-  Future<List<Device>> pollingGetDevices({ Duration? timeout }) async {
+  Future<List<Device>> pollingGetDevices({Duration? timeout}) async {
     if (!_fuchsiaWorkflow.canListDevices) {
       return <Device>[];
     }
     // TODO(omerlevran): Remove once soft transition is complete fxb/67602.
     final List<String>? text = (await _fuchsiaSdk.listDevices(
       timeout: timeout,
-    ))?.split('\n');
+    ))
+        ?.split('\n');
     if (text == null || text.isEmpty) {
       return <Device>[];
     }
@@ -263,7 +264,8 @@ class FuchsiaDevice extends Device {
   Future<bool> isAppInstalled(
     ApplicationPackage app, {
     String? userIdentifier,
-  }) async => false;
+  }) async =>
+      false;
 
   @override
   Future<bool> isLatestBuildInstalled(ApplicationPackage app) async => false;
@@ -272,13 +274,15 @@ class FuchsiaDevice extends Device {
   Future<bool> installApp(
     ApplicationPackage app, {
     String? userIdentifier,
-  }) => Future<bool>.value(false);
+  }) =>
+      Future<bool>.value(false);
 
   @override
   Future<bool> uninstallApp(
     ApplicationPackage app, {
     String? userIdentifier,
-  }) async => false;
+  }) async =>
+      false;
 
   @override
   bool isSupported() => true;
@@ -305,11 +309,9 @@ class FuchsiaDevice extends Device {
     }
 
     if (!prebuiltApplication) {
-      throwToolExit(
-        'This tool does not currently build apps for fuchsia.\n'
-        'Build the app using a supported Fuchsia workflow.\n'
-        'Then use the --${FlutterOptions.kUseApplicationBinary} flag.'
-      );
+      throwToolExit('This tool does not currently build apps for fuchsia.\n'
+          'Build the app using a supported Fuchsia workflow.\n'
+          'Then use the --${FlutterOptions.kUseApplicationBinary} flag.');
     }
     // Stop the app if it's currently running.
     await stopApp(package);
@@ -417,7 +419,8 @@ class FuchsiaDevice extends Device {
       if (await isSession) {
         // Instruct ffx session to start the app
         final bool addedApp =
-            await globals.fuchsiaSdk?.fuchsiaFfx.sessionAdd(fuchsiaUrl) ?? false;
+            await globals.fuchsiaSdk?.fuchsiaFfx.sessionAdd(fuchsiaUrl) ??
+                false;
         if (!addedApp) {
           globals.printError('Failed to add the app via `ffx session add`');
           return LaunchResult.failed();
@@ -604,9 +607,11 @@ class FuchsiaDevice extends Device {
       throwToolExit("'--module' is required for attaching to a Fuchsia device");
     }
     if (expectedHostPort != null) {
-      throwToolExit("'--host-vmservice-port' is not supported when attaching to a Fuchsia device");
+      throwToolExit(
+          "'--host-vmservice-port' is not supported when attaching to a Fuchsia device");
     }
-    return FuchsiaIsolateVMServiceDiscoveryForAttach(getIsolateDiscoveryProtocol(fuchsiaModule));
+    return FuchsiaIsolateVMServiceDiscoveryForAttach(
+        getIsolateDiscoveryProtocol(fuchsiaModule));
   }
 
   /// [true] if the current host address is IPv6.
@@ -753,7 +758,8 @@ class FuchsiaDevice extends Device {
   }
 }
 
-class FuchsiaIsolateVMServiceDiscoveryForAttach extends VMServiceDiscoveryForAttach {
+class FuchsiaIsolateVMServiceDiscoveryForAttach
+    extends VMServiceDiscoveryForAttach {
   FuchsiaIsolateVMServiceDiscoveryForAttach(this.isolateDiscoveryProtocol);
   final FuchsiaIsolateDiscoveryProtocol isolateDiscoveryProtocol;
 
@@ -766,7 +772,8 @@ class FuchsiaIsolateVMServiceDiscoveryForAttach extends VMServiceDiscoveryForAtt
       } on Exception {
         final FuchsiaDevice device = isolateDiscoveryProtocol._device;
         isolateDiscoveryProtocol.dispose();
-        final List<ForwardedPort> ports = device.portForwarder.forwardedPorts.toList();
+        final List<ForwardedPort> ports =
+            device.portForwarder.forwardedPorts.toList();
         for (final ForwardedPort port in ports) {
           await device.portForwarder.unforward(port);
         }

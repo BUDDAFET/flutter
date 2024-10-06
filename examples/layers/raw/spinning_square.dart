@@ -22,14 +22,16 @@ void beginFrame(Duration timeStamp) {
 
   // PAINT
 
-  final ui.Rect paintBounds = ui.Offset.zero & (view.physicalSize / view.devicePixelRatio);
+  final ui.Rect paintBounds =
+      ui.Offset.zero & (view.physicalSize / view.devicePixelRatio);
   final ui.PictureRecorder recorder = ui.PictureRecorder();
   final ui.Canvas canvas = ui.Canvas(recorder, paintBounds);
   canvas.translate(paintBounds.width / 2.0, paintBounds.height / 2.0);
 
   // Here we determine the rotation according to the timeStamp given to us by
   // the engine.
-  final double t = timeStamp.inMicroseconds / Duration.microsecondsPerMillisecond / 1800.0;
+  final double t =
+      timeStamp.inMicroseconds / Duration.microsecondsPerMillisecond / 1800.0;
   canvas.rotate(math.pi * (t % 1.0));
 
   canvas.drawRect(
@@ -61,7 +63,7 @@ void beginFrame(Duration timeStamp) {
 void main() {
   // TODO(goderbauer): Create a window if embedder doesn't provide an implicit view to draw into.
   assert(ui.PlatformDispatcher.instance.implicitView != null);
-  view = ui.PlatformDispatcher.instance.implicitView!;
+  view = ui.PlatformDispatcher.instance.implicitView;
 
   ui.PlatformDispatcher.instance
     ..onBeginFrame = beginFrame

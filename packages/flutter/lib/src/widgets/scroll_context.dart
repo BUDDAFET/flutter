@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'framework.dart';
-import 'ticker_provider.dart';
 
 /// An interface that [Scrollable] widgets implement in order to use
 /// [ScrollPosition].

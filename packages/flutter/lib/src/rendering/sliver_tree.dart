@@ -74,7 +74,8 @@ class TreeSliverIndentationType {
   /// The default indentation of child [TreeSliverNode]s in a [TreeSliver].
   ///
   /// Child nodes will be offset by 10 pixels for each level in the tree.
-  static const TreeSliverIndentationType standard = TreeSliverIndentationType._internal(10.0);
+  static const TreeSliverIndentationType standard =
+      TreeSliverIndentationType._internal(10.0);
 
   /// Configures no offsetting of child nodes in a [TreeSliver].
   ///
@@ -82,7 +83,8 @@ class TreeSliverIndentationType {
   /// [TreeSliver.treeNodeBuilder] instead for more customization options.
   ///
   /// Child nodes will not be offset in the tree.
-  static const TreeSliverIndentationType none = TreeSliverIndentationType._internal(0.0);
+  static const TreeSliverIndentationType none =
+      TreeSliverIndentationType._internal(0.0);
 
   /// Configures a custom offset for indenting child nodes in a
   /// [TreeSliver].
@@ -115,8 +117,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
     required super.itemExtentBuilder,
     required Map<UniqueKey, TreeSliverNodesAnimation> activeAnimations,
     required double indentation,
-  }) : _activeAnimations = activeAnimations,
-       _indentation = indentation;
+  })  : _activeAnimations = activeAnimations,
+        _indentation = indentation;
 
   // TODO(Piinks): There are some opportunities to cache even further as far as
   // extents and layout offsets when using itemExtentBuilder from the super
@@ -126,7 +128,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
   ///
   /// Since the index of animating nodes can change at any time, the unique key
   /// is used to track an animation of nodes across frames.
-  Map<UniqueKey, TreeSliverNodesAnimation> get activeAnimations => _activeAnimations;
+  Map<UniqueKey, TreeSliverNodesAnimation> get activeAnimations =>
+      _activeAnimations;
   Map<UniqueKey, TreeSliverNodesAnimation> _activeAnimations;
   set activeAnimations(Map<UniqueKey, TreeSliverNodesAnimation> value) {
     if (_activeAnimations == value) {
@@ -160,13 +163,16 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
   final Map<UniqueKey, double> _animationOffsets = <UniqueKey, double>{};
   void _updateAnimationCache() {
     _animationLeadingIndices.clear();
-    _activeAnimations.forEach((UniqueKey key, TreeSliverNodesAnimation animation) {
+    _activeAnimations
+        .forEach((UniqueKey key, TreeSliverNodesAnimation animation) {
       _animationLeadingIndices[animation.fromIndex - 1] = key;
     });
     // Remove any stored offsets or clip layers that are no longer actively
     // animating.
-    _animationOffsets.removeWhere((UniqueKey key, _) => !_activeAnimations.keys.contains(key));
-    _clipHandles.removeWhere((UniqueKey key, LayerHandle<ClipRectLayer> handle) {
+    _animationOffsets.removeWhere(
+        (UniqueKey key, _) => !_activeAnimations.keys.contains(key));
+    _clipHandles
+        .removeWhere((UniqueKey key, LayerHandle<ClipRectLayer> handle) {
       if (!_activeAnimations.keys.contains(key)) {
         handle.layer = null;
         return true;
@@ -184,7 +190,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
 
   @override
   void dispose() {
-    _clipHandles.removeWhere((UniqueKey key, LayerHandle<ClipRectLayer> handle) {
+    _clipHandles
+        .removeWhere((UniqueKey key, LayerHandle<ClipRectLayer> handle) {
       handle.layer = null;
       return true;
     });
@@ -246,14 +253,15 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
         break;
       }
       if (_animationLeadingIndices.keys.contains(index)) {
-        final UniqueKey animationKey = _animationLeadingIndices[index]!;
+        final UniqueKey animationKey = _animationLeadingIndices[index];
         if (_animationOffsets[animationKey] == null) {
           // We have not computed the distance this block is traversing over the
           // lifetime of the animation.
           _computeAnimationOffsetFor(animationKey, position);
         }
         // We add the offset accounting for the animation value.
-        totalAnimationOffset += _animationOffsets[animationKey]! * (1 - _activeAnimations[animationKey]!.value);
+        totalAnimationOffset += _animationOffsets[animationKey]! *
+            (1 - _activeAnimations[animationKey]!.value);
       }
       position += itemExtent - totalAnimationOffset;
       ++index;
@@ -263,7 +271,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
 
   void _computeAnimationOffsetFor(UniqueKey key, double position) {
     assert(_activeAnimations[key] != null);
-    final double targetPosition = constraints.scrollOffset + constraints.remainingCacheExtent;
+    final double targetPosition =
+        constraints.scrollOffset + constraints.remainingCacheExtent;
     double currentPosition = position;
     final int startingIndex = _activeAnimations[key]!.fromIndex;
     final int lastIndex = _activeAnimations[key]!.toIndex;
@@ -272,7 +281,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
     // We animate only a portion of children that would be visible/in the cache
     // extent, unless all children would fit on the screen.
     while (currentIndex <= lastIndex && currentPosition < targetPosition) {
-      final double itemExtent = itemExtentBuilder(currentIndex, _currentLayoutDimensions)!;
+      final double itemExtent =
+          itemExtentBuilder(currentIndex, _currentLayoutDimensions)!;
       totalAnimatingOffset += itemExtent;
       currentPosition += itemExtent;
       currentIndex++;
@@ -305,10 +315,11 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
         break;
       }
       if (_animationLeadingIndices.keys.contains(currentIndex)) {
-        final UniqueKey animationKey = _animationLeadingIndices[currentIndex]!;
+        final UniqueKey animationKey = _animationLeadingIndices[currentIndex];
         assert(_animationOffsets[animationKey] != null);
         // We add the offset accounting for the animation value.
-        totalAnimationOffset += _animationOffsets[animationKey]! * (1 - _activeAnimations[animationKey]!.value);
+        totalAnimationOffset += _animationOffsets[animationKey]! *
+            (1 - _activeAnimations[animationKey]!.value);
       }
       position += itemExtent;
       currentIndex++;
@@ -316,7 +327,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
     return position - totalAnimationOffset;
   }
 
-  final Map<UniqueKey, LayerHandle<ClipRectLayer>> _clipHandles = <UniqueKey, LayerHandle<ClipRectLayer>>{};
+  final Map<UniqueKey, LayerHandle<ClipRectLayer>> _clipHandles =
+      <UniqueKey, LayerHandle<ClipRectLayer>>{};
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -334,7 +346,8 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
       RenderBox? child = startWith;
       while (child != null && indexOf(child) <= index) {
         final double mainAxisDelta = childMainAxisPosition(child);
-        final TreeSliverNodeParentData parentData = child.parentData! as TreeSliverNodeParentData;
+        final TreeSliverNodeParentData parentData =
+            child.parentData! as TreeSliverNodeParentData;
         final Offset childOffset = Offset(
           parentData.depth * indentation,
           parentData.layoutOffset!,
@@ -342,13 +355,15 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
 
         // If the child's visible interval (mainAxisDelta, mainAxisDelta + paintExtentOf(child))
         // does not intersect the paint extent interval (0, constraints.remainingPaintExtent), it's hidden.
-        if (mainAxisDelta < constraints.remainingPaintExtent && mainAxisDelta + paintExtentOf(child) > 0) {
+        if (mainAxisDelta < constraints.remainingPaintExtent &&
+            mainAxisDelta + paintExtentOf(child) > 0) {
           context.paintChild(child, childOffset);
         }
         child = childAfter(child);
       }
       nextChild = child;
     }
+
     if (_animationLeadingIndices.isEmpty) {
       // There are no animations running.
       paintUpTo(indexOf(lastChild!), firstChild, context, offset);
@@ -358,17 +373,21 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
     // We are animating.
     // Separate animating segments to clip for any overlap.
     int leadingIndex = indexOf(firstChild!);
-    final List<int> animationIndices = _animationLeadingIndices.keys.toList()..sort();
+    final List<int> animationIndices = _animationLeadingIndices.keys.toList()
+      ..sort();
     final List<_PaintSegment> paintSegments = <_PaintSegment>[];
     while (animationIndices.isNotEmpty) {
       final int trailingIndex = animationIndices.removeAt(0);
-      paintSegments.add((leadingIndex: leadingIndex, trailingIndex: trailingIndex));
+      paintSegments
+          .add((leadingIndex: leadingIndex, trailingIndex: trailingIndex));
       leadingIndex = trailingIndex + 1;
     }
-    paintSegments.add((leadingIndex: leadingIndex, trailingIndex: indexOf(lastChild!)));
+    paintSegments
+        .add((leadingIndex: leadingIndex, trailingIndex: indexOf(lastChild!)));
 
     // Paint, clipping for all but the first segment.
-    paintUpTo(paintSegments.removeAt(0).trailingIndex, nextChild, context, offset);
+    paintUpTo(
+        paintSegments.removeAt(0).trailingIndex, nextChild, context, offset);
     // Paint the rest with clip layers.
     while (paintSegments.isNotEmpty) {
       final _PaintSegment segment = paintSegments.removeAt(0);
@@ -378,18 +397,21 @@ class RenderTreeSliver extends RenderSliverVariedExtentList {
       // rely on the leading edge of the leading index, because it is currently
       // moving.
       final int parentIndex = math.max(segment.leadingIndex - 1, 0);
-      final double leadingOffset = indexToLayoutOffset(0.0, parentIndex)
-        + (parentIndex == 0 ? 0.0 : itemExtentBuilder(parentIndex, _currentLayoutDimensions)!);
-      final double trailingOffset = indexToLayoutOffset(0.0, segment.trailingIndex)
-        + itemExtentBuilder(segment.trailingIndex, _currentLayoutDimensions)!;
+      final double leadingOffset = indexToLayoutOffset(0.0, parentIndex) +
+          (parentIndex == 0
+              ? 0.0
+              : itemExtentBuilder(parentIndex, _currentLayoutDimensions)!);
+      final double trailingOffset = indexToLayoutOffset(
+              0.0, segment.trailingIndex) +
+          itemExtentBuilder(segment.trailingIndex, _currentLayoutDimensions)!;
       final Rect rect = Rect.fromPoints(
         Offset(0.0, leadingOffset),
         Offset(constraints.crossAxisExtent, trailingOffset),
       );
       // We use the same animation key to keep track of the clip layer, unless
       // this is the odd man out segment.
-      final UniqueKey key = _animationLeadingIndices[parentIndex]!;
-      _clipHandles[key] ??=  LayerHandle<ClipRectLayer>();
+      final UniqueKey key = _animationLeadingIndices[parentIndex];
+      _clipHandles[key] ??= LayerHandle<ClipRectLayer>();
       _clipHandles[key]!.layer = context.pushClipRect(
         needsCompositing,
         offset,

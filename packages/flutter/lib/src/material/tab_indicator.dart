@@ -45,7 +45,7 @@ class UnderlineTabIndicator extends Decoration {
     if (a is UnderlineTabIndicator) {
       return UnderlineTabIndicator(
         borderSide: BorderSide.lerp(a.borderSide, borderSide, t),
-        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t)!,
+        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t),
       );
     }
     return super.lerpFrom(a, t);
@@ -56,14 +56,14 @@ class UnderlineTabIndicator extends Decoration {
     if (b is UnderlineTabIndicator) {
       return UnderlineTabIndicator(
         borderSide: BorderSide.lerp(borderSide, b.borderSide, t),
-        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t)!,
+        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t),
       );
     }
     return super.lerpTo(b, t);
   }
 
   @override
-  BoxPainter createBoxPainter([ VoidCallback? onChanged ]) {
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return _UnderlinePainter(this, borderRadius, onChanged);
   }
 
@@ -80,9 +80,9 @@ class UnderlineTabIndicator extends Decoration {
   @override
   Path getClipPath(Rect rect, TextDirection textDirection) {
     if (borderRadius != null) {
-      return Path()..addRRect(
-        borderRadius!.toRRect(_indicatorRectFor(rect, textDirection))
-      );
+      return Path()
+        ..addRRect(
+            borderRadius!.toRRect(_indicatorRectFor(rect, textDirection)));
     }
     return Path()..addRect(_indicatorRectFor(rect, textDirection));
   }
@@ -102,7 +102,7 @@ class _UnderlinePainter extends BoxPainter {
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
     final Rect rect = offset & configuration.size!;
-    final TextDirection textDirection = configuration.textDirection!;
+    final TextDirection textDirection = configuration.textDirection;
     final Paint paint;
     if (borderRadius != null) {
       paint = Paint()..color = decoration.borderSide.color;
@@ -117,8 +117,9 @@ class _UnderlinePainter extends BoxPainter {
       canvas.drawRRect(rrect, paint);
     } else {
       paint = decoration.borderSide.toPaint()..strokeCap = StrokeCap.square;
-      final Rect indicator = decoration._indicatorRectFor(rect, textDirection)
-        .deflate(decoration.borderSide.width / 2.0);
+      final Rect indicator = decoration
+          ._indicatorRectFor(rect, textDirection)
+          .deflate(decoration.borderSide.width / 2.0);
       canvas.drawLine(indicator.bottomLeft, indicator.bottomRight, paint);
     }
   }

@@ -36,7 +36,7 @@ class CutCornersBorder extends OutlineInputBorder {
     if (a is CutCornersBorder) {
       final CutCornersBorder outline = a;
       return CutCornersBorder(
-        borderRadius: BorderRadius.lerp(outline.borderRadius, borderRadius, t)!,
+        borderRadius: BorderRadius.lerp(outline.borderRadius, borderRadius, t),
         borderSide: BorderSide.lerp(outline.borderSide, borderSide, t),
         cut: cut,
         gapPadding: outline.gapPadding,
@@ -50,7 +50,7 @@ class CutCornersBorder extends OutlineInputBorder {
     if (b is CutCornersBorder) {
       final CutCornersBorder outline = b;
       return CutCornersBorder(
-        borderRadius: BorderRadius.lerp(borderRadius, outline.borderRadius, t)!,
+        borderRadius: BorderRadius.lerp(borderRadius, outline.borderRadius, t),
         borderSide: BorderSide.lerp(borderSide, outline.borderSide, t),
         cut: cut,
         gapPadding: outline.gapPadding,
@@ -102,12 +102,14 @@ class CutCornersBorder extends OutlineInputBorder {
     if (gapStart == null || gapExtent <= 0 || gapPercentage == 0) {
       canvas.drawPath(_notchedCornerPath(outer.middleRect), paint);
     } else {
-      final double extent = lerpDouble(0.0, gapExtent + gapPadding * 2, gapPercentage)!;
+      final double extent =
+          lerpDouble(0.0, gapExtent + gapPadding * 2, gapPercentage)!;
       final double start = switch (textDirection!) {
         TextDirection.rtl => gapStart + gapPadding - extent,
         TextDirection.ltr => gapStart - gapPadding,
       };
-      canvas.drawPath(_notchedCornerPath(outer.middleRect, start, extent), paint);
+      canvas.drawPath(
+          _notchedCornerPath(outer.middleRect, start, extent), paint);
     }
   }
 }

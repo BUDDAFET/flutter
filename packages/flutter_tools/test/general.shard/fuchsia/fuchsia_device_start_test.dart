@@ -137,7 +137,8 @@ void main() {
                     .fuchsia);
       }
 
-      final DebuggingOptions debuggingOptions = DebuggingOptions.disabled(BuildInfo(
+      final DebuggingOptions debuggingOptions =
+          DebuggingOptions.disabled(BuildInfo(
         mode,
         null,
         treeShakeIcons: false,
@@ -150,8 +151,7 @@ void main() {
       );
     }
 
-    testUsingContext(
-        'start prebuilt in release mode fails without session',
+    testUsingContext('start prebuilt in release mode fails without session',
         () async {
       final LaunchResult launchResult =
           await setupAndStartApp(prebuilt: true, mode: BuildMode.release);
@@ -192,8 +192,9 @@ void main() {
       pubspecFile.writeAsStringSync('name: $appName');
       final File far = globals.fs.file('app_name-0.far')..createSync();
 
-      final FuchsiaApp app = FuchsiaApp.fromPrebuiltApp(far)!;
-      final DebuggingOptions debuggingOptions = DebuggingOptions.disabled(const BuildInfo(
+      final FuchsiaApp app = FuchsiaApp.fromPrebuiltApp(far);
+      final DebuggingOptions debuggingOptions =
+          DebuggingOptions.disabled(const BuildInfo(
         BuildMode.release,
         null,
         treeShakeIcons: false,
@@ -222,8 +223,9 @@ void main() {
       pubspecFile.writeAsStringSync('name: $appName');
       final File far = globals.fs.file('app_name-0.far')..createSync();
 
-      final FuchsiaApp app = FuchsiaApp.fromPrebuiltApp(far)!;
-      final DebuggingOptions debuggingOptions = DebuggingOptions.disabled(const BuildInfo(
+      final FuchsiaApp app = FuchsiaApp.fromPrebuiltApp(far);
+      final DebuggingOptions debuggingOptions =
+          DebuggingOptions.disabled(const BuildInfo(
         BuildMode.release,
         null,
         treeShakeIcons: false,
@@ -244,8 +246,7 @@ void main() {
       OperatingSystemUtils: () => osUtils,
     });
 
-    testUsingContext(
-        'start prebuilt in debug mode fails without session',
+    testUsingContext('start prebuilt in debug mode fails without session',
         () async {
       final LaunchResult launchResult =
           await setupAndStartApp(prebuilt: true, mode: BuildMode.debug);
@@ -275,11 +276,11 @@ void main() {
       OperatingSystemUtils: () => osUtils,
     });
 
-    testUsingContext(
-        'start buildable in release mode fails without session',
+    testUsingContext('start buildable in release mode fails without session',
         () async {
       expect(
-          () async => setupAndStartApp(prebuilt: false, mode: BuildMode.release),
+          () async =>
+              setupAndStartApp(prebuilt: false, mode: BuildMode.release),
           throwsToolExit(
               message: 'This tool does not currently build apps for fuchsia.\n'
                   'Build the app using a supported Fuchsia workflow.\n'
@@ -319,7 +320,8 @@ void main() {
         'start buildable in release mode with session fails, does not build apps yet',
         () async {
       expect(
-          () async => setupAndStartApp(prebuilt: false, mode: BuildMode.release),
+          () async =>
+              setupAndStartApp(prebuilt: false, mode: BuildMode.release),
           throwsToolExit(
               message: 'This tool does not currently build apps for fuchsia.\n'
                   'Build the app using a supported Fuchsia workflow.\n'
@@ -355,8 +357,7 @@ void main() {
       OperatingSystemUtils: () => osUtils,
     });
 
-    testUsingContext(
-        'start buildable in debug mode fails without session',
+    testUsingContext('start buildable in debug mode fails without session',
         () async {
       expect(
           () async => setupAndStartApp(prebuilt: false, mode: BuildMode.debug),

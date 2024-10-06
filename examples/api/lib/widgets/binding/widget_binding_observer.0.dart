@@ -26,10 +26,12 @@ class WidgetBindingsObserverSample extends StatefulWidget {
   const WidgetBindingsObserverSample({super.key});
 
   @override
-  State<WidgetBindingsObserverSample> createState() => _WidgetBindingsObserverSampleState();
+  State<WidgetBindingsObserverSample> createState() =>
+      _WidgetBindingsObserverSampleState();
 }
 
-class _WidgetBindingsObserverSampleState extends State<WidgetBindingsObserverSample> with WidgetsBindingObserver {
+class _WidgetBindingsObserverSampleState
+    extends State<WidgetBindingsObserverSample> with WidgetsBindingObserver {
   final List<AppLifecycleState> _stateHistoryList = <AppLifecycleState>[];
 
   @override
@@ -37,7 +39,7 @@ class _WidgetBindingsObserverSampleState extends State<WidgetBindingsObserverSam
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (WidgetsBinding.instance.lifecycleState != null) {
-      _stateHistoryList.add(WidgetsBinding.instance.lifecycleState!);
+      _stateHistoryList.add(WidgetsBinding.instance.lifecycleState);
     }
   }
 
@@ -66,6 +68,7 @@ class _WidgetBindingsObserverSampleState extends State<WidgetBindingsObserverSam
       );
     }
 
-    return const Center(child: Text('There are no AppLifecycleStates to show.'));
+    return const Center(
+        child: Text('There are no AppLifecycleStates to show.'));
   }
 }

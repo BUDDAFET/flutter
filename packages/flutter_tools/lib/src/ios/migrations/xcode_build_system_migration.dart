@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../base/file_system.dart';
 import '../../base/project_migrator.dart';
 import '../../xcode_project.dart';
 
@@ -20,8 +19,10 @@ class XcodeBuildSystemMigration extends ProjectMigrator {
   @override
   Future<void> migrate() async {
     final File? xcodeWorkspaceSharedSettings = _xcodeWorkspaceSharedSettings;
-    if (xcodeWorkspaceSharedSettings == null || !xcodeWorkspaceSharedSettings.existsSync()) {
-      logger.printTrace('Xcode workspace settings not found, skipping build system migration');
+    if (xcodeWorkspaceSharedSettings == null ||
+        !xcodeWorkspaceSharedSettings.existsSync()) {
+      logger.printTrace(
+          'Xcode workspace settings not found, skipping build system migration');
       return;
     }
 
@@ -34,7 +35,8 @@ class XcodeBuildSystemMigration extends ProjectMigrator {
 
     // contains instead of equals to ignore newline file ending variance.
     if (contents.contains(legacyBuildSettingsWorkspace)) {
-      logger.printStatus('Legacy build system detected, removing ${xcodeWorkspaceSharedSettings.path}');
+      logger.printStatus(
+          'Legacy build system detected, removing ${xcodeWorkspaceSharedSettings.path}');
       xcodeWorkspaceSharedSettings.deleteSync();
     }
   }

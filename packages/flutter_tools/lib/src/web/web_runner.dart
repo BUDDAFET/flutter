@@ -5,7 +5,6 @@
 import 'package:unified_analytics/unified_analytics.dart';
 
 import '../base/context.dart';
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../base/net.dart';
 import '../base/time.dart';

@@ -7,7 +7,6 @@ import 'package:process/process.dart';
 import 'android/android_sdk.dart';
 import 'android/application_package.dart';
 import 'application_package.dart';
-import 'base/file_system.dart';
 import 'base/logger.dart';
 import 'base/process.dart';
 import 'base/user_messages.dart';
@@ -30,13 +29,13 @@ class FlutterApplicationPackageFactory extends ApplicationPackageFactory {
     required Logger logger,
     required UserMessages userMessages,
     required FileSystem fileSystem,
-  }) : _androidSdk = androidSdk,
-       _processManager = processManager,
-       _logger = logger,
-       _userMessages = userMessages,
-       _fileSystem = fileSystem,
-       _processUtils = ProcessUtils(logger: logger, processManager: processManager);
-
+  })  : _androidSdk = androidSdk,
+        _processManager = processManager,
+        _logger = logger,
+        _userMessages = userMessages,
+        _fileSystem = fileSystem,
+        _processUtils =
+            ProcessUtils(logger: logger, processManager: processManager);
 
   final AndroidSdk? _androidSdk;
   final ProcessManager _processManager;
@@ -79,7 +78,8 @@ class FlutterApplicationPackageFactory extends ApplicationPackageFactory {
         );
       case TargetPlatform.ios:
         return applicationBinary == null
-            ? await IOSApp.fromIosProject(FlutterProject.current().ios, buildInfo)
+            ? await IOSApp.fromIosProject(
+                FlutterProject.current().ios, buildInfo)
             : IOSApp.fromPrebuiltApp(applicationBinary);
       case TargetPlatform.tester:
         return FlutterTesterApp.fromCurrentDirectory(globals.fs);

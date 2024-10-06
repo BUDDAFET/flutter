@@ -44,7 +44,8 @@ class SemanticsDebugger extends StatefulWidget {
   State<SemanticsDebugger> createState() => _SemanticsDebuggerState();
 }
 
-class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindingObserver {
+class _SemanticsDebuggerState extends State<SemanticsDebugger>
+    with WidgetsBindingObserver {
   PipelineOwner? _pipelineOwner;
   SemanticsHandle? _semanticsHandle;
   int _generation = 0;
@@ -103,7 +104,8 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
   Offset? _lastPointerDownLocation;
   void _handlePointerDown(PointerDownEvent event) {
     setState(() {
-      _lastPointerDownLocation = event.position * View.of(context).devicePixelRatio;
+      _lastPointerDownLocation =
+          event.position * View.of(context).devicePixelRatio;
     });
     // TODO(ianh): Use a gesture recognizer so that we can reset the
     // _lastPointerDownLocation when none of the other gesture recognizers win.
@@ -111,7 +113,7 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
 
   void _handleTap() {
     assert(_lastPointerDownLocation != null);
-    _performAction(_lastPointerDownLocation!, SemanticsAction.tap);
+    _performAction(_lastPointerDownLocation, SemanticsAction.tap);
     setState(() {
       _lastPointerDownLocation = null;
     });
@@ -119,7 +121,7 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
 
   void _handleLongPress() {
     assert(_lastPointerDownLocation != null);
-    _performAction(_lastPointerDownLocation!, SemanticsAction.longPress);
+    _performAction(_lastPointerDownLocation, SemanticsAction.longPress);
     setState(() {
       _lastPointerDownLocation = null;
     });
@@ -133,17 +135,17 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
     }
     if (vx.abs() > vy.abs()) {
       if (vx.sign < 0) {
-        _performAction(_lastPointerDownLocation!, SemanticsAction.decrease);
-        _performAction(_lastPointerDownLocation!, SemanticsAction.scrollLeft);
+        _performAction(_lastPointerDownLocation, SemanticsAction.decrease);
+        _performAction(_lastPointerDownLocation, SemanticsAction.scrollLeft);
       } else {
-        _performAction(_lastPointerDownLocation!, SemanticsAction.increase);
-        _performAction(_lastPointerDownLocation!, SemanticsAction.scrollRight);
+        _performAction(_lastPointerDownLocation, SemanticsAction.increase);
+        _performAction(_lastPointerDownLocation, SemanticsAction.scrollRight);
       }
     } else {
       if (vy.sign < 0) {
-        _performAction(_lastPointerDownLocation!, SemanticsAction.scrollUp);
+        _performAction(_lastPointerDownLocation, SemanticsAction.scrollUp);
       } else {
-        _performAction(_lastPointerDownLocation!, SemanticsAction.scrollDown);
+        _performAction(_lastPointerDownLocation, SemanticsAction.scrollDown);
       }
     }
     setState(() {
@@ -159,7 +161,7 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
   Widget build(BuildContext context) {
     return CustomPaint(
       foregroundPainter: _SemanticsDebuggerPainter(
-        _pipelineOwner!,
+        _pipelineOwner,
         _generation,
         _lastPointerDownLocation, // in physical pixels
         View.of(context).devicePixelRatio,
@@ -170,7 +172,8 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
         onTap: _handleTap,
         onLongPress: _handleLongPress,
         onPanEnd: _handlePanEnd,
-        excludeFromSemantics: true, // otherwise if you don't hit anything, we end up receiving it, which causes an infinite loop...
+        excludeFromSemantics:
+            true, // otherwise if you don't hit anything, we end up receiving it, which causes an infinite loop...
         child: Listener(
           onPointerDown: _handlePointerDown,
           behavior: HitTestBehavior.opaque,
@@ -184,7 +187,8 @@ class _SemanticsDebuggerState extends State<SemanticsDebugger> with WidgetsBindi
 }
 
 class _SemanticsDebuggerPainter extends CustomPainter {
-  const _SemanticsDebuggerPainter(this.owner, this.generation, this.pointerPosition, this.devicePixelRatio, this.labelStyle);
+  const _SemanticsDebuggerPainter(this.owner, this.generation,
+      this.pointerPosition, this.devicePixelRatio, this.labelStyle);
 
   final PipelineOwner owner;
   final int generation;
@@ -214,9 +218,9 @@ class _SemanticsDebuggerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SemanticsDebuggerPainter oldDelegate) {
-    return owner != oldDelegate.owner
-        || generation != oldDelegate.generation
-        || pointerPosition != oldDelegate.pointerPosition;
+    return owner != oldDelegate.owner ||
+        generation != oldDelegate.generation ||
+        pointerPosition != oldDelegate.pointerPosition;
   }
 
   @visibleForTesting
@@ -226,7 +230,8 @@ class _SemanticsDebuggerPainter extends CustomPainter {
 
     bool wantsTap = false;
     if (data.hasFlag(SemanticsFlag.hasCheckedState)) {
-      annotations.add(data.hasFlag(SemanticsFlag.isChecked) ? 'checked' : 'unchecked');
+      annotations
+          .add(data.hasFlag(SemanticsFlag.isChecked) ? 'checked' : 'unchecked');
       wantsTap = true;
     }
     if (data.hasFlag(SemanticsFlag.isTextField)) {
@@ -248,13 +253,13 @@ class _SemanticsDebuggerPainter extends CustomPainter {
       annotations.add('long-pressable');
     }
 
-    final bool isScrollable = data.hasAction(SemanticsAction.scrollLeft)
-        || data.hasAction(SemanticsAction.scrollRight)
-        || data.hasAction(SemanticsAction.scrollUp)
-        || data.hasAction(SemanticsAction.scrollDown);
+    final bool isScrollable = data.hasAction(SemanticsAction.scrollLeft) ||
+        data.hasAction(SemanticsAction.scrollRight) ||
+        data.hasAction(SemanticsAction.scrollUp) ||
+        data.hasAction(SemanticsAction.scrollDown);
 
-    final bool isAdjustable = data.hasAction(SemanticsAction.increase)
-        || data.hasAction(SemanticsAction.decrease);
+    final bool isAdjustable = data.hasAction(SemanticsAction.increase) ||
+        data.hasAction(SemanticsAction.decrease);
 
     if (isScrollable) {
       annotations.add('scrollable');
@@ -268,11 +273,13 @@ class _SemanticsDebuggerPainter extends CustomPainter {
     // Android will avoid pronouncing duplicating tooltip and label.
     // Therefore, having two identical strings is the same as having a single
     // string.
-    final bool shouldIgnoreDuplicatedLabel = defaultTargetPlatform == TargetPlatform.android && data.attributedLabel.string == data.tooltip;
+    final bool shouldIgnoreDuplicatedLabel =
+        defaultTargetPlatform == TargetPlatform.android &&
+            data.attributedLabel.string == data.tooltip;
     final String tooltipAndLabel = <String>[
-      if (data.tooltip.isNotEmpty)
-        data.tooltip,
-      if (data.attributedLabel.string.isNotEmpty && !shouldIgnoreDuplicatedLabel)
+      if (data.tooltip.isNotEmpty) data.tooltip,
+      if (data.attributedLabel.string.isNotEmpty &&
+          !shouldIgnoreDuplicatedLabel)
         data.attributedLabel.string,
     ].join('\n');
     if (tooltipAndLabel.isEmpty) {
@@ -311,11 +318,13 @@ class _SemanticsDebuggerPainter extends CustomPainter {
         style: labelStyle,
         text: message,
       )
-      ..textDirection = TextDirection.ltr // _getMessage always returns LTR text, even if node.label is RTL
+      ..textDirection = TextDirection
+          .ltr // _getMessage always returns LTR text, even if node.label is RTL
       ..textAlign = TextAlign.center
       ..layout(maxWidth: rect.width);
 
-    textPainter.paint(canvas, Alignment.center.inscribe(textPainter.size, rect).topLeft);
+    textPainter.paint(
+        canvas, Alignment.center.inscribe(textPainter.size, rect).topLeft);
     textPainter.dispose();
     canvas.restore();
   }
@@ -339,7 +348,8 @@ class _SemanticsDebuggerPainter extends CustomPainter {
     }
     final Rect rect = node.rect;
     if (!rect.isEmpty) {
-      final Color lineColor = Color(0xFF000000 + math.Random(node.id).nextInt(0xFFFFFF));
+      final Color lineColor =
+          Color(0xFF000000 + math.Random(node.id).nextInt(0xFFFFFF));
       final Rect innerRect = rect.deflate(rank * 1.0);
       if (innerRect.isEmpty) {
         final Paint fill = Paint()
@@ -386,5 +396,5 @@ class _RenderIgnorePointerWithSemantics extends RenderProxyBox {
   _RenderIgnorePointerWithSemantics();
 
   @override
-  bool hitTest(BoxHitTestResult result, { required Offset position }) => false;
+  bool hitTest(BoxHitTestResult result, {required Offset position}) => false;
 }

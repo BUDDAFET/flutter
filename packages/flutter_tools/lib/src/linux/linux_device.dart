@@ -4,7 +4,6 @@
 
 import 'package:process/process.dart';
 
-import '../base/file_system.dart';
 import '../base/logger.dart';
 import '../base/os.dart';
 import '../base/platform.dart';
@@ -74,7 +73,8 @@ class LinuxDevice extends DesktopDevice {
   }
 
   @override
-  String executablePathForDevice(covariant LinuxApp package, BuildInfo buildInfo) {
+  String executablePathForDevice(
+      covariant LinuxApp package, BuildInfo buildInfo) {
     return package.executable(buildInfo.mode);
   }
 }
@@ -87,16 +87,16 @@ class LinuxDevices extends PollingDeviceDiscovery {
     required FileSystem fileSystem,
     required ProcessManager processManager,
     required Logger logger,
-  }) : _platform = platform,
-       _linuxWorkflow = LinuxWorkflow(
+  })  : _platform = platform,
+        _linuxWorkflow = LinuxWorkflow(
           platform: platform,
           featureFlags: featureFlags,
-       ),
-       _fileSystem = fileSystem,
-       _logger = logger,
-       _processManager = processManager,
-       _operatingSystemUtils = operatingSystemUtils,
-       super('linux devices');
+        ),
+        _fileSystem = fileSystem,
+        _logger = logger,
+        _processManager = processManager,
+        _operatingSystemUtils = operatingSystemUtils,
+        super('linux devices');
 
   final Platform _platform;
   final LinuxWorkflow _linuxWorkflow;
@@ -112,7 +112,7 @@ class LinuxDevices extends PollingDeviceDiscovery {
   bool get canListAnything => _linuxWorkflow.canListDevices;
 
   @override
-  Future<List<Device>> pollingGetDevices({ Duration? timeout }) async {
+  Future<List<Device>> pollingGetDevices({Duration? timeout}) async {
     if (!canListAnything) {
       return const <Device>[];
     }

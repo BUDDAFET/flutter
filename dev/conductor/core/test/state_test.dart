@@ -7,8 +7,6 @@ import 'package:conductor_core/src/state.dart';
 import 'package:file/file.dart';
 import 'package:file/memory.dart';
 
-import './common.dart';
-
 void main() {
   test('writeStateToFile() pretty-prints JSON with 2 spaces', () {
     final MemoryFileSystem fileSystem = MemoryFileSystem.test();
@@ -22,16 +20,12 @@ void main() {
         ..candidateBranch = candidateBranch
         ..upstream = (pb.Remote.create()
           ..name = 'upstream'
-          ..url = 'git@github.com:flutter/engine.git'
-        )
-      )
+          ..url = 'git@github.com:flutter/engine.git'))
       ..framework = (pb.Repository.create()
         ..candidateBranch = candidateBranch
         ..upstream = (pb.Remote.create()
           ..name = 'upstream'
-          ..url = 'git@github.com:flutter/flutter.git'
-        )
-      );
+          ..url = 'git@github.com:flutter/flutter.git'));
     writeStateToFile(
       stateFile,
       state,

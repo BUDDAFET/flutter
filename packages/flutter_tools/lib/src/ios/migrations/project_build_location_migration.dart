@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../base/file_system.dart';
 import '../../base/project_migrator.dart';
 import '../../xcode_project.dart';
 
@@ -18,7 +17,8 @@ class ProjectBuildLocationMigration extends ProjectMigrator {
   @override
   Future<void> migrate() async {
     if (!_xcodeProjectWorkspaceData.existsSync()) {
-      logger.printTrace('Xcode project workspace data not found, skipping build location migration.');
+      logger.printTrace(
+          'Xcode project workspace data not found, skipping build location migration.');
       return;
     }
 

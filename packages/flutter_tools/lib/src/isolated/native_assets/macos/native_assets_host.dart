@@ -7,7 +7,6 @@
 import 'package:native_assets_cli/native_assets_cli_internal.dart';
 
 import '../../../base/common.dart';
-import '../../../base/file_system.dart';
 import '../../../base/io.dart';
 import '../../../build_info.dart';
 import '../../../convert.dart';
@@ -22,7 +21,8 @@ Future<void> createInfoPlist(
   String? minimumIOSVersion,
 }) async {
   final File infoPlistFile = target.childFile('Info.plist');
-  final String bundleIdentifier = 'io.flutter.flutter.native_assets.$name'.replaceAll('_', '-');
+  final String bundleIdentifier =
+      'io.flutter.flutter.native_assets.$name'.replaceAll('_', '-');
   await infoPlistFile.writeAsString(<String>[
     '''
 <?xml version="1.0" encoding="UTF-8"?>

@@ -24,7 +24,8 @@ enum RemoteName {
 
 class Remote {
   const Remote({required RemoteName name, required this.url})
-      : _name = name, assert(url != '');
+      : _name = name,
+        assert(url != '');
 
   const Remote.mirror(String url) : this(name: RemoteName.mirror, url: url);
   const Remote.upstream(String url) : this(name: RemoteName.upstream, url: url);
@@ -35,7 +36,7 @@ class Remote {
   String get name {
     return switch (_name) {
       RemoteName.upstream => 'upstream',
-      RemoteName.mirror   => 'mirror',
+      RemoteName.mirror => 'mirror',
     };
   }
 
@@ -158,7 +159,7 @@ abstract class Repository {
     }
 
     _checkoutDirectory = parentDirectory.childDirectory(name);
-    await lazilyInitialize(_checkoutDirectory!);
+    await lazilyInitialize(_checkoutDirectory);
 
     return _checkoutDirectory!;
   }
@@ -274,7 +275,8 @@ abstract class Repository {
       <String>['merge-base', firstRef, secondRef],
       'determine the merge base between $firstRef and $secondRef',
       workingDirectory: (await checkoutDirectory).path,
-    )).trim();
+    ))
+        .trim();
   }
 
   /// Fetch all branches and associated commits and tags from [remoteName].
@@ -372,7 +374,8 @@ abstract class Repository {
   }
 
   /// Determines if one ref is an ancestor for another.
-  Future<bool> isAncestor(String possibleAncestor, String possibleDescendant) async {
+  Future<bool> isAncestor(
+      String possibleAncestor, String possibleDescendant) async {
     final int exitcode = await git.run(
       <String>[
         'merge-base',
@@ -446,7 +449,9 @@ abstract class Repository {
       <String>['status', '--porcelain'],
       'check for uncommitted changes',
       workingDirectory: (await checkoutDirectory).path,
-    )).trim().isNotEmpty;
+    ))
+        .trim()
+        .isNotEmpty;
     if (!hasChanges) {
       throw ConductorException(
           'Tried to commit with message $message but no changes were present');
@@ -520,7 +525,8 @@ class FrameworkRepository extends Repository {
   FrameworkRepository(
     this.checkouts, {
     super.name = 'framework',
-    super.upstreamRemote = const Remote.upstream(FrameworkRepository.defaultUpstream),
+    super.upstreamRemote =
+        const Remote.upstream(FrameworkRepository.defaultUpstream),
     super.localUpstream,
     super.previousCheckoutLocation,
     String super.initialRef = FrameworkRepository.defaultBranch,
@@ -577,7 +583,8 @@ class FrameworkRepository extends Repository {
     return FrameworkRepository(
       checkouts,
       name: cloneName,
-      upstreamRemote: Remote.upstream('file://${(await checkoutDirectory).path}/'),
+      upstreamRemote:
+          Remote.upstream('file://${(await checkoutDirectory).path}/'),
     );
   }
 
@@ -619,13 +626,11 @@ class FrameworkRepository extends Repository {
       fileSystem.path.join((await checkoutDirectory).path, 'bin', 'flutter'),
       ...args,
     ]);
-    process
-        .stdout
+    process.stdout
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .listen(stdoutCallback ?? stdio.printTrace);
-    process
-        .stderr
+    process.stderr
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .listen(stderrCallback ?? stdio.printError);
@@ -786,7 +791,8 @@ class EngineRepository extends Repository {
     this.checkouts, {
     super.name = 'engine',
     String super.initialRef = EngineRepository.defaultBranch,
-    super.upstreamRemote = const Remote.upstream(EngineRepository.defaultUpstream),
+    super.upstreamRemote =
+        const Remote.upstream(EngineRepository.defaultUpstream),
     super.localUpstream,
     super.previousCheckoutLocation,
     super.mirrorRemote,
@@ -797,7 +803,8 @@ class EngineRepository extends Repository {
           platform: checkouts.platform,
           processManager: checkouts.processManager,
           stdio: checkouts.stdio,
-          requiredLocalBranches: additionalRequiredLocalBranches ?? const <String>[],
+          requiredLocalBranches:
+              additionalRequiredLocalBranches ?? const <String>[],
         );
 
   final Checkouts checkouts;
@@ -837,7 +844,8 @@ class EngineRepository extends Repository {
     return EngineRepository(
       checkouts,
       name: cloneName,
-      upstreamRemote: Remote.upstream('file://${(await checkoutDirectory).path}/'),
+      upstreamRemote:
+          Remote.upstream('file://${(await checkoutDirectory).path}/'),
     );
   }
 }

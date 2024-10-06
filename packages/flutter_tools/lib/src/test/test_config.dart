@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
 import '../base/logger.dart';
 
 /// The name of the test configuration file that will be discovered by the
@@ -20,7 +19,8 @@ File? findTestConfigFile(File testFile, Logger logger) {
   while (directory.path != directory.parent.path) {
     final File configFile = directory.childFile(_kTestConfigFileName);
     if (configFile.existsSync()) {
-      logger.printTrace('Discovered $_kTestConfigFileName in ${directory.path}');
+      logger
+          .printTrace('Discovered $_kTestConfigFileName in ${directory.path}');
       testConfigFile = configFile;
       break;
     }

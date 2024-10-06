@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../base/file_system.dart';
-
 import 'build_system.dart';
 
 /// An exception thrown when a rule declares an input that does not exist on

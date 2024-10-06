@@ -97,18 +97,18 @@ class ReorderableListView extends StatefulWidget {
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
     this.autoScrollerVelocityScalar,
-  }) : assert(
-        (itemExtent == null && prototypeItem == null) ||
-        (itemExtent == null && itemExtentBuilder == null) ||
-        (prototypeItem == null && itemExtentBuilder == null),
-        'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
-       ),
-       assert(
-         children.every((Widget w) => w.key != null),
-         'All children of this widget must have a key.',
-       ),
-       itemBuilder = ((BuildContext context, int index) => children[index]),
-       itemCount = children.length;
+  })  : assert(
+          (itemExtent == null && prototypeItem == null) ||
+              (itemExtent == null && itemExtentBuilder == null) ||
+              (prototypeItem == null && itemExtentBuilder == null),
+          'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+        ),
+        assert(
+          children.every((Widget w) => w.key != null),
+          'All children of this widget must have a key.',
+        ),
+        itemBuilder = ((BuildContext context, int index) => children[index]),
+        itemCount = children.length;
 
   /// Creates a reorderable list from widget items that are created on demand.
   ///
@@ -166,13 +166,13 @@ class ReorderableListView extends StatefulWidget {
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
     this.autoScrollerVelocityScalar,
-  }) : assert(itemCount >= 0),
-       assert(
-         (itemExtent == null && prototypeItem == null) ||
-         (itemExtent == null && itemExtentBuilder == null) ||
-         (prototypeItem == null && itemExtentBuilder == null),
-         'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
-       );
+  })  : assert(itemCount >= 0),
+        assert(
+          (itemExtent == null && prototypeItem == null) ||
+              (itemExtent == null && itemExtentBuilder == null) ||
+              (prototypeItem == null && itemExtentBuilder == null),
+          'You can only pass one of itemExtent, prototypeItem and itemExtentBuilder.',
+        );
 
   /// {@macro flutter.widgets.reorderable_list.itemBuilder}
   final IndexedWidgetBuilder itemBuilder;
@@ -303,7 +303,8 @@ class _ReorderableListViewState extends State<ReorderableListView> {
       return true;
     }());
 
-    final Key itemGlobalKey = _ReorderableListViewChildGlobalKey(item.key!, this);
+    final Key itemGlobalKey =
+        _ReorderableListViewChildGlobalKey(item.key, this);
 
     if (widget.buildDefaultDragHandles) {
       switch (Theme.of(context).platform) {
@@ -401,9 +402,21 @@ class _ReorderableListViewState extends State<ReorderableListView> {
 
     final EdgeInsets startPadding, endPadding, listPadding;
     (startPadding, endPadding, listPadding) = switch (widget.scrollDirection) {
-      Axis.horizontal || Axis.vertical when (start ?? end) == null => (EdgeInsets.zero, EdgeInsets.zero, padding),
-      Axis.horizontal => (padding.copyWith(left: 0), padding.copyWith(right: 0), padding.copyWith(left: start, right: end)),
-      Axis.vertical   => (padding.copyWith(top: 0), padding.copyWith(bottom: 0), padding.copyWith(top: start, bottom: end)),
+      Axis.horizontal || Axis.vertical when (start ?? end) == null => (
+          EdgeInsets.zero,
+          EdgeInsets.zero,
+          padding
+        ),
+      Axis.horizontal => (
+          padding.copyWith(left: 0),
+          padding.copyWith(right: 0),
+          padding.copyWith(left: start, right: end)
+        ),
+      Axis.vertical => (
+          padding.copyWith(top: 0),
+          padding.copyWith(bottom: 0),
+          padding.copyWith(top: start, bottom: end)
+        ),
     };
     final (EdgeInsets headerPadding, EdgeInsets footerPadding) = widget.reverse
         ? (startPadding, endPadding)
@@ -460,7 +473,8 @@ class _ReorderableListViewState extends State<ReorderableListView> {
 // of the objects used to generate widgets.
 @optionalTypeArgs
 class _ReorderableListViewChildGlobalKey extends GlobalObjectKey {
-  const _ReorderableListViewChildGlobalKey(this.subKey, this.state) : super(subKey);
+  const _ReorderableListViewChildGlobalKey(this.subKey, this.state)
+      : super(subKey);
 
   final Key subKey;
   final State state;
@@ -470,9 +484,9 @@ class _ReorderableListViewChildGlobalKey extends GlobalObjectKey {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is _ReorderableListViewChildGlobalKey
-        && other.subKey == subKey
-        && other.state == state;
+    return other is _ReorderableListViewChildGlobalKey &&
+        other.subKey == subKey &&
+        other.state == state;
   }
 
   @override

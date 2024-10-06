@@ -1,4 +1,7 @@
 {
 	"name": "fake-vs-code-install-for-tests",
-	"version": "1.2.3"
+	"version": "1.2.3",
+	"dependencies": {
+		"fake-vs-code-install-for-tests": "file:"
+	}
 }

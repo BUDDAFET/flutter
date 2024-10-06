@@ -5,23 +5,18 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:flutter_driver/src/driver/memory_summarizer.dart';
 
-import '../common.dart';
-
 TimelineEvent newGPUTraceEvent(double ms) => TimelineEvent(<String, dynamic>{
-  'name': 'AllocatorVK',
-  'ph': 'b',
-  'args': <String, String>{
-    'MemoryBudgetUsageMB': ms.toString()
-  },
-});
+      'name': 'AllocatorVK',
+      'ph': 'b',
+      'args': <String, String>{'MemoryBudgetUsageMB': ms.toString()},
+    });
 
-TimelineEvent newMetalGPUTraceEvent(double ms) => TimelineEvent(<String, dynamic>{
-  'name': 'AllocatorMTL',
-  'ph': 'b',
-  'args': <String, String>{
-    'MemoryBudgetUsageMB': ms.toString()
-  },
-});
+TimelineEvent newMetalGPUTraceEvent(double ms) =>
+    TimelineEvent(<String, dynamic>{
+      'name': 'AllocatorMTL',
+      'ph': 'b',
+      'args': <String, String>{'MemoryBudgetUsageMB': ms.toString()},
+    });
 
 void main() {
   test('Can process GPU memory usage times.', () {

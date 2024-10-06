@@ -6,7 +6,6 @@ import 'package:native_assets_builder/native_assets_builder.dart'
     hide NativeAssetsBuildRunner;
 import 'package:native_assets_cli/native_assets_cli_internal.dart';
 
-import '../../../base/file_system.dart';
 import '../../../build_info.dart';
 import '../../../globals.dart' as globals;
 import '../native_assets.dart';
@@ -28,7 +27,8 @@ Future<Uri?> dryRunNativeAssetsMacOS({
   }
 
   final Uri buildUri = nativeAssetsBuildUri(projectUri, OSImpl.macOS);
-  final Iterable<KernelAsset> nativeAssetPaths = await dryRunNativeAssetsMacOSInternal(
+  final Iterable<KernelAsset> nativeAssetPaths =
+      await dryRunNativeAssetsMacOSInternal(
     fileSystem,
     projectUri,
     flutterTester,
@@ -113,8 +113,7 @@ Future<(Uri? nativeAssetsYaml, List<Uri> dependencies)> buildNativeAssetsMacOS({
   final List<Target> targets = darwinArchs != null
       ? darwinArchs.map(_getNativeTarget).toList()
       : <Target>[Target.current];
-  final BuildModeImpl buildModeCli =
-      nativeAssetsBuildMode(buildMode);
+  final BuildModeImpl buildModeCli = nativeAssetsBuildMode(buildMode);
 
   globals.logger
       .printTrace('Building native assets for $targets $buildModeCli.');
@@ -180,9 +179,9 @@ Future<(Uri? nativeAssetsYaml, List<Uri> dependencies)> buildNativeAssetsMacOS({
 /// Extract the [Target] from a [DarwinArch].
 Target _getNativeTarget(DarwinArch darwinArch) {
   return switch (darwinArch) {
-    DarwinArch.arm64  => Target.macOSArm64,
+    DarwinArch.arm64 => Target.macOSArm64,
     DarwinArch.x86_64 => Target.macOSX64,
-    DarwinArch.armv7  => throw Exception('Unknown DarwinArch: $darwinArch.'),
+    DarwinArch.armv7 => throw Exception('Unknown DarwinArch: $darwinArch.'),
   };
 }
 
