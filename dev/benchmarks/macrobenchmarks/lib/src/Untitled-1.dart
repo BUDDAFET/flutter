@@ -69,28 +69,27 @@ class _MultiWidgetConstructTableState extends State<MultiWidgetConstructTable>
         final Color c2 = colorList[(c1Position + 1) % colorList.length][900];
         final Color baseColor = Color.lerp(c1, c2, colorPosition - c1Position);
         counter++;
-        children:
-        List<TableRow>.generate(
-            widget.rowCount,
-            (int row) => TableRow(
-                  children:
-                      List<Widget>.generate(widget.columnCount, (int column) {
-                    final int label = row * widget.columnCount + column;
-                    // This implementation rebuild the widget tree for every
-                    // frame, and is intentionally designed of poor performance
-                    // for benchmark purposes. The key is used to force
-                    // rebuilding the element.
-                    return Container(
-                      key: ValueKey<int>(widgetCounter + label),
-                      color: Color.lerp(
-                          Colors.white, baseColor, label / totalLength),
-                      height: height,
-                      child: Center(
-                        child: Text('${widgetCounter + label}'),
-                      ),
-                    );
-                  }),
-                )).toList();
+        return Table(
+          children: List<TableRow>.generate(
+              widget.rowCount,
+              (int row) => TableRow(
+                    children:
+                        List<Widget>.generate(widget.columnCount, (int column) {
+                      final int label = row * widget.columnCount + column;
+                      // This implementation rebuild the widget tree for every
+                      // frame, and is intentionally designed of poor performance
+                      // for benchmark purposes. The key is used to force
+                      // rebuilding the element.
+                      return Container(
+                        key: ValueKey<int>(widgetCounter + label),
+                        color: Color.lerp(
+                            Colors.white, baseColor, label / totalLength),
+                        height: height,
+                        child: Center(child: Text('${widgetCounter + label}')),
+                      );
+                    }),
+                  )),
+        );
       },
     );
   }
